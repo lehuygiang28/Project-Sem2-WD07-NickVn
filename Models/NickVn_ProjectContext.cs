@@ -51,6 +51,12 @@ namespace Project_Sem2_WD07_NickVn.Models
                     .HasColumnType("text")
                     .HasColumnName("last_name");
 
+                entity.Property(e => e.Money).HasColumnName("money");
+
+                entity.Property(e => e.Note)
+                    .HasColumnType("text")
+                    .HasColumnName("note");
+
                 entity.Property(e => e.Password)
                     .HasColumnType("text")
                     .HasColumnName("password");

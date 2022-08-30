@@ -13,7 +13,7 @@
     <div class="login-box-body box-custom">
         <p class="login-box-msg">Đăng nhập hệ thống</p>
         <span class="help-block" style="text-align: center;color: #dd4b39">
-            <strong></strong>
+            <strong>@ViewBag.Error</strong>
         </span>
 
         <form asp-action="LoginSolve">
@@ -25,7 +25,7 @@
 
             </div>
             <div class="form-group has-feedback">
-                @Html.TextBoxFor(u => u.Password, new { @class = "form-control", @placeholder = "Mật khẩu"})
+                @Html.TextBoxFor(u => u.Password, new { @type="password", @class = "form-control", @placeholder = "Mật khẩu"})
                 @* <input type="password" class="form-control" name="password" placeholder="Mật khẩu"> *@
                 <span class="fa-solid fa-lock form-control-feedback"></span>
             </div>

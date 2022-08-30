@@ -11,6 +11,8 @@ namespace Project_Sem2_WD07_NickVn.Models
         public string FirstName { get; set; } = null!;
         public string LastName { get; set; } = null!;
         public string Email { get; set; } = null!;
+        public float Money { get; set; }
         public int Role { get; set; }
+        public string? Note { get; set; }
     }
 }
