@@ -15,7 +15,7 @@ public class UsersController : Controller
 
     public IActionResult Index()
     {
-        return View(nameof(Login));
+        return Login();
     }
 
     public IActionResult Login()
