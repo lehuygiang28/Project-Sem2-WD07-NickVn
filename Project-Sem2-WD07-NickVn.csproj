@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>Project_Sem2_WD07_NickVn</RootNamespace>
+    <!-- <RootNamespace>Project_Sem2_WD07_NickVn</RootNamespace> -->
   </PropertyGroup>
 
 </Project>
