@@ -710,11 +710,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project-Sem2-WD07-NickVn\\Project-Sem2-WD07-NickVn.csproj",
-      "projectName": "Project-Sem2-WD07-NickVn",
-      "projectPath": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project-Sem2-WD07-NickVn\\Project-Sem2-WD07-NickVn.csproj",
+      "projectUniqueName": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\Project_Sem2_WD07_NickVn.csproj",
+      "projectName": "Project_Sem2_WD07_NickVn",
+      "projectPath": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\Project_Sem2_WD07_NickVn.csproj",
       "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
-      "outputPath": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project-Sem2-WD07-NickVn\\obj\\",
+      "outputPath": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\ASUS\\AppData\\Roaming\\NuGet\\NuGet.Config"

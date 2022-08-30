@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "pPxd2MJ9La1SkDDVdnUTsU99iv9XILC6cJPy1qZfNa38VonfGYCD6eee8isEl0YjljPZipC1EkcTAwW+QyLoag==",
+  "dgSpecHash": "yt2q/Es55nmwPlfuD8CnQDQwC+LGAs5gF9jX/QDhlXTGhOxrZXJRbijIKTj9VuxkM3Zysgish3vs0XoqjFgJ8g==",
   "success": true,
-  "projectFilePath": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project-Sem2-WD07-NickVn\\Project-Sem2-WD07-NickVn.csproj",
+  "projectFilePath": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\Project_Sem2_WD07_NickVn.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ASUS\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\ASUS\\.nuget\\packages\\microsoft.entityframeworkcore\\6.0.5\\microsoft.entityframeworkcore.6.0.5.nupkg.sha512",
