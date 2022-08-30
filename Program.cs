@@ -1,4 +1,19 @@
+using Project_Sem2_WD07_NickVn.Models;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
+
+string connectionString = builder.Configuration.GetConnectionString("NickVn_Project");
+builder.Services.AddDbContext<NickVn_ProjectContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+
+// Add session services
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromHours(1);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

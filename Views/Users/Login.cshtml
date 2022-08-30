@@ -1,3 +1,4 @@
+@model User
 @{
     ViewData["Title"] = "Login Page";
 }
@@ -15,15 +16,17 @@
             <strong></strong>
         </span>
 
-        <form action="login" method="POST">
-            <input type="hidden" name="_token" value="">
+        <form asp-action="LoginSolve">
+            @* <input type="hidden" name="_token" value=""> *@
             <div class="form-group has-feedback">
-                <input type="text" class="form-control" name="username" value="" placeholder="Tài khoản của Web">
+                @Html.TextBoxFor(u => u.UserName, new { @class = "form-control", @placeholder = "Tài khoản của Web"})
+                @* <input type="text" class="form-control" name="username" value="" placeholder="Tài khoản của Web"> *@
                 <span class="fa-solid fa-user form-control-feedback"></span>
 
             </div>
             <div class="form-group has-feedback">
-                <input type="password" class="form-control" name="password" placeholder="Mật khẩu">
+                @Html.TextBoxFor(u => u.Password, new { @class = "form-control", @placeholder = "Mật khẩu"})
+                @* <input type="password" class="form-control" name="password" placeholder="Mật khẩu"> *@
                 <span class="fa-solid fa-lock form-control-feedback"></span>
             </div>
             <div class="row">
@@ -60,7 +63,7 @@
 
             @* <a href="http://fb.nhapnick.com/nick_vn" class="btn  btn-social btn-facebook btn-flat d-inline-block"><i
                     class="fa-brands fa-facebook-f"></i>Login FB</a> *@
-            <a href="/nick_vn" class="btn  btn-social btn-facebook btn-flat d-inline-block"><i
+            <a href="#" class="btn  btn-social btn-facebook btn-flat d-inline-block"><i
                     class="fa-brands fa-facebook-f"></i>Login FB</a>
             <a href="/register" class="btn  btn-social btn-google btn-flat d-inline-block"><i
                     class="icon-key icons"></i>Tạo tài

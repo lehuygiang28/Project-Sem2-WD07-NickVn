@@ -7,20 +7,27 @@ namespace Project_Sem2_WD07_NickVn.Controllers;
 public class UsersController : Controller
 {
     private readonly ILogger<UsersController> _logger;
+    private readonly NickVn_ProjectContext _context;
 
-    public UsersController(ILogger<UsersController> logger)
+    public UsersController(ILogger<UsersController> logger, NickVn_ProjectContext context)
     {
         _logger = logger;
+        _context = context;
     }
 
-    public IActionResult Index()
+    public IActionResult LoginSolve()
     {
-        return Login();
+        return NotFound();
     }
 
     public IActionResult Login()
     {
         return View();
+    }
+    
+    public IActionResult Index()
+    {
+        return Login();
     }
 
     public IActionResult Privacy()
