@@ -5,12 +5,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Project_Sem2_WD07_NickVn.Controllers;
 
-public class CategoryController : Controller
+public class ShopaccController : Controller
 {
-    private readonly ILogger<CategoryController> _logger;
+    private readonly ILogger<ShopaccController> _logger;
     private readonly NickVn_ProjectContext _context;
 
-    public CategoryController(ILogger<CategoryController> logger, NickVn_ProjectContext context)
+    public ShopaccController(ILogger<ShopaccController> logger, NickVn_ProjectContext context)
     {
         _logger = logger;
         _context = context;
@@ -18,14 +18,6 @@ public class CategoryController : Controller
 
     public IActionResult Index()
     {
-        return View();
-    }
-    public async Task<IActionResult> Garena(int id)
-    {
-        var cateProduct = await _context.ProductCategories.Where(c => c.CategoryId == id).ToListAsync();
-
-        ViewBag.cateProduct  = cateProduct;
-        _logger.LogInformation("ID: " + id);
         return View();
     }
 
