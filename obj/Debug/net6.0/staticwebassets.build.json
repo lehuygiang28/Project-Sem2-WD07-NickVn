@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "F5Ve3TDAfzngWCQnc2FMpb4DO2MFSoui9otz4zhM1Vw=",
+  "Hash": "io3BgdpuphpQt5YdIG3LLhVjmjbUchX6o1jy14Tw/IQ=",
   "Source": "Project_Sem2_WD07_NickVn",
   "BasePath": "_content/Project_Sem2_WD07_NickVn",
   "Mode": "Default",
@@ -66,6 +66,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\assets\\frontend\\css\\homepage-style.css"
+    },
+    {
+      "Identity": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\assets\\frontend\\css\\lienminh-category-style.css",
+      "SourceId": "Project_Sem2_WD07_NickVn",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\",
+      "BasePath": "_content/Project_Sem2_WD07_NickVn",
+      "RelativePath": "assets/frontend/css/lienminh-category-style.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\assets\\frontend\\css\\lienminh-category-style.css"
     },
     {
       "Identity": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\assets\\frontend\\css\\login-style.css",
@@ -2601,6 +2618,23 @@
       "OriginalItemSpec": "wwwroot\\storage\\images\\0jjbYp7OmJ_1623164374.gif"
     },
     {
+      "Identity": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\storage\\images\\0qBPw7AiOQ_1632531413.jpg",
+      "SourceId": "Project_Sem2_WD07_NickVn",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\",
+      "BasePath": "_content/Project_Sem2_WD07_NickVn",
+      "RelativePath": "storage/images/0qBPw7AiOQ_1632531413.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\storage\\images\\0qBPw7AiOQ_1632531413.jpg"
+    },
+    {
       "Identity": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\storage\\images\\6JMeECUSjw_1623212937.gif",
       "SourceId": "Project_Sem2_WD07_NickVn",
       "SourceType": "Discovered",
@@ -2669,6 +2703,23 @@
       "OriginalItemSpec": "wwwroot\\storage\\images\\bHhkJqAKlB_1623164417.gif"
     },
     {
+      "Identity": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\storage\\images\\CM9q56zAnM_1632531413.jpg",
+      "SourceId": "Project_Sem2_WD07_NickVn",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\",
+      "BasePath": "_content/Project_Sem2_WD07_NickVn",
+      "RelativePath": "storage/images/CM9q56zAnM_1632531413.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\storage\\images\\CM9q56zAnM_1632531413.jpg"
+    },
+    {
       "Identity": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\storage\\images\\eSReP0KiSv_1623293249.gif",
       "SourceId": "Project_Sem2_WD07_NickVn",
       "SourceType": "Discovered",
@@ -2684,6 +2735,57 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\storage\\images\\eSReP0KiSv_1623293249.gif"
+    },
+    {
+      "Identity": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\storage\\images\\FGnSG7H4qT_1623167497.gif",
+      "SourceId": "Project_Sem2_WD07_NickVn",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\",
+      "BasePath": "_content/Project_Sem2_WD07_NickVn",
+      "RelativePath": "storage/images/FGnSG7H4qT_1623167497.gif",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\storage\\images\\FGnSG7H4qT_1623167497.gif"
+    },
+    {
+      "Identity": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\storage\\images\\FSPfB05HiR_1632531414.jpg",
+      "SourceId": "Project_Sem2_WD07_NickVn",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\",
+      "BasePath": "_content/Project_Sem2_WD07_NickVn",
+      "RelativePath": "storage/images/FSPfB05HiR_1632531414.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\storage\\images\\FSPfB05HiR_1632531414.jpg"
+    },
+    {
+      "Identity": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\storage\\images\\HLpEr7ojZm_1632531414.jpg",
+      "SourceId": "Project_Sem2_WD07_NickVn",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\",
+      "BasePath": "_content/Project_Sem2_WD07_NickVn",
+      "RelativePath": "storage/images/HLpEr7ojZm_1632531414.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\storage\\images\\HLpEr7ojZm_1632531414.jpg"
     },
     {
       "Identity": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\storage\\images\\i7QQlLPxod_1624873611.jpg",
@@ -2720,12 +2822,12 @@
       "OriginalItemSpec": "wwwroot\\storage\\images\\iIrZycTALV_1623294112.gif"
     },
     {
-      "Identity": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\storage\\images\\Ix2YhFfXxE_1623290744 (1).jpg",
+      "Identity": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\storage\\images\\lien-minh.gif",
       "SourceId": "Project_Sem2_WD07_NickVn",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\",
       "BasePath": "_content/Project_Sem2_WD07_NickVn",
-      "RelativePath": "storage/images/Ix2YhFfXxE_1623290744 (1).jpg",
+      "RelativePath": "storage/images/lien-minh.gif",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -2734,15 +2836,15 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\storage\\images\\Ix2YhFfXxE_1623290744 (1).jpg"
+      "OriginalItemSpec": "wwwroot\\storage\\images\\lien-minh.gif"
     },
     {
-      "Identity": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\storage\\images\\Ix2YhFfXxE_1623290744.jpg",
+      "Identity": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\storage\\images\\lien-quan.gif",
       "SourceId": "Project_Sem2_WD07_NickVn",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\",
       "BasePath": "_content/Project_Sem2_WD07_NickVn",
-      "RelativePath": "storage/images/Ix2YhFfXxE_1623290744.jpg",
+      "RelativePath": "storage/images/lien-quan.gif",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -2751,7 +2853,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\storage\\images\\Ix2YhFfXxE_1623290744.jpg"
+      "OriginalItemSpec": "wwwroot\\storage\\images\\lien-quan.gif"
     },
     {
       "Identity": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\storage\\images\\loader.gif",
@@ -2786,6 +2888,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\storage\\images\\logo.jpg"
+    },
+    {
+      "Identity": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\storage\\images\\mua-ngay.jpg",
+      "SourceId": "Project_Sem2_WD07_NickVn",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\",
+      "BasePath": "_content/Project_Sem2_WD07_NickVn",
+      "RelativePath": "storage/images/mua-ngay.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\storage\\images\\mua-ngay.jpg"
     },
     {
       "Identity": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\storage\\images\\NGvmmHGsgW_1623164474.gif",
@@ -2839,6 +2958,23 @@
       "OriginalItemSpec": "wwwroot\\storage\\images\\pneRsSb1BU_1626075373.gif"
     },
     {
+      "Identity": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\storage\\images\\pTWDgoJQuz_1632531413.jpg",
+      "SourceId": "Project_Sem2_WD07_NickVn",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\",
+      "BasePath": "_content/Project_Sem2_WD07_NickVn",
+      "RelativePath": "storage/images/pTWDgoJQuz_1632531413.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\storage\\images\\pTWDgoJQuz_1632531413.jpg"
+    },
+    {
       "Identity": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\storage\\images\\QKBoQb2gKQ_1623164763.gif",
       "SourceId": "Project_Sem2_WD07_NickVn",
       "SourceType": "Discovered",
@@ -2856,6 +2992,23 @@
       "OriginalItemSpec": "wwwroot\\storage\\images\\QKBoQb2gKQ_1623164763.gif"
     },
     {
+      "Identity": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\storage\\images\\sale-off-30.png",
+      "SourceId": "Project_Sem2_WD07_NickVn",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\",
+      "BasePath": "_content/Project_Sem2_WD07_NickVn",
+      "RelativePath": "storage/images/sale-off-30.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\storage\\images\\sale-off-30.png"
+    },
+    {
       "Identity": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\storage\\images\\Sbcs9ooDuN_1623164443.gif",
       "SourceId": "Project_Sem2_WD07_NickVn",
       "SourceType": "Discovered",
@@ -2871,6 +3024,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\storage\\images\\Sbcs9ooDuN_1623164443.gif"
+    },
+    {
+      "Identity": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\storage\\images\\thu-van-may.gif",
+      "SourceId": "Project_Sem2_WD07_NickVn",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\",
+      "BasePath": "_content/Project_Sem2_WD07_NickVn",
+      "RelativePath": "storage/images/thu-van-may.gif",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\storage\\images\\thu-van-may.gif"
     },
     {
       "Identity": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\storage\\images\\u71XsHaPuV_1621960862.png",
@@ -2958,6 +3128,23 @@
       "OriginalItemSpec": "wwwroot\\storage\\images\\WRZdijOT0U_1623164562.gif"
     },
     {
+      "Identity": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\storage\\images\\xxuC88f0h9_1632531414.jpg",
+      "SourceId": "Project_Sem2_WD07_NickVn",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\",
+      "BasePath": "_content/Project_Sem2_WD07_NickVn",
+      "RelativePath": "storage/images/xxuC88f0h9_1632531414.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\storage\\images\\xxuC88f0h9_1632531414.jpg"
+    },
+    {
       "Identity": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\storage\\images\\ZaUpJaYZh2_1623164524.gif",
       "SourceId": "Project_Sem2_WD07_NickVn",
       "SourceType": "Discovered",
@@ -2990,6 +3177,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\storage\\images\\ZwCbQxRd6b_1623164799.gif"
+    },
+    {
+      "Identity": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\storage\\images\\zwRCsqMtyo_1632531413.jpg",
+      "SourceId": "Project_Sem2_WD07_NickVn",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\",
+      "BasePath": "_content/Project_Sem2_WD07_NickVn",
+      "RelativePath": "storage/images/zwRCsqMtyo_1632531413.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\storage\\images\\zwRCsqMtyo_1632531413.jpg"
     }
   ]
 }

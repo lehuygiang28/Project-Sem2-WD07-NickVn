@@ -1,0 +1,113 @@
+@{
+    ViewData["Title"] = "Game Liên Minh";
+}
+
+<!-- BEGIN: PAGE CONTAINER -->
+<div class="c-layout-page">
+    <!-- BEGIN: PAGE CONTENT -->
+
+    <link rel="stylesheet" href="/assets/frontend/css/lienminh-category-style.css">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="alert alert-info" role="alert">
+                    <h1 class="alert-heading">Danh Mục Game Liên Minh</h1>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row row-flex row-flex-safari game-list item-list">
+
+            @{
+                var product = ViewBag.cateProduct;
+                if (product is List<ProductCategory>)
+                {
+                    List<ProductCategory> listProduct = (List<ProductCategory>)product;
+                    foreach (ProductCategory productItem in listProduct)
+                    {
+
+                        <div class="col-sm-3 col-xs-6">
+                            <div class="classWithPad">
+                                <div class="image">
+                                    <a href='@Url.ActionLink()'>
+                                        <img src="@productItem.ImgSrc" alt="@productItem.CategoryName">
+                                    </a>
+
+                                </div>
+                                <div class="news_title">
+                                    <a href='@Url.ActionLink()'>@productItem.CategoryName</a>
+                                </div>
+
+                                <div class="news_description">
+                                    <p>
+                                        Số tài khoản: @productItem.Total
+                                    </p>
+                                    <!-- <p>
+                                                                Đã bán: 944
+                                                            </p> -->
+                        </div>
+                                <div class="a-more">
+                                    <div class="row">
+
+                                        <div class="col-xs-12">
+                                            <div class="view">
+                                                <a href="@Url.ActionLink()" title="@productItem.CategoryName">Xem tất cả</a>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+
+                }
+            }
+
+        </div>
+
+        <!-- END: PAGE CONTENT -->
+    </div>
+
+    <div class="modal fade" id="noticeModal" role="dialog" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="loader" style="text-align: center"><img src="/assets/frontend/images/loader.gif"
+                    style="width: 50px;height: 50px;display: none"></div>
+            <div class="modal-content">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="LoadModal" role="dialog" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="loader" style="text-align: center"><img src="/assets/frontend/images/loader.gif"
+                style="width: 50px;height: 50px;display: none"></div>
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $('.load-modal').each(function (index, elem) {
+            $(elem).unbind().click(function (e) {
+                e.preventDefault();
+                e.preventDefault();
+                var curModal = $('#LoadModal');
+                curModal.find('.modal-content').html("<div class=\"loader\" style=\"text-align: center\"><img src=\"/assets/frontend/images/loader.gif\" style=\"width: 50px;height: 50px;\"></div>");
+                curModal.modal('show').find('.modal-content').load($(elem).attr('rel'));
+            });
+        });
+    });
+</script>
+
+
+<!-- END: PAGE CONTAINER -->

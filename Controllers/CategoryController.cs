@@ -1,26 +1,33 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Project_Sem2_WD07_NickVn.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Project_Sem2_WD07_NickVn.Controllers;
 
-public class HomeController : Controller
+public class CategoryController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
+    private readonly ILogger<CategoryController> _logger;
     private readonly NickVn_ProjectContext _context;
 
-    public HomeController(ILogger<HomeController> logger, NickVn_ProjectContext context)
+    public CategoryController(ILogger<CategoryController> logger, NickVn_ProjectContext context)
     {
         _logger = logger;
         _context = context;
     }
 
-    public async Task<IActionResult> Index()
+    public IActionResult Index()
     {
-        var categoryList = await _context.Categories.OrderBy(c => c.Id).ToListAsync();
 
-        ViewBag.categoryList = categoryList;
+        return View();
+    }
+
+    public async Task<IActionResult> LienMinh(int id)
+    {
+        var cateProduct = await _context.ProductCategories.Where(c => c.CategoryId == id).ToListAsync();
+
+        ViewBag.cateProduct  = cateProduct;
+        Console.WriteLine("ID: " + id);
         return View();
     }
 

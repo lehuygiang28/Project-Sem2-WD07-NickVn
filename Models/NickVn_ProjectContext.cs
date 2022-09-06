@@ -16,6 +16,8 @@ namespace Project_Sem2_WD07_NickVn.Models
         {
         }
 
+        public virtual DbSet<Category> Categories { get; set; } = null!;
+        public virtual DbSet<ProductCategory> ProductCategories { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -30,6 +32,74 @@ namespace Project_Sem2_WD07_NickVn.Models
         {
             modelBuilder.UseCollation("utf8mb4_general_ci")
                 .HasCharSet("utf8mb4");
+
+            modelBuilder.Entity<Category>(entity =>
+            {
+                entity.ToTable("categories");
+
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
+
+                entity.Property(e => e.Action)
+                    .HasColumnType("text")
+                    .HasColumnName("action");
+
+                entity.Property(e => e.ImgSaleOff)
+                    .HasColumnType("text")
+                    .HasColumnName("img_sale_off");
+
+                entity.Property(e => e.ImgSrc)
+                    .HasColumnType("text")
+                    .HasColumnName("img_src");
+
+                entity.Property(e => e.Name)
+                    .HasColumnType("text")
+                    .HasColumnName("name");
+
+                entity.Property(e => e.Note)
+                    .HasColumnType("text")
+                    .HasColumnName("note");
+
+                entity.Property(e => e.Title)
+                    .HasColumnType("text")
+                    .HasColumnName("title");
+
+                entity.Property(e => e.Total)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("total");
+            });
+
+            modelBuilder.Entity<ProductCategory>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("product_category");
+
+                entity.Property(e => e.Action)
+                    .HasColumnType("text")
+                    .HasColumnName("action");
+
+                entity.Property(e => e.CategoryId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("category_id");
+
+                entity.Property(e => e.CategoryName)
+                    .HasColumnType("text")
+                    .HasColumnName("category_name");
+
+                entity.Property(e => e.ImgSrc)
+                    .HasColumnType("text")
+                    .HasColumnName("img_src");
+
+                entity.Property(e => e.Note)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("note");
+
+                entity.Property(e => e.Total)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("total");
+            });
 
             modelBuilder.Entity<User>(entity =>
             {
