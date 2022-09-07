@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "L8MsHGp+VtJjXJLpviYrnJPYSBN9W5u+ClcSGxoHiCc=",
+  "Hash": "WRCC3ydwjZMA04dUVJtZwgX75o4FB+UQhofaQamN58Q=",
   "Source": "Project_Sem2_WD07_NickVn",
   "BasePath": "_content/Project_Sem2_WD07_NickVn",
   "Mode": "Default",
@@ -4945,23 +4945,6 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\storage\\images\\thu-van-may.gif"
-    },
-    {
-      "Identity": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\storage\\images\\u71XsHaPuV_1621960862.png",
-      "SourceId": "Project_Sem2_WD07_NickVn",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\",
-      "BasePath": "_content/Project_Sem2_WD07_NickVn",
-      "RelativePath": "storage/images/u71XsHaPuV_1621960862.png",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\storage\\images\\u71XsHaPuV_1621960862.png"
     },
     {
       "Identity": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\storage\\images\\uJytL3ULdn_1623147751.jpg",
