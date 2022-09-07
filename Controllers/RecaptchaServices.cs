@@ -14,8 +14,16 @@ public class RecaptchaServices
     //ActionFilterAttribute has no async for MVC 5 therefore not using as an actionfilter attribute - needs revisiting in MVC 6
     internal static async Task<bool> Validate(HttpRequest request, string SecretKey)
     {
-        string recaptchaResponse = request.HttpContext.Request.Form["g-recaptcha-response"];
-        Console.WriteLine("g-recaptcha-response: " + recaptchaResponse);
+        string recaptchaResponse = "";
+        try
+        {
+            recaptchaResponse = request.HttpContext.Request.Form["g-recaptcha-response"];
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("EX: " + e.Message);
+            return false;
+        }
         if (string.IsNullOrEmpty(recaptchaResponse))
         {
             return false;
