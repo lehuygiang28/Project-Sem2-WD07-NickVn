@@ -6,6 +6,13 @@ var builder = WebApplication.CreateBuilder(args);
 string connectionString = builder.Configuration.GetConnectionString("NickVn_Project");
 builder.Services.AddDbContext<NickVn_ProjectContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
+// UseUrls - change IpAdress and port to listen
+builder.WebHost.UseKestrel(serverOptions =>
+{
+    serverOptions.ListenAnyIP(80);
+    serverOptions.ListenAnyIP(443, listenOptions => listenOptions.UseHttps());
+});
+
 // Add session services
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
