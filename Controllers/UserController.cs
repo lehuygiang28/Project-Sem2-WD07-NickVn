@@ -19,6 +19,97 @@ public class UserController : Controller
         _context = context;
     }
 
+    public async Task<IActionResult> SignupSolve(User userInput, string password_confirmation)
+    {
+        // if (!ModelState.IsValid)
+        // {
+        //     ViewBag.Error = "Đã xảy ra lỗi! Vui lòng thử lại.";
+        //     return View(nameof(Signup));
+        // }
+
+        bool isExistsUserName = await _context.Users.AnyAsync(u => u.UserName == userInput.UserName);
+        bool isExistsPhone = await _context.Users.AnyAsync(u => u.Phone == userInput.Phone);
+        bool isExistsEmail = await _context.Users.AnyAsync(u => u.Email == userInput.Email);
+
+        if(isExistsUserName)
+        {
+            ViewBag.Error = "Tài khoản đã được sử dụng";
+            return View(nameof(Signup));
+        }
+        else if(isExistsPhone)
+        {
+            ViewBag.Error = "Số điện thoại đã được sử dụng";
+            return View(nameof(Signup));
+        }
+        else if(isExistsEmail)
+        {
+            ViewBag.Error = "Email đã được sử dụng";
+            return View(nameof(Signup));
+        }
+
+        if(userInput.UserName.Length < 8)
+        {
+            ViewBag.Error = "Tài khoản phải ít nhất 8 kí tự";
+            return View(nameof(Signup));
+        }
+
+        bool IsValidPassword(string plainText)
+        {
+            System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex(@"^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$");
+            System.Text.RegularExpressions.Match match = regex.Match(plainText);
+            return match.Success;
+        }
+
+        if(!IsValidPassword(userInput.Password))
+        {
+            ViewBag.Error = "Mật khẩu chưa hợp lệ";
+            return View(nameof(Signup));
+        }
+
+        if (String.Compare(userInput.Password, password_confirmation, false) != 0)
+        {
+            ViewBag.Error = "Mật khẩu nhập lại không khớp";
+            return View(nameof(Signup));
+        }
+        
+        bool IsValidEmail(string plainText)
+        {
+            try
+            {
+                System.Net.Mail.MailAddress mail = new System.Net.Mail.MailAddress(plainText);
+                return true;
+            } catch {
+                return false;
+            }
+        }
+
+        if(!IsValidEmail(userInput.Email)){
+            ViewBag.Error = "Email chưa đúng định dạng";
+            return View(nameof(Signup));
+        }
+
+        userInput.Password = MD5.CreateMD5(userInput.Password);
+        userInput.FirstName = "NickVn";
+        DateTime localTime = DateTime.Now;
+
+        userInput.LastName = localTime.ToString("yyyyMMdd'T'HHmmss");
+        userInput.CreateAt = localTime;
+        userInput.UpdateAt = localTime;
+
+        await _context.AddAsync(userInput);
+        await _context.SaveChangesAsync();
+
+        ViewBag.Success = "Đăng ký thành công! Đăng nhập để tiếp tục";
+        _logger.LogInformation("Sign up successfull UserName: " + userInput.UserName);
+
+        return View(nameof(Signup));
+    }
+
+    public IActionResult Signup()
+    {
+        return View();
+    }
+
     public IActionResult Logout()
     {
         if (HttpContext.Session.GetInt32(SessionKeyId) != null){

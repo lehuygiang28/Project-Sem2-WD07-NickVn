@@ -176,6 +176,10 @@ namespace Project_Sem2_WD07_NickVn.Models
                     .HasColumnType("int(11)")
                     .HasColumnName("id");
 
+                entity.Property(e => e.CreateAt)
+                    .HasColumnType("datetime")
+                    .HasColumnName("create_at");
+
                 entity.Property(e => e.Email)
                     .HasColumnType("text")
                     .HasColumnName("email");
@@ -198,10 +202,18 @@ namespace Project_Sem2_WD07_NickVn.Models
                     .HasColumnType("text")
                     .HasColumnName("password");
 
+                entity.Property(e => e.Phone)
+                    .HasColumnType("text")
+                    .HasColumnName("phone");
+
                 entity.Property(e => e.Role)
                     .HasColumnType("int(11)")
                     .HasColumnName("role")
                     .HasDefaultValueSql("'1'");
+
+                entity.Property(e => e.UpdateAt)
+                    .HasColumnType("datetime")
+                    .HasColumnName("update_at");
 
                 entity.Property(e => e.UserName)
                     .HasColumnType("text")

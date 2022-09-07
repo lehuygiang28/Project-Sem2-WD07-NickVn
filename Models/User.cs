@@ -10,9 +10,12 @@ namespace Project_Sem2_WD07_NickVn.Models
         public string Password { get; set; } = null!;
         public string FirstName { get; set; } = null!;
         public string LastName { get; set; } = null!;
+        public string? Phone { get; set; }
         public string Email { get; set; } = null!;
         public float Money { get; set; }
         public int Role { get; set; }
         public string? Note { get; set; }
+        public DateTime? CreateAt { get; set; }
+        public DateTime? UpdateAt { get; set; }
     }
 }
