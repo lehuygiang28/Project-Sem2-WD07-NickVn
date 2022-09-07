@@ -17,6 +17,8 @@ namespace Project_Sem2_WD07_NickVn.Models
         }
 
         public virtual DbSet<Category> Categories { get; set; } = null!;
+        public virtual DbSet<Image> Images { get; set; } = null!;
+        public virtual DbSet<Lienminh> Lienminhs { get; set; } = null!;
         public virtual DbSet<ProductCategory> ProductCategories { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
 
@@ -68,6 +70,71 @@ namespace Project_Sem2_WD07_NickVn.Models
                 entity.Property(e => e.Total)
                     .HasColumnType("int(11)")
                     .HasColumnName("total");
+            });
+
+            modelBuilder.Entity<Image>(entity =>
+            {
+                entity.HasKey(e => e.ImgId)
+                    .HasName("PRIMARY");
+
+                entity.ToTable("images");
+
+                entity.Property(e => e.ImgId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("img_id");
+
+                entity.Property(e => e.ImgLink)
+                    .HasColumnType("text")
+                    .HasColumnName("img_link");
+
+                entity.Property(e => e.LienminhId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("lienminh_id");
+            });
+
+            modelBuilder.Entity<Lienminh>(entity =>
+            {
+                entity.ToTable("lienminh");
+
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
+
+                entity.Property(e => e.Champ)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("champ");
+
+                entity.Property(e => e.ImgSrc)
+                    .HasColumnType("text")
+                    .HasColumnName("img_src");
+
+                entity.Property(e => e.ImgThumb)
+                    .HasColumnType("text")
+                    .HasColumnName("img_thumb");
+
+                entity.Property(e => e.Name)
+                    .HasColumnType("text")
+                    .HasColumnName("name");
+
+                entity.Property(e => e.Note)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("note");
+
+                entity.Property(e => e.PriceAtm)
+                    .HasPrecision(10)
+                    .HasColumnName("price_atm");
+
+                entity.Property(e => e.Rank)
+                    .HasColumnType("text")
+                    .HasColumnName("rank");
+
+                entity.Property(e => e.Skin)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("skin");
+
+                entity.Property(e => e.Status)
+                    .HasColumnType("text")
+                    .HasColumnName("status");
             });
 
             modelBuilder.Entity<ProductCategory>(entity =>

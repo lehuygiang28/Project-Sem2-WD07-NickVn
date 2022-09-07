@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "io3BgdpuphpQt5YdIG3LLhVjmjbUchX6o1jy14Tw/IQ=",
+  "Hash": "X+W0Mhf+V+A477xQK158KGqENVpCoFrVAY6o0OHdUyc=",
   "Source": "Project_Sem2_WD07_NickVn",
   "BasePath": "_content/Project_Sem2_WD07_NickVn",
   "Mode": "Default",
@@ -100,6 +100,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\assets\\frontend\\css\\login-style.css"
+    },
+    {
+      "Identity": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\assets\\frontend\\css\\shopacc-style.css",
+      "SourceId": "Project_Sem2_WD07_NickVn",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\",
+      "BasePath": "_content/Project_Sem2_WD07_NickVn",
+      "RelativePath": "assets/frontend/css/shopacc-style.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\assets\\frontend\\css\\shopacc-style.css"
     },
     {
       "Identity": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\assets\\frontend\\css\\style-infile.css",
