@@ -1,7 +1,10 @@
 @model User
 @{
-    ViewData["Title"] = "Login Page";
+    ViewData["Title"] = "Đăng nhập";
+    TempData.Keep("siteKey");
 }
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
 <link rel="stylesheet" href="~/assets/frontend/css/login-style.css">
 
     <!-- BEGIN: PAGE CONTAINER -->
@@ -13,7 +16,7 @@
     <div class="login-box-body box-custom">
         <p class="login-box-msg">Đăng nhập hệ thống</p>
         <span class="help-block" style="text-align: center;color: #dd4b39">
-            <strong>@ViewBag.Error</strong>
+            <strong>@TempData["error"]</strong>
         </span>
 
         <form asp-action="LoginSolve">
@@ -29,6 +32,9 @@
                 @* <input type="password" class="form-control" name="password" placeholder="Mật khẩu"> *@
                 <span class="fa-solid fa-lock form-control-feedback"></span>
             </div>
+            
+            <div class="form-group has-feedback g-recaptcha" data-sitekey='@TempData["siteKey"]'></div>
+
             <div class="row">
                 <div class="col-xs-6">
                     <div class="checkbox icheck">
@@ -65,7 +71,7 @@
                     class="fa-brands fa-facebook-f"></i>Login FB</a> *@
             <a href="#" class="btn  btn-social btn-facebook btn-flat d-inline-block"><i
                     class="fa-brands fa-facebook-f"></i>Login FB</a>
-            <a href="/register" class="btn  btn-social btn-google btn-flat d-inline-block"><i
+            <a asp-controller="User" asp-action="Signup" class="btn  btn-social btn-google btn-flat d-inline-block"><i
                     class="icon-key icons"></i>Tạo tài
                 khoản</a>
         </div>

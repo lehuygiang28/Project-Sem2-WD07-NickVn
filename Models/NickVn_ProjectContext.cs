@@ -17,6 +17,7 @@ namespace Project_Sem2_WD07_NickVn.Models
         }
 
         public virtual DbSet<Category> Categories { get; set; } = null!;
+        public virtual DbSet<Googlerecaptcha> Googlerecaptchas { get; set; } = null!;
         public virtual DbSet<Image> Images { get; set; } = null!;
         public virtual DbSet<Lienminh> Lienminhs { get; set; } = null!;
         public virtual DbSet<ProductCategory> ProductCategories { get; set; } = null!;
@@ -70,6 +71,27 @@ namespace Project_Sem2_WD07_NickVn.Models
                 entity.Property(e => e.Total)
                     .HasColumnType("int(11)")
                     .HasColumnName("total");
+            });
+
+            modelBuilder.Entity<Googlerecaptcha>(entity =>
+            {
+                entity.ToTable("googlerecaptcha");
+
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
+
+                entity.Property(e => e.HostName)
+                    .HasColumnType("text")
+                    .HasColumnName("host_name");
+
+                entity.Property(e => e.SecretKey)
+                    .HasColumnType("text")
+                    .HasColumnName("secret_key");
+
+                entity.Property(e => e.SiteKey)
+                    .HasColumnType("text")
+                    .HasColumnName("site_key");
             });
 
             modelBuilder.Entity<Image>(entity =>

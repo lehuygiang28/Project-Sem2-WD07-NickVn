@@ -2,6 +2,8 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Project_Sem2_WD07_NickVn.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Net.Http.Headers;
+using Newtonsoft.Json;
 
 namespace Project_Sem2_WD07_NickVn.Controllers;
 
@@ -10,6 +12,7 @@ public class UserController : Controller
     public const string SessionKeyName = "_Name";
     public const string SessionKeyId = "_Id";
     public const string SessionKeyMoney = "_Money";
+    public const string HostName = "localhost";
     private readonly ILogger<UserController> _logger;
     private readonly NickVn_ProjectContext _context;
 
@@ -21,35 +24,48 @@ public class UserController : Controller
 
     public async Task<IActionResult> SignupSolve(User userInput, string password_confirmation)
     {
-        // if (!ModelState.IsValid)
-        // {
-        //     ViewBag.Error = "Đã xảy ra lỗi! Vui lòng thử lại.";
-        //     return View(nameof(Signup));
-        // }
+        if (!ModelState.IsValid)
+        {
+            TempData["error"] = "Đã xảy ra lỗi! Vui lòng thử lại";
+            return View(nameof(Signup));
+        }
+
+        var SecretKey = (await _context.Googlerecaptchas.Where(a => a.HostName == HostName).FirstAsync()).SecretKey;
+        if (!await RecaptchaServices.Validate(Request, SecretKey))
+        {
+            _logger.LogInformation("Captcha Validate: FALSE");
+            ModelState.AddModelError(string.Empty, "Xác minh bạn không phải là robot");
+            TempData["error"] = "Xác minh bạn không phải là robot";
+            return View(nameof(Signup));
+        }
+        else
+        {
+            _logger.LogInformation("Captcha Validate: TRUE");
+        }
 
         bool isExistsUserName = await _context.Users.AnyAsync(u => u.UserName == userInput.UserName);
         bool isExistsPhone = await _context.Users.AnyAsync(u => u.Phone == userInput.Phone);
         bool isExistsEmail = await _context.Users.AnyAsync(u => u.Email == userInput.Email);
 
-        if(isExistsUserName)
+        if (isExistsUserName)
         {
-            ViewBag.Error = "Tài khoản đã được sử dụng";
+            TempData["error"] = "Tài khoản đã được sử dụng";
             return View(nameof(Signup));
         }
-        else if(isExistsPhone)
+        else if (isExistsPhone)
         {
-            ViewBag.Error = "Số điện thoại đã được sử dụng";
+            TempData["error"] = "Số điện thoại đã được sử dụng";
             return View(nameof(Signup));
         }
-        else if(isExistsEmail)
+        else if (isExistsEmail)
         {
-            ViewBag.Error = "Email đã được sử dụng";
+            TempData["error"] = "Email đã được sử dụng";
             return View(nameof(Signup));
         }
 
-        if(userInput.UserName.Length < 8)
+        if (userInput.UserName.Length < 8)
         {
-            ViewBag.Error = "Tài khoản phải ít nhất 8 kí tự";
+            TempData["error"] = "Tài khoản phải ít nhất 8 kí tự";
             return View(nameof(Signup));
         }
 
@@ -60,31 +76,34 @@ public class UserController : Controller
             return match.Success;
         }
 
-        if(!IsValidPassword(userInput.Password))
+        if (!IsValidPassword(userInput.Password))
         {
-            ViewBag.Error = "Mật khẩu chưa hợp lệ";
+            TempData["error"] = "Mật khẩu chưa hợp lệ";
             return View(nameof(Signup));
         }
 
         if (String.Compare(userInput.Password, password_confirmation, false) != 0)
         {
-            ViewBag.Error = "Mật khẩu nhập lại không khớp";
+            TempData["error"] = "Mật khẩu nhập lại không khớp";
             return View(nameof(Signup));
         }
-        
+
         bool IsValidEmail(string plainText)
         {
             try
             {
                 System.Net.Mail.MailAddress mail = new System.Net.Mail.MailAddress(plainText);
                 return true;
-            } catch {
+            }
+            catch
+            {
                 return false;
             }
         }
 
-        if(!IsValidEmail(userInput.Email)){
-            ViewBag.Error = "Email chưa đúng định dạng";
+        if (!IsValidEmail(userInput.Email))
+        {
+            TempData["error"] = "Email chưa đúng định dạng";
             return View(nameof(Signup));
         }
 
@@ -99,20 +118,24 @@ public class UserController : Controller
         await _context.AddAsync(userInput);
         await _context.SaveChangesAsync();
 
-        ViewBag.Success = "Đăng ký thành công! Đăng nhập để tiếp tục";
+        TempData["success"] = "Đăng ký thành công! Đăng nhập để tiếp tục";
         _logger.LogInformation("Sign up successfull UserName: " + userInput.UserName);
 
         return View(nameof(Signup));
     }
 
-    public IActionResult Signup()
+    public async Task<IActionResult> Signup()
     {
+        var SiteKey = await _context.Googlerecaptchas.Where(k => k.HostName == HostName).FirstAsync();
+
+        TempData["siteKey"] = SiteKey.SiteKey;
         return View();
     }
 
     public IActionResult Logout()
     {
-        if (HttpContext.Session.GetInt32(SessionKeyId) != null){
+        if (HttpContext.Session.GetInt32(SessionKeyId) != null)
+        {
             HttpContext.Session.Clear();
         }
         return RedirectToAction("Index", "Home");
@@ -120,32 +143,46 @@ public class UserController : Controller
 
     public async Task<IActionResult> LoginSolve(string UserName, string Password)
     {
+        var SecretKey = (await _context.Googlerecaptchas.Where(a => a.HostName == HostName).FirstAsync()).SecretKey;
+        if (!await RecaptchaServices.Validate(Request, SecretKey))
+        {
+            _logger.LogInformation("Captcha Validate: FALSE");
+            ModelState.AddModelError(string.Empty, "Xác minh bạn không phải là robot");
+            // ViewBag.Error = "Xác minh bạn không phải là robot";
+            TempData["error"] = "Xác minh bạn không phải là robot";
+            return RedirectToAction(nameof(Login));
+            // return View(nameof(Login));
+        }
+        else
+        {
+            _logger.LogInformation("Captcha Validate: TRUE");
+        }
+        
         if (string.IsNullOrEmpty(UserName) || string.IsNullOrWhiteSpace(UserName))
         {
-            ViewBag.Error = "User Name can not be null";
+            TempData["error"] = "Tài khoản không được để trống";
             return View(nameof(Login));
         }
         if (string.IsNullOrEmpty(Password) || string.IsNullOrWhiteSpace(Password))
         {
-            ViewBag.Error = "Password can not be null";
+            TempData["error"] = "Mật khẩu không được để trống";
             return View(nameof(Login));
         }
 
         User inputUser = new User();
-        inputUser.UserName = UserName;
-        inputUser.Password = MD5.CreateMD5(Password);
+        Password = MD5.CreateMD5(Password);
 
-        if(!await _context.Users.AnyAsync(u => u.UserName == inputUser.UserName && u.Password == inputUser.Password))
+        if (!await _context.Users.AnyAsync(u => u.UserName == UserName && u.Password == Password))
         {
-            ViewBag.Error = "UserName or Password is incorrect!";
+            TempData["error"] = "Tài khoản hoặc mật khẩu không chính xác";
             return View(nameof(Login));
         }
 
-        var loginUser = await _context.Users.Where(u => u.UserName == inputUser.UserName && u.Password == inputUser.Password).FirstAsync();
-        
+        var loginUser = await _context.Users.Where(u => u.UserName == UserName && u.Password == Password).FirstAsync();
+
         if (loginUser == null)
         {
-            ViewBag.Error = "Có lỗi xảy ra";
+            TempData["error"] = "Có lỗi xảy ra";
             return View(nameof(Login));
         }
 
@@ -164,14 +201,15 @@ public class UserController : Controller
         return RedirectToAction(nameof(Index), "Home");
     }
 
-    public IActionResult Login()
+    public async Task<IActionResult> Login()
     {
+        TempData["siteKey"] = (await _context.Googlerecaptchas.Where(a => a.HostName == HostName).FirstAsync()).SiteKey;
         return View();
     }
-    
+
     public IActionResult Index()
     {
-        return View(nameof(Login));
+        return RedirectToAction(nameof(Login));
     }
 
     public IActionResult Privacy()

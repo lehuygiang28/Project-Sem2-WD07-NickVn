@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "yt2q/Es55nmwPlfuD8CnQDQwC+LGAs5gF9jX/QDhlXTGhOxrZXJRbijIKTj9VuxkM3Zysgish3vs0XoqjFgJ8g==",
+  "dgSpecHash": "AT4mA1x74SNeCCCGpusmUSFT4vh0K/rqG/7QEgK3d3gzwOakgD2VQyeyKfJlNBdSYj/MUhfGvz8+jhSTgwJf6g==",
   "success": true,
   "projectFilePath": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\Project_Sem2_WD07_NickVn.csproj",
   "expectedPackageFiles": [
@@ -20,6 +20,7 @@
     "C:\\Users\\ASUS\\.nuget\\packages\\microsoft.extensions.options\\6.0.0\\microsoft.extensions.options.6.0.0.nupkg.sha512",
     "C:\\Users\\ASUS\\.nuget\\packages\\microsoft.extensions.primitives\\6.0.0\\microsoft.extensions.primitives.6.0.0.nupkg.sha512",
     "C:\\Users\\ASUS\\.nuget\\packages\\mysqlconnector\\2.1.2\\mysqlconnector.2.1.2.nupkg.sha512",
+    "C:\\Users\\ASUS\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
     "C:\\Users\\ASUS\\.nuget\\packages\\pomelo.entityframeworkcore.mysql\\6.0.1\\pomelo.entityframeworkcore.mysql.6.0.1.nupkg.sha512",
     "C:\\Users\\ASUS\\.nuget\\packages\\system.collections.immutable\\6.0.0\\system.collections.immutable.6.0.0.nupkg.sha512",
     "C:\\Users\\ASUS\\.nuget\\packages\\system.diagnostics.diagnosticsource\\6.0.0\\system.diagnostics.diagnosticsource.6.0.0.nupkg.sha512",
