@@ -15,6 +15,10 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\VTCA\SEM-2\Project-Sem2\Project_Sem2_WD07_NickVn
 build_property._RazorSourceGeneratorDebug = 
 
+[C:/VTCA/SEM-2/Project-Sem2/Project_Sem2_WD07_NickVn/Views/Admin/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/VTCA/SEM-2/Project-Sem2/Project_Sem2_WD07_NickVn/Views/Category/Garena.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcnlcR2FyZW5hLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -33,6 +37,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/VTCA/SEM-2/Project-Sem2/Project_Sem2_WD07_NickVn/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VTCA/SEM-2/Project-Sem2/Project_Sem2_WD07_NickVn/Views/Shared/_AdminLayout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9BZG1pbkxheW91dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/VTCA/SEM-2/Project-Sem2/Project_Sem2_WD07_NickVn/Views/Shared/_ValidationScriptsPartial.cshtml]
