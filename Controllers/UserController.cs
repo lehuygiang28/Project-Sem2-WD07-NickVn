@@ -12,7 +12,8 @@ public class UserController : Controller
     public const string SessionKeyName = "_Name";
     public const string SessionKeyId = "_Id";
     public const string SessionKeyMoney = "_Money";
-    public string HostName = "localhost";
+    public string HostName = "168.138.179.121";
+    // public string HostName = "localhost";
     private readonly ILogger<UserController> _logger;
     private readonly NickVn_ProjectContext _context;
 
@@ -30,8 +31,6 @@ public class UserController : Controller
             return View(nameof(Signup));
         }
         
-        HostName = $"{Request.Host}";
-        _logger.LogInformation("Host: " + HostName);
         var SecretKey = (await _context.Googlerecaptchas.Where(a => a.HostName == HostName).FirstAsync()).SecretKey;
         if (!await RecaptchaServices.Validate(Request, SecretKey))
         {
@@ -145,8 +144,6 @@ public class UserController : Controller
 
     public async Task<IActionResult> LoginSolve(string UserName, string Password)
     {
-        HostName = $"{Request.Host}";
-        _logger.LogInformation("Host: " + HostName);
         var SecretKey = (await _context.Googlerecaptchas.Where(a => a.HostName == HostName).FirstAsync()).SecretKey;
         if (!await RecaptchaServices.Validate(Request, SecretKey))
         {
