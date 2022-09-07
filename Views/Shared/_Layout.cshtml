@@ -1,4 +1,46 @@
-﻿<!DOCTYPE html>
+﻿@{
+    bool isLogin()
+    {
+        if (Context.Session.GetInt32("_Id") != null)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    string vndFormat(int? money)
+    {
+        if (money == null)
+        {
+            return "0";
+        }
+        var info = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+        return String.Format(info, "{0:c}", money);
+    }
+
+    string limitChar(string? input)
+    {
+        string output = "";
+
+        if (input == null)
+        {
+            return output;
+        }
+
+        if (input.Length > 7)
+        {
+            output = input.Substring(0, 7) + "...";
+            Console.WriteLine("Substring: " + output);
+        }
+        else
+        {
+            output = input;
+        }
+        return output;
+    }
+}
+
+<!DOCTYPE html>
 <html lang="vi">
 
 <head>
@@ -71,7 +113,7 @@
     <script src="~/assets/frontend/plugins/jquery-cookie/jquery.cookie.js"></script>
     <link href="~/assets/frontend/css/style.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="~/assets/frontend/css/style-infile.css">
-    
+
     <!-- END THEME STYLES -->
 
 </head>
@@ -143,7 +185,8 @@
                                 <img height="35px" src="~/storage/images/logo.jpg" alt="logo" class="c-desktop-logo">
                                 <img height="29px" src="~/storage/images/logo.jpg" alt="logo"
                                     class="c-desktop-logo-inverse">
-                                <img height="35px" src="~/storage/images/logo.jpg" alt="logo" class="c-mobile-logo"> </a>
+                                <img height="35px" src="~/storage/images/logo.jpg" alt="logo" class="c-mobile-logo">
+                            </a>
                         </div>
                         <button class="c-hor-nav-toggler" type="button" data-target=".c-mega-menu">
                             <span class="c-line"></span>
@@ -225,19 +268,39 @@
                                             s&aacute;ch tại Nick.vn</a></li>
                                 </ul>
                             </li>
-                            <li><a asp-controller="Users" asp-action="Login"
+                            @{
+                                if (isLogin() == false)
+                                {
+                                    <li><a asp-controller="User" asp-action="Login" class="c-btn-border-opacity-04 c-btn btn-no-focus c-btn-header btn btn-sm c-btn-border-1x
+                                                        c-btn-dark c-btn-circle c-btn-uppercase c-btn-sbold">
+                                            <i class="icon-user"></i> Đăng nhập</a>
+                                    </li>
+                                    <li><a href="~/register" class="c-btn-border-opacity-04 c-btn btn-no-focus c-btn-header btn btn-sm c-btn-border-1x
+                                                        c-btn-dark c-btn-circle c-btn-uppercase c-btn-sbold">
+                                            <i class="icon-key icons"></i> Đăng ký</a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    var userName = Context.Session.GetString("_Name");
+                                    var money = Context.Session.GetInt32("_Money");
+                                    <li>
+                                        <a href="#" title="@userName"
+                                        class="c-btn-border-opacity-04 c-btn btn-no-focus c-btn-header btn btn-sm c-btn-border-1x c-btn-dark c-btn-circle c-btn-uppercase c-btn-sbold">
+                                            <i class="icon-user"></i> @limitChar(userName) - @vndFormat(money)</a>
+                                    </li>
+                                    <li>
+                                        <a asp-action="Logout" asp-controller="User"
                                     class="c-btn-border-opacity-04 c-btn btn-no-focus c-btn-header btn btn-sm c-btn-border-1x c-btn-dark c-btn-circle c-btn-uppercase c-btn-sbold">
-                                    <i class="icon-user"></i> Đăng nhập</a>
-                            </li>
-                            <li><a href="~/register"
-                                    class="c-btn-border-opacity-04 c-btn btn-no-focus c-btn-header btn btn-sm c-btn-border-1x c-btn-dark c-btn-circle c-btn-uppercase c-btn-sbold">
-                                    <i class="icon-key icons"></i> Đăng ký</a>
-                            </li>
+                                            Đăng xuất
+                                        </a>
+                                    </li>
+                                }
+                            }
+
                         </ul>
 
-
                     </nav>
-
 
                     <nav
                         class="menu-main-mobile c-mega-menu c-pull-right c-mega-menu-dark c-mega-menu-dark-mobile c-fonts-uppercase c-fonts-bold hidden-md hidden-lg">
@@ -257,8 +320,8 @@
                                     <li class="c-menu-type-classic"><a rel="" href="~/recharge" class="">Nạp ATM tự
                                             động</a></li>
                                     <li class="c-menu-type-classic"><a target='_blank' rel=""
-                                            href="~/blog/huong-dan-nap-tien-tu-dong-bang-atm-vao-nickvn"
-                                            class="">Hướng dẫn nạp ATM tự động</a></li>
+                                            href="~/blog/huong-dan-nap-tien-tu-dong-bang-atm-vao-nickvn" class="">Hướng
+                                            dẫn nạp ATM tự động</a></li>
                                 </ul>
                             </li>
                             <li class="c-menu-type-classic"><a rel="" href="#" class="c-link dropdown-toggle ">Tin
@@ -274,21 +337,46 @@
                                     <li class="c-menu-type-classic"><a rel=""
                                             href="blog/dieu-khoan-su-dung-website-nickvn" class="">Điều
                                             khoản sử dụng website</a></li>
-                                    <li class="c-menu-type-classic"><a rel=""
-                                            href="blog/chinh-sach-tai-nickvn" class="">Ch&iacute;nh
+                                    <li class="c-menu-type-classic"><a rel="" href="blog/chinh-sach-tai-nickvn"
+                                            class="">Ch&iacute;nh
                                             s&aacute;ch tại Nick.vn</a></li>
                                 </ul>
                             </li>
-                            <li><a asp-controller="Users" asp-action="Login"
-                                    class="c-btn-border-opacity-04 c-btn btn-no-focus c-btn-header btn btn-sm c-btn-border-1x c-btn-dark c-btn-circle c-btn-uppercase c-btn-sbold">
-                                    <i class="icon-user"></i> Đăng nhập</a>
-                            </li>
-                            <li><a asp-controller="Users" asp-action="Signup"
-                                    class="c-btn-border-opacity-04 c-btn btn-no-focus c-btn-header btn btn-sm c-btn-border-1x c-btn-dark c-btn-circle c-btn-uppercase c-btn-sbold">
-                                    <i class="icon-key icons"></i> Đăng ký</a>
-                            </li>
-                        </ul>
 
+                            @{
+                                if (isLogin() == false)
+                                {
+                                    <li><a asp-controller="user" asp-action="Login" class="c-btn-border-opacity-04 c-btn btn-no-focus c-btn-header btn btn-sm c-btn-border-1x
+                                            c-btn-dark c-btn-circle c-btn-uppercase c-btn-sbold">
+                                            <i class="icon-user"></i> Đăng nhập</a>
+                                    </li>
+                                    <li><a asp-controller="user" asp-action="Signup" class="c-btn-border-opacity-04 c-btn btn-no-focus c-btn-header btn btn-sm c-btn-border-1x
+                                            c-btn-dark c-btn-circle c-btn-uppercase c-btn-sbold">
+                                            <i class="icon-key icons"></i> Đăng ký</a>
+                                    </li>
+
+                                }
+                                else
+                                {
+                                    var userName = Context.Session.GetString("_Name");
+                                    var money = Context.Session.GetInt32("_Money");
+
+                                    <li>
+                                        <a href="#" title="@userName"
+                                        class="c-btn-border-opacity-04 c-btn btn-no-focus c-btn-header btn btn-sm c-btn-border-1x c-btn-dark c-btn-circle c-btn-uppercase c-btn-sbold">
+                                            <i class="icon-user"></i> @limitChar(userName) - @vndFormat(money)</a>
+                                    </li>
+                                    <li>
+                                        <a asp-action="Logout" asp-controller="User"
+                                    class="c-btn-border-opacity-04 c-btn btn-no-focus c-btn-header btn btn-sm c-btn-border-1x c-btn-dark c-btn-circle c-btn-uppercase c-btn-sbold">
+                                            Đăng xuất
+                                        </a>
+                                    </li>
+
+                                }
+                            }
+
+                            </ul>
 
                     </nav>
 
@@ -392,20 +480,20 @@
                     <div class="col-md-4">
                         <div class="c-container c-last">
                             <!-- <div class="c-content-title-1">
-							<h3 class="c-font-uppercase c-font-bold c-font-white">Chúng tôi ở đây</h3>
-							<div class="c-line-left hide"></div>
-							<p>Chúng tôi làm việc một cách chuyên nghiệp, uy tín, nhanh chóng và luôn đặt quyền lợi của bạn lên hàng đầu</p>
-						</div>
-						<ul class="c-socials">
-							<li><a href="https://www.facebook.com/CSKH-Tr%C3%B9m-C%C3%A1c-Game-Online-102414321166624/" target="_blank"><i class="icon-social-facebook"></i></a></li>
-							<li><a href="" target="_blank"><i class="icon-social-youtube"></i></a></li>
-						</ul>
-						<ul class="c-address"> -->
+                            <h3 class="c-font-uppercase c-font-bold c-font-white">Chúng tôi ở đây</h3>
+                            <div class="c-line-left hide"></div>
+                            <p>Chúng tôi làm việc một cách chuyên nghiệp, uy tín, nhanh chóng và luôn đặt quyền lợi của bạn lên hàng đầu</p>
+                        </div>
+                        <ul class="c-socials">
+                            <li><a href="https://www.facebook.com/CSKH-Tr%C3%B9m-C%C3%A1c-Game-Online-102414321166624/" target="_blank"><i class="icon-social-facebook"></i></a></li>
+                            <li><a href="" target="_blank"><i class="icon-social-youtube"></i></a></li>
+                        </ul>
+                        <ul class="c-address"> -->
                             <!--<li><i class="icon-pointer c-theme-font"></i> One Boulevard, Beverly Hills</li>-->
                             <!-- <li><i class="icon-call-end c-theme-font"></i> <a href="tel:0869693000" class="c-font-regular">08.6969.3000</a> (8h-22h)</li>
-							<li><i class="icon-envelope c-theme-font"></i> <a href="mailto:admin@nick.vn" class="c-font-regular">admin@nick.vn</a></li>
-							<li><i class="icon-clock c-theme-font"></i><span class="c-font-regular">8h-11h30 & 13h30-22h</span></li>
-						</ul> -->
+                            <li><i class="icon-envelope c-theme-font"></i> <a href="mailto:admin@nick.vn" class="c-font-regular">admin@nick.vn</a></li>
+                            <li><i class="icon-clock c-theme-font"></i><span class="c-font-regular">8h-11h30 & 13h30-22h</span></li>
+                        </ul> -->
                             <h2><span style="color:#ffffff"><span style="font-size:22px"><strong>CH&Uacute;NG T&Ocirc;I
                                             Ở Đ&Acirc;Y</strong></span></span></h2>
 
@@ -429,13 +517,10 @@
 
 
 
-                        <div class="fb-page"
-                            data-href="https://www.facebook.com/"
-                            data-tabs="timeline" data-height="270" data-small-header="false"
-                            data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true">
-                            <blockquote
-                                cite="https://www.facebook.com/"
-                                class="fb-xfbml-parse-ignore"><a
+                        <div class="fb-page" data-href="https://www.facebook.com/" data-tabs="timeline"
+                            data-height="270" data-small-header="false" data-adapt-container-width="true"
+                            data-hide-cover="false" data-show-facepile="true">
+                            <blockquote cite="https://www.facebook.com/" class="fb-xfbml-parse-ignore"><a
                                     href="https://www.facebook.com/">Nick.vn</a>
                             </blockquote>
                         </div>

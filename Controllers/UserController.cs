@@ -5,18 +5,26 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Project_Sem2_WD07_NickVn.Controllers;
 
-public class UsersController : Controller
+public class UserController : Controller
 {
     public const string SessionKeyName = "_Name";
     public const string SessionKeyId = "_Id";
     public const string SessionKeyMoney = "_Money";
-    private readonly ILogger<UsersController> _logger;
+    private readonly ILogger<UserController> _logger;
     private readonly NickVn_ProjectContext _context;
 
-    public UsersController(ILogger<UsersController> logger, NickVn_ProjectContext context)
+    public UserController(ILogger<UserController> logger, NickVn_ProjectContext context)
     {
         _logger = logger;
         _context = context;
+    }
+
+    public IActionResult Logout()
+    {
+        if (HttpContext.Session.GetInt32(SessionKeyId) != null){
+            HttpContext.Session.Clear();
+        }
+        return RedirectToAction("Index", "Home");
     }
 
     public async Task<IActionResult> LoginSolve(string UserName, string Password)
