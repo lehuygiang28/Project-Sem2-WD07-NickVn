@@ -21,13 +21,14 @@ namespace Project_Sem2_WD07_NickVn.Models
         public virtual DbSet<Image> Images { get; set; } = null!;
         public virtual DbSet<Lienminh> Lienminhs { get; set; } = null!;
         public virtual DbSet<ProductCategory> ProductCategories { get; set; } = null!;
+        public virtual DbSet<Role> Roles { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseMySql("name=ConnectionStrings:NickVn_Project", Microsoft.EntityFrameworkCore.ServerVersion.Parse("10.4.22-mariadb"));
+                optionsBuilder.UseMySql("name=ConnectionStrings:NickVn_Project", Microsoft.EntityFrameworkCore.ServerVersion.Parse("10.4.24-mariadb"));
             }
         }
 
@@ -46,7 +47,8 @@ namespace Project_Sem2_WD07_NickVn.Models
 
                 entity.Property(e => e.Action)
                     .HasColumnType("text")
-                    .HasColumnName("action");
+                    .HasColumnName("action")
+                    .HasDefaultValueSql("'#'");
 
                 entity.Property(e => e.ImgSaleOff)
                     .HasColumnType("text")
@@ -84,6 +86,8 @@ namespace Project_Sem2_WD07_NickVn.Models
                 entity.Property(e => e.HostName)
                     .HasColumnType("text")
                     .HasColumnName("host_name");
+
+                entity.Property(e => e.Response).HasColumnType("text");
 
                 entity.Property(e => e.SecretKey)
                     .HasColumnType("text")
@@ -190,6 +194,29 @@ namespace Project_Sem2_WD07_NickVn.Models
                     .HasColumnName("total");
             });
 
+            modelBuilder.Entity<Role>(entity =>
+            {
+                entity.ToTable("roles");
+
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
+
+                entity.Property(e => e.RoleId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("role_id")
+                    .HasDefaultValueSql("'1'");
+
+                entity.Property(e => e.RoleName)
+                    .HasColumnType("text")
+                    .HasColumnName("role_name")
+                    .HasDefaultValueSql("'Thành Viên'");
+
+                entity.Property(e => e.RoleNameEn)
+                    .HasColumnType("text")
+                    .HasColumnName("role_name_en");
+            });
+
             modelBuilder.Entity<User>(entity =>
             {
                 entity.ToTable("users");
@@ -228,9 +255,9 @@ namespace Project_Sem2_WD07_NickVn.Models
                     .HasColumnType("text")
                     .HasColumnName("phone");
 
-                entity.Property(e => e.Role)
+                entity.Property(e => e.RoleId)
                     .HasColumnType("int(11)")
-                    .HasColumnName("role")
+                    .HasColumnName("role_id")
                     .HasDefaultValueSql("'1'");
 
                 entity.Property(e => e.UpdateAt)

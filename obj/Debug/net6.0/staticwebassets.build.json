@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "WRCC3ydwjZMA04dUVJtZwgX75o4FB+UQhofaQamN58Q=",
+  "Hash": "I7Qn8A+XMj2TW1IswK2Jd6srUDuMQDoG9d6ovh0JfaM=",
   "Source": "Project_Sem2_WD07_NickVn",
   "BasePath": "_content/Project_Sem2_WD07_NickVn",
   "Mode": "Default",
@@ -134,6 +134,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\AdminAssets\\img\\user.jpg"
+    },
+    {
+      "Identity": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\AdminAssets\\img\\userGiang.jpg",
+      "SourceId": "Project_Sem2_WD07_NickVn",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\",
+      "BasePath": "_content/Project_Sem2_WD07_NickVn",
+      "RelativePath": "AdminAssets/img/userGiang.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\AdminAssets\\img\\userGiang.jpg"
     },
     {
       "Identity": "C:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\wwwroot\\AdminAssets\\js\\main.js",
