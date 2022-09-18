@@ -13,7 +13,11 @@ builder.Services.AddDbContext<NickVn_ProjectContext>(options => options.UseMySql
 //     serverOptions.ListenLocalhost(911, listenOptions => listenOptions.UseHttps());
 //     // serverOptions.ListenAnyIP(443, listenOptions => listenOptions.UseHttps());
 // });
-builder.WebHost.UseUrls().UseKestrel();
+builder.WebHost.UseUrls().UseKestrel(serverOptions =>
+{
+    serverOptions.ListenAnyIP(80);
+    serverOptions.ListenAnyIP(443, listenOptions => listenOptions.UseHttps());
+});
 
 // builder.Services.Configure<ForwardedHeadersOptions>(options =>{
 //     options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;

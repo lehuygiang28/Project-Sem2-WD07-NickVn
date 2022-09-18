@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 07, 2022 at 08:17 PM
+-- Generation Time: Sep 18, 2022 at 09:12 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.2
 
@@ -31,20 +31,22 @@ CREATE TABLE `categories` (
   `id` int(11) NOT NULL,
   `name` text NOT NULL,
   `title` text NOT NULL,
-  `action` text NOT NULL,
+  `action` text NOT NULL DEFAULT '#',
   `img_sale_off` text NOT NULL,
   `img_src` text NOT NULL,
   `total` int(11) NOT NULL DEFAULT 0,
-  `note` text NOT NULL
+  `note` text NOT NULL,
+  `status` int(11) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `categories`
 --
 
-INSERT INTO `categories` (`id`, `name`, `title`, `action`, `img_sale_off`, `img_src`, `total`, `note`) VALUES
-(1, 'Lien Minh', 'Danh mục game liên minh', 'Garena', '/storage/images/sale-off-30.png', '/storage/images/lien-minh.gif', 12335, ''),
-(2, 'Liên Quân', 'Danh mục game Liên Quân', 'Garena', '/storage/images/sale-off-30.png', '/storage/images/lien-quan.gif', 24235, '');
+INSERT INTO `categories` (`id`, `name`, `title`, `action`, `img_sale_off`, `img_src`, `total`, `note`, `status`) VALUES
+(1, 'Lien Minh', 'Danh mục game liên minh', 'Garena', '/storage/images/sale-off-30.png', '/storage/images/lien-minh.gif', 12335, '', 1),
+(2, 'Liên Quân', 'Danh mục game Liên Quân', 'Garena', '/storage/images/sale-off-30.png', '/storage/images/lien-quan.gif', 24235, '', 1),
+(3, 'Ngọc Rồng', 'Danh mục game Ngọc Rồng', '#', '/storage/images/sale-off-30.png', '/storage\\images\\ngoc-rong.gif', 11241, '', 1);
 
 -- --------------------------------------------------------
 
@@ -65,7 +67,7 @@ CREATE TABLE `googlerecaptcha` (
 --
 
 INSERT INTO `googlerecaptcha` (`id`, `host_name`, `site_key`, `secret_key`, `Response`) VALUES
-(1, 'localhost', '6LdZFd4hAAAAAH3CzSQKeHMOd-N9taof0XE7bpUd', '6LdZFd4hAAAAAOcaKQEVn-EP4AuyLL-wLqnykBXa', NULL),
+(1, 'GoogleReCaptcha', '6Lc55R4fAAAAAEh4qaPNR6fVcwu44zSkIHKrVMng', '6Lc55R4fAAAAALGca6ts3hikUsFbjHT74ytvHqoR', NULL),
 (2, '168.138.179.121', '6Lc55R4fAAAAAEh4qaPNR6fVcwu44zSkIHKrVMng', '6Lc55R4fAAAAALGca6ts3hikUsFbjHT74ytvHqoR', NULL);
 
 -- --------------------------------------------------------
@@ -167,6 +169,27 @@ INSERT INTO `product_category` (`category_id`, `category_name`, `action`, `img_s
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `roles`
+--
+
+CREATE TABLE `roles` (
+  `id` int(11) NOT NULL,
+  `role_id` int(11) NOT NULL DEFAULT 1,
+  `role_name` text NOT NULL DEFAULT 'Thành Viên',
+  `role_name_en` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `roles`
+--
+
+INSERT INTO `roles` (`id`, `role_id`, `role_name`, `role_name_en`) VALUES
+(1, 100, 'Quản Trị Viên', 'admin'),
+(2, 1, 'Thành Viên', NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -179,19 +202,21 @@ CREATE TABLE `users` (
   `phone` text DEFAULT NULL,
   `email` text NOT NULL,
   `money` float NOT NULL DEFAULT 0,
-  `role` int(11) NOT NULL DEFAULT 1,
+  `role_id` int(11) NOT NULL DEFAULT 1,
+  `img_src` text DEFAULT NULL,
   `note` text DEFAULT NULL,
   `create_at` datetime DEFAULT NULL,
-  `update_at` datetime DEFAULT NULL
+  `update_at` datetime DEFAULT NULL,
+  `last_login` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `user_name`, `password`, `first_name`, `last_name`, `phone`, `email`, `money`, `role`, `note`, `create_at`, `update_at`) VALUES
-(1, 'giang', '0c40ca0420380a00b902308200d0cc05009a06f07508409b', 'giang', 'huy', '0981333332', 'giang@vtc.edu.vn', 145000, 1, 'pw: 1', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(2, 'giangadmin', '0ff0440e101c0b80140ee02509b0f80ff0e20e502f01301f', 'NickVn', '9/7/2022 19:24:54', '0123456789', '28122002g@gmail.com', 0, 1, NULL, NULL, NULL);
+INSERT INTO `users` (`id`, `user_name`, `password`, `first_name`, `last_name`, `phone`, `email`, `money`, `role_id`, `img_src`, `note`, `create_at`, `update_at`, `last_login`) VALUES
+(1, 'giangadmin', '0c40ca0420380a00b902308200d0cc05009a06f07508409b', 'giang', 'huy', '0981333332', 'giang@vtc.edu.vn', 145000, 1, 'AdminAssets/img/userGiang.jpg', 'pw: 1', '0001-01-01 00:00:00', '0001-01-01 00:00:00', '2022-09-18 20:40:32'),
+(2, 'giang', '0c40ca0420380a00b902308200d0cc05009a06f07508409b', 'NickVn', '9/7/2022 19:24:54', '0123456789', '28122002g@gmail.com', 0, 2, NULL, NULL, NULL, NULL, NULL);
 
 --
 -- Indexes for dumped tables
@@ -222,6 +247,12 @@ ALTER TABLE `lienminh`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `roles`
+--
+ALTER TABLE `roles`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -235,7 +266,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `googlerecaptcha`
@@ -254,6 +285,12 @@ ALTER TABLE `images`
 --
 ALTER TABLE `lienminh`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45561;
+
+--
+-- AUTO_INCREMENT for table `roles`
+--
+ALTER TABLE `roles`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `users`
