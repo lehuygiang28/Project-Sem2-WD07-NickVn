@@ -15,9 +15,9 @@ builder.Services.AddDbContext<NickVn_ProjectContext>(options => options.UseMySql
 // });
 builder.WebHost.UseUrls().UseKestrel();
 
-builder.Services.Configure<ForwardedHeadersOptions>(options =>{
-    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
-});
+// builder.Services.Configure<ForwardedHeadersOptions>(options =>{
+//     options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+// });
 
 
 // Add session services
@@ -42,7 +42,10 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseForwardedHeaders();
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+});
 
 // Handle error 404
 // app.Use(async (context, next) =>
