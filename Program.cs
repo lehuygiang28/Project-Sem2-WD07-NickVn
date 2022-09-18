@@ -7,11 +7,12 @@ string connectionString = builder.Configuration.GetConnectionString("NickVn_Proj
 builder.Services.AddDbContext<NickVn_ProjectContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
 // UseUrls - change IpAdress and port to listen
-builder.WebHost.UseKestrel(serverOptions =>
-{
-    serverOptions.ListenAnyIP(80);
-    serverOptions.ListenAnyIP(443, listenOptions => listenOptions.UseHttps());
-});
+// builder.WebHost.UseKestrel(serverOptions =>
+// {
+//     serverOptions.ListenLocalhost(911, listenOptions => listenOptions.UseHttps());
+//     // serverOptions.ListenAnyIP(443, listenOptions => listenOptions.UseHttps());
+// });
+builder.WebHost.UseUrls().UseKestrel();
 
 // Add session services
 builder.Services.AddDistributedMemoryCache();
