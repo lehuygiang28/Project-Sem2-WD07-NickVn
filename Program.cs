@@ -1,5 +1,6 @@
 using Project_Sem2_WD07_NickVn.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,11 @@ builder.Services.AddDbContext<NickVn_ProjectContext>(options => options.UseMySql
 //     // serverOptions.ListenAnyIP(443, listenOptions => listenOptions.UseHttps());
 // });
 builder.WebHost.UseUrls().UseKestrel();
+
+builder.Services.Configure<ForwardedHeadersOptions>(options =>{
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+});
+
 
 // Add session services
 builder.Services.AddDistributedMemoryCache();
@@ -35,6 +41,8 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+app.UseForwardedHeaders();
 
 // Handle error 404
 // app.Use(async (context, next) =>
