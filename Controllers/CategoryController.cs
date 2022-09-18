@@ -22,7 +22,11 @@ public class CategoryController : Controller
     }
     public async Task<IActionResult> Garena(int id)
     {
-        var cateProduct = await _context.ProductCategories.Where(c => c.CategoryId == id).ToListAsync();
+        var query = from cate in _context.Categories
+                    where cate.Status == 1
+                    select cate;
+
+        var cateProduct = await query.ToListAsync();
 
         ViewBag.cateProduct  = cateProduct;
         _logger.LogInformation("ID: " + id);

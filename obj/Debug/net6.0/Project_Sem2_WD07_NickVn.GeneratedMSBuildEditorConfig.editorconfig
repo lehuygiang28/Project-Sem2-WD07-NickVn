@@ -15,6 +15,22 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\VTCA\SEM-2\Project-Sem2\Project_Sem2_WD07_NickVn
 build_property._RazorSourceGeneratorDebug = 
 
+[C:/VTCA/SEM-2/Project-Sem2/Project_Sem2_WD07_NickVn/Views/Admin/Categories.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQ2F0ZWdvcmllcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VTCA/SEM-2/Project-Sem2/Project_Sem2_WD07_NickVn/Views/Admin/DetailCategory.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRGV0YWlsQ2F0ZWdvcnkuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VTCA/SEM-2/Project-Sem2/Project_Sem2_WD07_NickVn/Views/Admin/EditCategory.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRWRpdENhdGVnb3J5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VTCA/SEM-2/Project-Sem2/Project_Sem2_WD07_NickVn/Views/Admin/Error404.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRXJyb3I0MDQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/VTCA/SEM-2/Project-Sem2/Project_Sem2_WD07_NickVn/Views/Admin/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 

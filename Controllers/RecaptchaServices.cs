@@ -11,44 +11,49 @@ using System.Runtime.Serialization;
 
 public class RecaptchaServices
 {
-    //ActionFilterAttribute has no async for MVC 5 therefore not using as an actionfilter attribute - needs revisiting in MVC 6
+    // Passing recaptcha for dev
     internal static async Task<bool> Validate(HttpRequest request, string SecretKey)
     {
-        string recaptchaResponse = "";
-        try
-        {
-            recaptchaResponse = request.HttpContext.Request.Form["g-recaptcha-response"];
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine("EX: " + e.Message);
-            return false;
-        }
-        if (string.IsNullOrEmpty(recaptchaResponse))
-        {
-            return false;
-        }
-        using (var client = new HttpClient { BaseAddress = new Uri("https://www.google.com") })
-        {
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            var content = new FormUrlEncodedContent(new[]
-            {
-                    new KeyValuePair<string, string>("secret", SecretKey),
-                    new KeyValuePair<string, string>("response", recaptchaResponse),
-                    new KeyValuePair<string, string>("remoteip", request.HttpContext.Connection.RemoteIpAddress != null ? request.HttpContext.Connection.RemoteIpAddress.ToString() : "")
-                });
-            var result = await client.PostAsync("/recaptcha/api/siteverify", content);
-            result.EnsureSuccessStatusCode();
-            string jsonString = await result.Content.ReadAsStringAsync();
-            var response = JsonConvert.DeserializeObject<RecaptchaResponse>(jsonString);
-
-            if (response == null)
-            {
-                return false;
-            }
-            return response.Success;
-        }
+        return true;
     }
+    //ActionFilterAttribute has no async for MVC 5 therefore not using as an actionfilter attribute - needs revisiting in MVC 6
+    // internal static async Task<bool> Validate(HttpRequest request, string SecretKey)
+    // {
+    //     string recaptchaResponse = "";
+    //     try
+    //     {
+    //         recaptchaResponse = request.HttpContext.Request.Form["g-recaptcha-response"];
+    //     }
+    //     catch (Exception e)
+    //     {
+    //         Console.WriteLine("EX: " + e.Message);
+    //         return false;
+    //     }
+    //     if (string.IsNullOrEmpty(recaptchaResponse))
+    //     {
+    //         return false;
+    //     }
+    //     using (var client = new HttpClient { BaseAddress = new Uri("https://www.google.com") })
+    //     {
+    //         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+    //         var content = new FormUrlEncodedContent(new[]
+    //         {
+    //                 new KeyValuePair<string, string>("secret", SecretKey),
+    //                 new KeyValuePair<string, string>("response", recaptchaResponse),
+    //                 new KeyValuePair<string, string>("remoteip", request.HttpContext.Connection.RemoteIpAddress != null ? request.HttpContext.Connection.RemoteIpAddress.ToString() : "")
+    //             });
+    //         var result = await client.PostAsync("/recaptcha/api/siteverify", content);
+    //         result.EnsureSuccessStatusCode();
+    //         string jsonString = await result.Content.ReadAsStringAsync();
+    //         var response = JsonConvert.DeserializeObject<RecaptchaResponse>(jsonString);
+
+    //         if (response == null)
+    //         {
+    //             return false;
+    //         }
+    //         return response.Success;
+    //     }
+    // }
 
     [DataContract]
     internal class RecaptchaResponse

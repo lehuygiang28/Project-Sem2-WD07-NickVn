@@ -28,7 +28,7 @@ namespace Project_Sem2_WD07_NickVn.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseMySql("name=ConnectionStrings:NickVn_Project", Microsoft.EntityFrameworkCore.ServerVersion.Parse("10.4.24-mariadb"));
+                optionsBuilder.UseMySql("name=ConnectionStrings:NickVn_Project", Microsoft.EntityFrameworkCore.ServerVersion.Parse("10.4.22-mariadb"));
             }
         }
 
@@ -65,6 +65,11 @@ namespace Project_Sem2_WD07_NickVn.Models
                 entity.Property(e => e.Note)
                     .HasColumnType("text")
                     .HasColumnName("note");
+
+                entity.Property(e => e.Status)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("status")
+                    .HasDefaultValueSql("'1'");
 
                 entity.Property(e => e.Title)
                     .HasColumnType("text")
@@ -236,6 +241,14 @@ namespace Project_Sem2_WD07_NickVn.Models
                 entity.Property(e => e.FirstName)
                     .HasColumnType("text")
                     .HasColumnName("first_name");
+
+                entity.Property(e => e.ImgSrc)
+                    .HasColumnType("text")
+                    .HasColumnName("img_src");
+
+                entity.Property(e => e.LastLogin)
+                    .HasColumnType("datetime")
+                    .HasColumnName("last_login");
 
                 entity.Property(e => e.LastName)
                     .HasColumnType("text")

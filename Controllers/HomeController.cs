@@ -18,7 +18,11 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var categoryList = await _context.Categories.OrderBy(c => c.Id).ToListAsync();
+        var query = from cate in _context.Categories
+                    where cate.Status == 1
+                    select cate;
+
+        var categoryList = await query.OrderBy(c => c.Id).ToListAsync();
 
         ViewBag.categoryList = categoryList;
         return View();

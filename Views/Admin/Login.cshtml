@@ -1,7 +1,10 @@
 @model User
 @{
     ViewData["Title"] = "Login Admin";
+    TempData.Keep("siteKey");
 }
+
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
 <!-- Sign In Start -->
 <div class="container-fluid">
@@ -14,6 +17,9 @@
                     </a>
                     <h3>Sign In</h3>
                 </div>
+                <div class="text-danger mb-4">
+                    @TempData["error"]
+                </div>
                 <div class="form-floating mb-3">
                     @Html.TextBoxFor(u => u.UserName, new {@class = "form-control", @id = "floatingInput", @placeholder = "exampleUser"})
                     @* <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com"> *@
@@ -24,6 +30,9 @@
                     @Html.TextBoxFor(u => u.Password, new {@class = "form-control", @id = "floatingInput", @type = "Password", @placeholder = "Password"})
                     <label for="floatingPassword">Password</label>
                 </div>
+
+                <div class="form-group has-feedback g-recaptcha mb-4" data-sitekey='@TempData["siteKey"]'></div>
+
                 <div class="d-flex align-items-center justify-content-between mb-4">
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input" id="exampleCheck1">
@@ -45,7 +54,10 @@
 </script>
 
 <style>
-.sidebar, .navbar, .footer, .back-to-top{
-  display: none;
-}
+    .sidebar,
+    .navbar,
+    .footer,
+    .back-to-top {
+        display: none;
+    }
 </style>

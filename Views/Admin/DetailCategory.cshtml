@@ -1,0 +1,152 @@
+@{
+    ViewData["Title"] = "Category Detail";
+
+    var cateById = ViewBag.cateById;
+    Category cate = (Category)cateById;
+
+}
+<div class="container-fluid pt-4 px-4">
+
+    <div class="row g-4">
+
+
+        <div class="col-sm-12 col-xl-4">
+            <div class="bg-secondary rounded h-100 p-4">
+                <h6 class="mb-4">#@cate.Id - @cate.Name</h6>
+                <dl class="row mb-0">
+                    <dt class="col-sm-4">Id</dt>
+                    <dd class="col-sm-8">@cate.Id</dd>
+
+                    <dt class="col-sm-4">Name</dt>
+                    <dd class="col-sm-8">@cate.Name</dd>
+
+                    <dt class="col-sm-4">Title</dt>
+                    <dd class="col-sm-8">@cate.Title</dd>
+
+                    <dt class="col-sm-4">Action</dt>
+                    <dd class="col-sm-8">@cate.Action</dd>
+
+                    <dt class="col-sm-4">Img Sale Off</dt>
+                    <dd class="col-sm-8">@cate.ImgSaleOff</dd>
+
+                    <dt class="col-sm-4">Img Scr</dt>
+                    <dd class="col-sm-8">@cate.ImgSrc</dd>
+
+                    <dt class="col-sm-4">Total</dt>
+                    <dd class="col-sm-8">@cate.Total</dd>
+
+                    <dt class="col-sm-4">Note</dt>
+                    <dd class="col-sm-8">@cate.Note</dd>
+
+                    <div class="d-flex justify-content-center">
+
+                        @Html.ActionLink("Edit", "EditCategory", new { id = cate.Id }, new {@class =
+                        "btn btn-outline-light m-2"})
+
+                        <!-- Button trigger modal -->
+                        <a type="button" class="btn btn-outline-danger m-2" data-bs-toggle="modal"
+                            data-bs-target="#DeleteCategoryPopup">
+                            Delete
+                        </a>
+                        <!-- Modal -->
+                        <div class="modal fade" id="DeleteCategoryPopup" tabindex="-1"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title text-secondary" id="exampleModalLabel">Confirmation to
+                                            delete?</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Are you sure to delete this Category?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-danger">@Html.ActionLink("Confirm Delete",
+                                            "DeleteCategory", new { id = cate.Id }, new { @class =
+                                            "text-white"})</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Modal End -->
+
+                    </div>
+                </dl>
+            </div>
+        </div>
+
+        @* <div class="col-sm-12 col-xl-4">
+            <div class="bg-secondary rounded h-100 p-4">
+            <h6 class="mb-4">#@cate.Id - @cate.Name</h6>
+            <ul class="list-group list-group-flush">
+            <li class="list-group-item bg-transparent">Id: @cate.Id</li>
+            <li class="list-group-item bg-transparent">Name: @cate.Name</li>
+            <li class="list-group-item bg-transparent">Title: @cate.Title</li>
+            <li class="list-group-item bg-transparent">Action: @cate.Action</li>
+            <li class="list-group-item bg-transparent">Img Sale Off: @cate.ImgSaleOff</li>
+            <li class="list-group-item bg-transparent">Img Scr: @cate.ImgSrc</li>
+            <li class="list-group-item bg-transparent">Total: @cate.Total</li>
+            <li class="list-group-item bg-transparent">Note: @cate.Note</li>
+            <li class="list-group-item bg-transparent d-flex justify-content-center">
+            <button class="pe-4 btn btn-outline-light m-2">
+            @Html.ActionLink("Edit", "DetailCategory", new { id = cate.Id }, new {@class =
+            "text-light"})
+            </button>
+            <button class="btn btn-outline-danger m-2">
+            @Html.ActionLink("Delete", "DetailCategory", new { id = cate.Id }, new {@class =
+            "text-danger"})
+            </button>
+            </li>
+            </ul>
+            </div>
+            </div> *@
+
+        <div class="col-sm-12 col-xl-8">
+            <div class="bg-secondary rounded h-100 p-4">
+                <h6 class="mb-4">Categories Table</h6>
+                <table class="table table-striped" id="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Category ID</th>
+                            <th scope="col">Category Name</th>
+                            <th scope="col">Action</th>
+                            <th scope="col">Img</th>
+                            <th scope="col">Total</th>
+                            <th scope="col">&nbsp;</th>
+                            <th scope="col">&nbsp;</th>
+                            <th scope="col">&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            var productByCateId = ViewBag.productByCateId;
+                            List<ProductCategory> productCate = (List<ProductCategory>)productByCateId;
+
+                            foreach (var item in productCate)
+                            {
+                                <tr>
+                                    <th scope="row">@item.CategoryId</th>
+                                    <td>@item.CategoryName</td>
+                                    <td>@item.Action</td>
+                                    <td>@item.ImgSrc</td>
+                                    <td>@item.Total</td>
+                                    <td>@Html.ActionLink("Details", "DetailCategory", new { id = item.CategoryId }, new { @class
+                                = "text-info"})</td>
+                                    <td>@Html.ActionLink("Edit", "EditCategory", new { id = item.CategoryId }, new { @class =
+                                "text-light"})</td>
+                                    <td>@Html.ActionLink("Delete", "DeleteCategory", new { id = item.CategoryId }, new { @class
+                                = "text-danger"})</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>

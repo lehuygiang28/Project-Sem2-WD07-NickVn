@@ -12,7 +12,7 @@ public class UserController : Controller
     public const string SessionKeyName = "_Name";
     public const string SessionKeyId = "_Id";
     public const string SessionKeyMoney = "_Money";
-    public const string HostName = "GoogleReCaptcha";
+    private const string HostName = "GoogleReCaptcha";
     // public string HostName = "localhost";
     private readonly ILogger<UserController> _logger;
     private readonly NickVn_ProjectContext _context;
@@ -198,6 +198,10 @@ public class UserController : Controller
         _logger.LogInformation("Session key ID: {id}", id);
         _logger.LogInformation("Session key UName: {uname}", uname);
         _logger.LogInformation("Session key Money: {money}", money);
+
+        loginUser.LastLogin = DateTime.Now;
+        _context.Update(loginUser);
+        await _context.SaveChangesAsync();
 
         return RedirectToAction(nameof(Index), "Home");
     }

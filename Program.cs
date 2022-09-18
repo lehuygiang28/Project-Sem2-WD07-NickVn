@@ -35,6 +35,19 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+// Handle error 404
+// app.Use(async (context, next) =>
+// {
+//     await next();
+
+//     if (context.Response.StatusCode == 404)
+//     {
+//         context.Request.Path = "/Admin/Error404";
+//         await next();
+//     }
+// });
+// app.UseStatusCodePages();
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
