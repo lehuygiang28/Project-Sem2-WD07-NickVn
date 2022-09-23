@@ -11,5 +11,6 @@ namespace Project_Sem2_WD07_NickVn.Models
         public string ImgSrc { get; set; } = null!;
         public int Total { get; set; }
         public int? Note { get; set; }
+        public int Status { get; set; }
     }
 }

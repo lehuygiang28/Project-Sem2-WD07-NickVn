@@ -9,6 +9,7 @@ public class CategoryController : Controller
 {
     private readonly ILogger<CategoryController> _logger;
     private readonly NickVn_ProjectContext _context;
+    private const int ENABLE_ACTIVE = 1;
 
     public CategoryController(ILogger<CategoryController> logger, NickVn_ProjectContext context)
     {
@@ -22,14 +23,14 @@ public class CategoryController : Controller
     }
     public async Task<IActionResult> Garena(int id)
     {
-        var query = from cate in _context.Categories
-                    where cate.Status == 1
+        var query = from cate in _context.ProductCategories
+                    where cate.Status == ENABLE_ACTIVE
                     select cate;
 
         var cateProduct = await query.ToListAsync();
 
         ViewBag.cateProduct  = cateProduct;
-        _logger.LogInformation("ID: " + id);
+        _logger.LogInformation("ID selected: " + id);
         return View();
     }
 

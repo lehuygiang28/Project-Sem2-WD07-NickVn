@@ -1,3 +1,16 @@
+@{
+    ViewData["Title"] = "Game liên minh";
+    string vndFormat(int? money)
+    {
+        if (money == null)
+        {
+            return "0";
+        }
+        var info = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+        return String.Format(info, "{0:c}", money);
+    }
+}
+
 <!-- BEGIN: PAGE CONTAINER -->
 <div class="c-layout-page">
     <!-- BEGIN: PAGE CONTENT -->
@@ -384,7 +397,7 @@
                                 <div class="a-more">
                                     <div class="row">
                                         <div class="col-xs-6">
-                                            <div class="price_item">@LOL.PriceAtm</div>
+                                            <div class="price_item">@vndFormat((int?)LOL.PriceAtm)</div>
                                         </div>
                                         <div class="col-xs-6 ">
                                             <div class="view">

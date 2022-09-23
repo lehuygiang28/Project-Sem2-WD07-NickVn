@@ -1,6 +1,23 @@
 @{
     ViewData["Title"] = "Game Liên Minh";
+    Lienminh accLienMinh = new Lienminh();
+
+    string vndFormat(int? money)
+    {
+        if (money == null)
+        {
+            return "0";
+        }
+        var info = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+        return String.Format(info, "{0:c}", money);
+    }
 }
+
+
+@* <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> *@
+@* <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> *@
+@* <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> *@
+
 
 <!-- BEGIN: PAGE CONTAINER -->
 <div class="c-layout-page">
@@ -10,11 +27,10 @@
         var detailAcc = ViewBag.accLienMinh;
         if (detailAcc is Lienminh)
         {
-            Lienminh accLienMinh = (Lienminh)detailAcc;
+            accLienMinh = (Lienminh)detailAcc;
 
             <div class="c-content-box c-size-lg c-overflow-hide c-bg-white">
                 <div class="container">
-
 
                     <nav aria-label="breadcrumb" style="display:none">
                         <ol class="breadcrumb">
@@ -97,11 +113,11 @@
                                     @{
                                         decimal cardPrice = accLienMinh.PriceAtm / 100 * 145;
                                         <div class="position0">
-                                            @cardPrice CARD
+                                            CARD @vndFormat((int?)cardPrice)
                                         </div>
                                     }
                                     <div class="position1">
-                                        @accLienMinh.PriceAtm ATM
+                                        ATM @vndFormat((int?)accLienMinh.PriceAtm)
                                     </div>
                                 </div>
                                 <script type="text/javascript">
@@ -112,9 +128,14 @@
                             <div class="col-md-4 text-right">
                                 <div class="c-product-header">
                                     <div class="c-content-title-1">
-                                        <button type="button"
-                                        class="btn c-btn btn-lg c-theme-btn c-font-uppercase c-font-bold c-btn-square m-t-20 load-modal"
-                                        rel="/buyacc/467183">Mua ngay</button>
+
+                                        @* @Html.ActionLink("Mua Ngay", "BuyNowPopupModalLienMinh", "ShopAcc", new { id =
+                                            accLienMinh.Id}, new { @class = "btn c-btn btn-lg c-theme-btn c-font-uppercase
+                                            c-font-bold c-btn-square m-t-20 load-modal", @id = "BuyNowBtn"}) *@
+                                        <button type="button" id="BuyNowBtn"
+                                        class="btn c-btn btn-lg c-theme-btn c-font-uppercase c-font-bold c-btn-square m-t-20">Mua
+                                            ngay</button>
+
                                         <button type="button"
                                         class="btn c-btn btn-lg btn-danger c-font-uppercase c-font-bold c-btn-square m-t-20 load-modal"
                                         rel="/hire-purchase/467183">Trả góp</button>
@@ -186,7 +207,6 @@
                     </div>
                 </div>
 
-
                 <div class="container m-t-20 content_post">
 
                     @{
@@ -202,9 +222,7 @@
 
                         }
                     }
-
                     <div class="buy-footer" style="text-align: center">
-
 
                         <button type="button"
                         class="btn c-btn btn-lg c-theme-btn c-font-uppercase c-font-bold c-btn-square m-t-20 load-modal"
@@ -269,7 +287,7 @@
                                         <div class="row">
                                             <div class="col-xs-6">
                                                 <div class="price_item">
-                                                    @random.PriceAtm
+                                                    @vndFormat((int?)random.PriceAtm)
                                                 </div>
                                             </div>
                                             <div class="col-xs-6 ">
@@ -379,69 +397,363 @@
         }
     }
 
+    @* @{
+        if (ViewBag.popupModalScriptBuy != null)
+        {
+        @Html.Raw(ViewBag.popupModalScriptBuy)
+        }
+        } *@
 
-
-    <div class="modal fade" id="LoadModal" role="dialog" style="display: none;" aria-hidden="true">
+    <div class="modal fade" id="LoadModal" role="dialog">
         <div class="modal-dialog" role="document">
-            <div class="loader" style="text-align: center"><img src="/assets/frontend/images/loader.gif"
-                    style="width: 50px;height: 50px;display: none"></div>
             <div class="modal-content">
+                <form method='POST' asp-action='BuyAcc' asp-controller='ShopAcc' accept-charset='UTF-8'
+                    class='form-horizontal' enctype='multipart/form-data'>
+
+                    <div class='modal-header'>
+                        <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                            <span aria-hidden='true'>×</span>
+                        </button>
+                        <h4 class='modal-title'>Xác nhận mua tài khoản</h4>
+                    </div>
+
+                    <div class='modal-body'>
+                        <div class='c-content-tab-4 c-opt-3' role='tabpanel'>
+                            <ul class='nav nav-justified' role='tablist'>
+                                <li role='presentation' class='active'>
+                                    <a href='#payment' role='tab' data-toggle='tab' class='c-font-16'>Thanh toán</a>
+                                </li>
+                                <li role='presentation'>
+                                    <a href='#info' role='tab' data-toggle='tab' class='c-font-16'>Tài khoản</a>
+                                </li>
+                            </ul>
+                            <div class='tab-content'>
+
+                                <div role='tabpanel' class='tab-pane fade in active' id='payment'>
+                                    <ul class='c-tab-items p-t-0 p-b-0 p-l-5 p-r-5'>
+                                        <li class='c-font-dark'>
+                                            <table class='table table-striped'>
+                                                <tbody>
+                                                    <tr>
+                                                        <th colspan='2'>Thông tin tài khoản # @accLienMinh.Id</th>
+                                                    </tr>
+                                                </tbody>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Nhà phát hành:</td>
+                                                        <th>@accLienMinh.Publisher</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Tên game:</td>
+                                                        <th>@accLienMinh.Name</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Giá tiền:</td>
+                                                        <th class='text-info'>@vndFormat((int?)accLienMinh.PriceAtm)đ</th>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div role='tabpanel' class='tab-pane fade' id='info'>
+                                    <ul class='c-tab-items p-t-0 p-b-0 p-l-5 p-r-5'>
+                                        <li class='c-font-dark'>
+                                            <table class='table table-striped'>
+                                                <tbody>
+                                                    <tr>
+                                                        <th colspan='2'>Chi tiết tài khoản #@accLienMinh.Id</th>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td style='width: 50%'>Tướng:</td>
+                                                        <td class='text-danger' style='font-weight: 700'>
+                                                            @accLienMinh.Champ
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td style='width: 50%'>Skin:</td>
+                                                        <td class='text-danger' style='font-weight: 700'>
+                                                            @accLienMinh.Skin</td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td style='width: 50%'>Bảng Ngọc:</td>
+                                                        <td class='text-danger' style='font-weight: 700'></td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td style='width:50%'>Rank:</td>
+                                                        <td class='text-danger' style='font-weight: 700'>
+                                                            @accLienMinh.Rank</td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td style='width:50%'>Trạng Thái:</td>
+                                                        <td class='text-danger' style='font-weight: 700'>
+                                                            @accLienMinh.Status
+                                                        </td>
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class='form-group '>
+                            <label class='col-md-3 form-control-label'>Mã giảm giá:</label>
+                            <div class='col-md-7'>
+                                <input type='text' class='form-control c-square c-theme ' name='coupon'
+                                    placeholder='Mã giảm giá' value=''>
+                                <span class='help-block'>Nhập mã giảm giá nếu có để nhận ưu đãi</span>
+                            </div>
+                        </div>
+
+                        @{
+                            var sessionVar = Context.Session;
+                            string form = "";
+                            var money = sessionVar.GetInt32("_Money");
+                            if (money == null)
+                            {
+                                form = @"
+                                <div class='form-group '>
+                                    <label class='col-md-12 form-control-label text-danger'
+                                        style='text-align: center;margin: 10px 0; '>
+                                        Bạn phải đăng nhập mới có thể mua tài khoản tự động.
+                                    </label>
+                                </div>
+                                <div style='clear: both'></div>
+                                </div>
+                                
+                                <div class='modal-footer'>
+
+                                    <a class='btn c-theme-btn c-btn-square c-btn-uppercase c-btn-bold' href='/User/Login'>Đăng nhập</a>
+
+                                    <button type='button'
+                                        class='btn c-theme-btn c-btn-border-2x c-btn-square c-btn-bold c-btn-uppercase'
+                                        data-dismiss='modal'>Đóng</button>
+
+                                </div>";
+                            }
+                            else if (money < accLienMinh.PriceAtm)
+                            {
+                                form = @"
+                                <div class='form-group '>
+                                    <label class='col-md-12 form-control-label text-danger'
+                                        style='text-align: center;margin: 10px 0; '>
+                                        Bạn không đủ số dư để mua tài khoản này. Bạn hãy click vào nút nạp thẻ để nạp thêm và mua tài khoản.
+                                    </label>
+                                </div>
+                                <div style='clear: both'></div>
+                                </div>
+
+                                <div class='modal-footer'>
+
+                                    <a class='btn c-theme-btn c-btn-square c-btn-uppercase c-btn-bold' href='#'>Nạp thẻ cào</a>
+                                    <a class='btn c-theme-btn c-btn-square c-btn-uppercase c-btn-bold c-bg-green-4' href='#'>Nạp từ atm - ví điện tử</a>
+
+                                    <button type='button'
+                                        class='btn c-theme-btn c-btn-border-2x c-btn-square c-btn-bold c-btn-uppercase'
+                                        data-dismiss='modal'>Đóng</button>
+
+                                </div>";
+                            }
+                            else
+                            {
+                                form = @"
+                                    <div class='form-group '>
+                                        <label class='col-md-12 form-control-label text-danger'
+                                            style='text-align: center;margin: 10px 0; '>
+                                            
+                                        </label>
+                                    </div>
+                                    <div style='clear: both'></div>
+                                    </div>
+
+                                    <div class='modal-footer'>
+
+                                        <a class='btn c-theme-btn c-btn-square c-btn-uppercase c-btn-bold c-bg-green-4' href='#'>Xác nhận mua ngay</a>
+
+                                        <button type='button'
+                                            class='btn c-theme-btn c-btn-border-2x c-btn-square c-btn-bold c-btn-uppercase'
+                                            data-dismiss='modal'>Đóng</button>
+
+                                    </div>";
+                            }
+                        }
+                    @Html.Raw(form)
+                </form>
             </div>
         </div>
     </div>
 
 
-    <script>
-        $(document).ready(function () {
-            $('.load-modal').each(function (index, elem) {
-                $(elem).unbind().click(function (e) {
-                    e.preventDefault();
-                    e.preventDefault();
-                    var curModal = $('#LoadModal');
-                    curModal.find('.modal-content').html("<div class=\"loader\" style=\"text-align: center\"><img src=\"/assets/frontend/images/loader.gif\" style=\"width: 50px;height: 50px;\"></div>");
-                    curModal.modal('show').find('.modal-content').load($(elem).attr('rel'));
-                });
-            });
-        });
-    </script>
+    <div class="modal fade" id="noticeModal" role="dialog" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="loader" style="text-align: center"><img src="~/storage/images/loader.gif"
+                    style="width: 50px;height: 50px;display: none"></div>
+            <div class="modal-content">
+
+            </div>
+        </div>
+    </div>
 
     <!-- END: PAGE CONTENT -->
 </div>
 
-<div class="modal fade" id="noticeModal" role="dialog" style="display: none;" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="loader" style="text-align: center"><img src="/assets/frontend/images/loader.gif"
-                style="width: 50px;height: 50px;display: none"></div>
-        <div class="modal-content">
 
-        </div>
+
+
+@* <script>
+    @{
+    string formString = @"
+    <form method='POST' asp-action='BuyAcc' asp-controller= 'ShopAcc' accept-charset='UTF-8'
+    class='form-horizontal' enctype='multipart/form-data'>
+    <input name='_token' type='hidden' value='HJ1Ev1SApzFP8sBSxWreqUtn2Hje5r3jhf8PosZO'>
+
+    <div class='modal-header'>
+    <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+    <span aria-hidden='true'>×</span>
+    </button>
+    <h4 class='modal-title'>Xác nhận mua tài khoản</h4>
     </div>
-</div>
-</div>
 
-<div class="modal fade" id="LoadModal" role="dialog" style="display: none;" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="loader" style="text-align: center"><img src="/assets/frontend/images/loader.gif"
-                style="width: 50px;height: 50px;display: none"></div>
-        <div class="modal-content">
-        </div>
+    <div class='modal-body'>
+    <div class='c-content-tab-4 c-opt-3' role='tabpanel'>
+    <ul class='nav nav-justified' role='tablist'>
+    <li role='presentation' class='active'>
+    <a href='#p' role='tab' data-toggle='tab' class='c-font-16'>Thanh toán</a>
+    </li>
+    <li role='presentation'>
+    <a href='#' role='tab' data-toggle='tab' class='c-font-16'>Tài khoản</a>
+    </li>
+    </ul>
+    <div class='tab-content'>
+    <div role='tabpanel' class='tab-pane fade in active' id='payment'>
+    <ul class='c-tab-items p-t-0 p-b-0 p-l-5 p-r-5'>
+    <li class='c-font-dark'>
+    <table class='table table-striped'>
+    <tbody>
+    <tr>
+    <th colspan='2'>Thông tin tài khoản #@accLienMinh.id}</th>
+    </tr>
+    </tbody>
+    <tbody>
+    <tr>
+    <td>Nhà phát hành:</td>
+    <th>Garena</th>
+    </tr>
+    <tr>
+    <td>Tên game:</td>
+    <th>Liên minh</th>
+    </tr>
+    <tr>
+    <td>Giá tiền:</td>
+    <th class='text-info'>204,000đ</th>
+    </tr>
+    </tbody>
+    </table>
+    </li>
+    </ul>
     </div>
-</div>
+    <div role='tabpanel' class='tab-pane fade' id='info'>
+    <ul class='c-tab-items p-t-0 p-b-0 p-l-5 p-r-5'>
+    <li class='c-font-dark'>
+    <table class='table table-striped'>
+    <tbody>
+    <tr>
+    <th colspan='2'>Chi tiết tài khoản #467183</th>
+    </tr>
 
+    <tr>
+    <td style='width: 50%'>Tướng:</td>
+    <td class='text-danger' style='font-weight: 700'>58</td>
+    </tr>
+
+    <tr>
+    <td style='width: 50%'>Skin:</td>
+    <td class='text-danger' style='font-weight: 700'>34</td>
+    </tr>
+
+    <tr>
+    <td style='width: 50%'>Bảng Ngọc:</td>
+    <td class='text-danger' style='font-weight: 700'></td>
+    </tr>
+
+    <tr>
+    <td style='width:50%'>Rank:</td>
+    <td class='text-danger' style='font-weight: 700'>Chưa Rank</td>
+    </tr>
+
+    <tr>
+    <td style='width:50%'>Trạng Thái:</td>
+    <td class='text-danger' style='font-weight: 700'>Trắng thông tin
+    </td>
+    </tr>
+
+    </tbody>
+    </table>
+    </li>
+    </ul>
+    </div>
+    </div>
+    </div>
+    <div class='form-group '>
+    <label class='col-md-3 form-control-label'>Mã giảm giá:</label>
+    <div class='col-md-7'>
+    <input type='text' class='form-control c-square c-theme ' name='coupon'
+    placeholder='Mã giảm giá' value=''>
+    <span class='help-block'>Nhập mã giảm giá nếu có để nhận ưu đãi</span>
+    </div>
+    </div>
+
+    <div class='form-group '>
+    <label class='col-md-12 form-control-label text-danger'
+    style='text-align: center;margin: 10px 0; '>
+    Bạn phải đăng nhập mới có thể mua tài khoản tự động.
+    </label>
+
+
+    </div>
+
+    <div style='clear: both'></div>
+    </div>
+    <div class='modal-footer'>
+
+    <a class='btn c-theme-btn c-btn-square c-btn-uppercase c-btn-bold' href='/login'>Đăng nhập</a>
+
+    <button type='button'
+    class='btn c-theme-btn c-btn-border-2x c-btn-square c-btn-bold c-btn-uppercase'
+    data-dismiss='modal'>Đóng</button>
+
+    </div>
+    </form>";
+    }
+    $(document).ready(function () {
+    $('.load-modal').each(function (index, elem) {
+    $(elem).unbind().click(function (e) {
+    e.preventDefault();
+    e.preventDefault();
+    var curModal = $('#LoadModal');
+    curModal.find('.modal-content').html(@formString);
+    curModal.modal('show').find('.modal-content').load($(elem).attr('rel'));
+    });
+    });
+    });
+    </script> *@
 
 <script>
     $(document).ready(function () {
-        $('.load-modal').each(function (index, elem) {
-            $(elem).unbind().click(function (e) {
-                e.preventDefault();
-                e.preventDefault();
-                var curModal = $('#LoadModal');
-                curModal.find('.modal-content').html("<div class=\"loader\" style=\"text-align: center\"><img src=\"/assets/frontend/images/loader.gif\" style=\"width: 50px;height: 50px;\"></div>");
-                curModal.modal('show').find('.modal-content').load($(elem).attr('rel'));
-            });
+        $("#BuyNowBtn").click(function () {
+            $("#LoadModal").modal();
         });
     });
 </script>
 
-
 <!-- END: PAGE CONTAINER -->
+

@@ -155,6 +155,10 @@ namespace Project_Sem2_WD07_NickVn.Models
                     .HasPrecision(10)
                     .HasColumnName("price_atm");
 
+                entity.Property(e => e.Publisher)
+                    .HasColumnType("text")
+                    .HasColumnName("publisher");
+
                 entity.Property(e => e.Rank)
                     .HasColumnType("text")
                     .HasColumnName("rank");
@@ -193,6 +197,11 @@ namespace Project_Sem2_WD07_NickVn.Models
                 entity.Property(e => e.Note)
                     .HasColumnType("int(11)")
                     .HasColumnName("note");
+
+                entity.Property(e => e.Status)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("status")
+                    .HasDefaultValueSql("'1'");
 
                 entity.Property(e => e.Total)
                     .HasColumnType("int(11)")
