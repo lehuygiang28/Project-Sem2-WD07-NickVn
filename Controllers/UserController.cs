@@ -35,44 +35,38 @@ public class UserController : Controller
 
     public async Task<IActionResult> Account()
     {
-        try
+        if (!IsLogin())
         {
-            if (!IsLogin())
-            {
-                return RedirectToAction("Index", "Home");
-            }
-            int userId = Convert.ToInt32(HttpContext.Session.GetInt32(SessionKeyId));
-            List<Oder> listAccountId = await _context.Oders.Where(o => o.UserId == userId).OrderByDescending(a => a.CreateAt).ToListAsync();
-
-            if (listAccountId == null)
-            {
-                return View();
-            }
-
-            Task addList(Lienminh item, List<Lienminh> list)
-            {
-                Task.Run(() =>
-                {
-                    list.Add(item);
-                });
-                return Task.CompletedTask;
-            }
-
-            List<Lienminh> listProducts = new List<Lienminh>();
-            foreach (Oder itemInList in listAccountId)
-            {
-                System.Console.WriteLine("ID LIST: " + itemInList.ProductId);
-                System.Console.WriteLine("ID ");
-                Lienminh item = await _context.Lienminhs.Where(o => o.Id == itemInList.ProductId).FirstAsync();
-                await addList(item, listProducts);
-            }
-
-            ViewBag.listOrders = listAccountId;
-            ViewBag.listProducts = listProducts;
-        } catch (Exception ex)
-        {
-            System.Console.WriteLine(ex.Message);
+            return RedirectToAction("Index", "Home");
         }
+        int userId = Convert.ToInt32(HttpContext.Session.GetInt32(SessionKeyId));
+        List<Oder> listAccountId = await _context.Oders.Where(o => o.UserId == userId).OrderByDescending(a => a.CreateAt).ToListAsync();
+
+        if (listAccountId == null)
+        {
+            return View();
+        }
+
+        Task addList(Lienminh item, List<Lienminh> list)
+        {
+            Task.Run(() =>
+            {
+                list.Add(item);
+            });
+            return Task.CompletedTask;
+        }
+
+        List<Lienminh> listProducts = new List<Lienminh>();
+        foreach (Oder itemInList in listAccountId)
+        {
+            System.Console.WriteLine("ID LIST: " + itemInList.ProductId);
+            System.Console.WriteLine("ID ");
+            Lienminh item = await _context.Lienminhs.Where(o => o.Id == itemInList.ProductId).FirstAsync();
+            await addList(item, listProducts);
+        }
+
+        ViewBag.listOrders = listAccountId;
+        ViewBag.listProducts = listProducts;
 
         return View();
     }
@@ -101,7 +95,7 @@ public class UserController : Controller
 
         bool IsValidPassword(string plainText)
         {
-            return true; // Disable password regex check for dev
+            // return true; // Disable password regex check for dev
             System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex(@"^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$");
             System.Text.RegularExpressions.Match match = regex.Match(plainText);
             return match.Success;
