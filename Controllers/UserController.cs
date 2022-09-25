@@ -248,9 +248,18 @@ public class UserController : Controller
         userInput.FirstName = "NickVn";
         DateTime localTime = DateTime.Now;
 
+        string defaultAvatarUrl = @"storage/images/unknown-avatar.jpg";
+        string defaultCoverUrl = @"storage/images/unknown-cover.jpg";
+
+        // int ROLE_ADMIN = 1;
+        int ROLE_USER = 2;
+
         userInput.LastName = localTime.ToString("yyyyMMdd'T'HHmmss");
         userInput.CreateAt = localTime;
         userInput.UpdateAt = localTime;
+        userInput.ImgSrc = defaultAvatarUrl;
+        userInput.CoverImgSrc = defaultCoverUrl;
+        userInput.RoleId = ROLE_USER;
 
         await _context.AddAsync(userInput);
         await _context.SaveChangesAsync();
