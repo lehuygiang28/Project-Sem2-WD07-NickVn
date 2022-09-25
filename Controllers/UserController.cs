@@ -57,7 +57,7 @@ public class UserController : Controller
 
         bool IsValidPassword(string plainText)
         {
-            // return true; // Disable password regex check for dev
+            return true; // Disable password regex check for dev
             System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex(@"^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$");
             System.Text.RegularExpressions.Match match = regex.Match(plainText);
             return match.Success;
