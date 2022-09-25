@@ -16388,6 +16388,11 @@
       "FileKind": "mvc"
     },
     {
+      "FilePath": "c:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\Views\\User\\Account.cshtml",
+      "TargetPath": "Views\\User\\Account.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "c:\\VTCA\\SEM-2\\Project-Sem2\\Project_Sem2_WD07_NickVn\\Views\\Admin\\Index.cshtml",
       "TargetPath": "Views\\Admin\\Index.cshtml",
       "FileKind": "mvc"

@@ -156,6 +156,14 @@ namespace Project_Sem2_WD07_NickVn.Models
                     .HasPrecision(10)
                     .HasColumnName("price_atm");
 
+                entity.Property(e => e.ProductUserName)
+                    .HasColumnType("text")
+                    .HasColumnName("product_user_name");
+
+                entity.Property(e => e.ProductUserPassword)
+                    .HasColumnType("text")
+                    .HasColumnName("product_user_password");
+
                 entity.Property(e => e.Publisher)
                     .HasColumnType("text")
                     .HasColumnName("publisher");

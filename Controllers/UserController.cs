@@ -33,6 +33,50 @@ public class UserController : Controller
         return true;
     }
 
+    public async Task<IActionResult> Account()
+    {
+        try
+        {
+            if (!IsLogin())
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            int userId = Convert.ToInt32(HttpContext.Session.GetInt32(SessionKeyId));
+            List<Oder> listAccountId = await _context.Oders.Where(o => o.UserId == userId).OrderByDescending(a => a.CreateAt).ToListAsync();
+
+            if (listAccountId == null)
+            {
+                return View();
+            }
+
+            Task addList(Lienminh item, List<Lienminh> list)
+            {
+                Task.Run(() =>
+                {
+                    list.Add(item);
+                });
+                return Task.CompletedTask;
+            }
+
+            List<Lienminh> listProducts = new List<Lienminh>();
+            foreach (Oder itemInList in listAccountId)
+            {
+                System.Console.WriteLine("ID LIST: " + itemInList.ProductId);
+                System.Console.WriteLine("ID ");
+                Lienminh item = await _context.Lienminhs.Where(o => o.Id == itemInList.ProductId).FirstAsync();
+                await addList(item, listProducts);
+            }
+
+            ViewBag.listOrders = listAccountId;
+            ViewBag.listProducts = listProducts;
+        } catch (Exception ex)
+        {
+            System.Console.WriteLine(ex.Message);
+        }
+
+        return View();
+    }
+
     public async Task<IActionResult> ChangePasswordSolve(string oldPassword, string newPassword, string passwordConfirmation)
     {
         if (!IsLogin())
@@ -40,7 +84,7 @@ public class UserController : Controller
             return RedirectToAction("Index", "Home");
         }
 
-        if(string.IsNullOrEmpty(oldPassword) || string.IsNullOrWhiteSpace(oldPassword))
+        if (string.IsNullOrEmpty(oldPassword) || string.IsNullOrWhiteSpace(oldPassword))
         {
             TempData["error"] = "Mật khẩu cũ chưa hợp lệ";
             return View(nameof(ChangePassword));
@@ -49,7 +93,7 @@ public class UserController : Controller
         var currentUser = await _context.Users.Where(a => a.Id == HttpContext.Session.GetInt32(SessionKeyId)).FirstAsync();
 
         oldPassword = MD5.CreateMD5(oldPassword);
-        if(string.Compare(oldPassword, currentUser.Password) != 0)
+        if (string.Compare(oldPassword, currentUser.Password) != 0)
         {
             TempData["error"] = "Sai mật khẩu";
             return View(nameof(ChangePassword));

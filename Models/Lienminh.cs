@@ -9,6 +9,8 @@ namespace Project_Sem2_WD07_NickVn.Models
         public const int SOLD = 1;
         public int Id { get; set; }
         public string Name { get; set; } = null!;
+        public string ProductUserName { get; set; } = null!;
+        public string ProductUserPassword { get; set; } = null!;
         public string Publisher { get; set; } = null!;
         public decimal PriceAtm { get; set; }
         public int Champ { get; set; }
