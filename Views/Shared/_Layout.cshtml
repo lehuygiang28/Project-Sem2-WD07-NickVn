@@ -118,12 +118,6 @@
 </head>
 
 <body class="c-layout-header-fixed c-layout-header-mobile-fixed c-layout-header-topbar c-layout-header-topbar-collapse">
-    <!-- Messenger Plugin chat Code -->
-    <div id="fb-root"></div>
-
-    <!-- Your Plugin chat code -->
-    <div id="fb-customer-chat" class="fb-customerchat">
-    </div>
 
     <div class="h1tag"
         style="font-size:0px;text-indent:-1000px;height:0;width:0;position: absolute;z-index:-1000;padding:0;margin:0">
@@ -156,7 +150,7 @@
                 <nav class="c-top-menu c-pull-right m-t-10">
                     <ul class="c-links c-theme-ul">
                         <li>
-                            Hotline: <a href="tel:08.6969.3000">08.6969.3000 </a>
+                            Hotline: <a href="tel:0">08.6969.3000 </a>
                         </li>
 
                         <!--                <li class="c-divider">|</li>
@@ -284,7 +278,7 @@
                                     var userName = Context.Session.GetString("_Name");
                                     var money = Context.Session.GetInt32("_Money");
                                     <li>
-                                        <a href="#" title="@userName"
+                                        <a asp-action="Profile" asp-controller="User" title="@userName"
                                         class="c-btn-border-opacity-04 c-btn btn-no-focus c-btn-header btn btn-sm c-btn-border-1x c-btn-dark c-btn-circle c-btn-uppercase c-btn-sbold">
                                             <i class="icon-user"></i> @limitChar(userName) - @vndFormat(money)</a>
                                     </li>

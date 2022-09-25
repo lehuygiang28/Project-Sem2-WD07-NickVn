@@ -23,14 +23,112 @@ public class UserController : Controller
         _context = context;
     }
 
+    private bool IsLogin()
+    {
+        var sessionValueId = HttpContext.Session.GetInt32(SessionKeyId);
+        if (sessionValueId == null)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    public async Task<IActionResult> ChangePasswordSolve(string oldPassword, string newPassword, string passwordConfirmation)
+    {
+        if (!IsLogin())
+        {
+            return RedirectToAction("Index", "Home");
+        }
+
+        if(string.IsNullOrEmpty(oldPassword) || string.IsNullOrWhiteSpace(oldPassword))
+        {
+            TempData["error"] = "Mật khẩu cũ chưa hợp lệ";
+            return View(nameof(ChangePassword));
+        }
+
+        var currentUser = await _context.Users.Where(a => a.Id == HttpContext.Session.GetInt32(SessionKeyId)).FirstAsync();
+
+        oldPassword = MD5.CreateMD5(oldPassword);
+        if(string.Compare(oldPassword, currentUser.Password) != 0)
+        {
+            TempData["error"] = "Sai mật khẩu";
+            return View(nameof(ChangePassword));
+        }
+
+        bool IsValidPassword(string plainText)
+        {
+            // return true; // Disable password regex check for dev
+            System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex(@"^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$");
+            System.Text.RegularExpressions.Match match = regex.Match(plainText);
+            return match.Success;
+        }
+
+        if (!IsValidPassword(newPassword))
+        {
+            TempData["error"] = "Mật khẩu mới chưa hợp lệ";
+            return View(nameof(ChangePassword));
+        }
+
+        //string.Compare(newPassword, passwordConfirmation, true): neu true thi se bo qua in hoa va in thuong
+        if (string.Compare(newPassword, passwordConfirmation) != 0)
+        {
+            TempData["error"] = "Mật khẩu nhập lại không khớp";
+            return View(nameof(ChangePassword));
+        }
+
+        newPassword = MD5.CreateMD5(newPassword);
+
+        currentUser.Password = newPassword;
+        DateTime now = DateTime.Now;
+        currentUser.UpdateAt = now;
+
+        _context.Users.Update(currentUser);
+        await _context.SaveChangesAsync();
+
+        TempData["success"] = "Đổi mật khẩu thành công";
+        _logger.LogInformation($"Change password successfully! ID: {currentUser.Id} - Time: {now.ToString("HH:mm:ss dd/MM/yyyy")}");
+
+        return RedirectToAction(nameof(ChangePassword));
+    }
+
+    public IActionResult ChangePassword()
+    {
+        if (!IsLogin())
+        {
+            return RedirectToAction("Index", "Home");
+        }
+        return View();
+    }
+
+    public async Task<IActionResult> Profile()
+    {
+        if (!IsLogin())
+        {
+            return RedirectToAction(nameof(Login));
+        }
+
+        var idSession = HttpContext.Session.GetInt32(SessionKeyId);
+        var user = await _context.Users.Where(a => a.Id == idSession).FirstAsync();
+        var roles = await _context.Roles.OrderBy(a => a.Id).ToListAsync();
+
+        TempData["roles"] = roles;
+        TempData["user"] = user;
+        return View();
+    }
+
     public async Task<IActionResult> SignupSolve(User userInput, string password_confirmation)
     {
+        if (IsLogin())
+        {
+            return RedirectToAction("Index", "Home");
+        }
+
         if (!ModelState.IsValid)
         {
             TempData["error"] = "Đã xảy ra lỗi! Vui lòng thử lại";
             return View(nameof(Signup));
         }
-        
+
         var SecretKey = (await _context.Googlerecaptchas.Where(a => a.HostName == HostName).FirstAsync()).SecretKey;
         if (!await RecaptchaServices.Validate(Request, SecretKey))
         {
@@ -127,6 +225,11 @@ public class UserController : Controller
 
     public async Task<IActionResult> Signup()
     {
+        if (IsLogin())
+        {
+            return RedirectToAction("Index", "Home");
+        }
+
         var SiteKey = await _context.Googlerecaptchas.Where(k => k.HostName == HostName).FirstAsync();
 
         TempData["siteKey"] = SiteKey.SiteKey;
@@ -144,6 +247,11 @@ public class UserController : Controller
 
     public async Task<IActionResult> LoginSolve(string UserName, string Password)
     {
+        if (IsLogin())
+        {
+            return RedirectToAction("Index", "Home");
+        }
+
         var SecretKey = (await _context.Googlerecaptchas.Where(a => a.HostName == HostName).FirstAsync()).SecretKey;
         if (!await RecaptchaServices.Validate(Request, SecretKey))
         {
@@ -158,7 +266,7 @@ public class UserController : Controller
         {
             _logger.LogInformation("Captcha Validate: TRUE");
         }
-        
+
         if (string.IsNullOrEmpty(UserName) || string.IsNullOrWhiteSpace(UserName))
         {
             TempData["error"] = "Tài khoản không được để trống";
@@ -208,12 +316,22 @@ public class UserController : Controller
 
     public async Task<IActionResult> Login()
     {
+        if (IsLogin())
+        {
+            return RedirectToAction("Index", "Home");
+        }
+
         TempData["siteKey"] = (await _context.Googlerecaptchas.Where(a => a.HostName == HostName).FirstAsync()).SiteKey;
         return View();
     }
 
     public IActionResult Index()
     {
+        if (IsLogin())
+        {
+            return RedirectToAction("Index", "Home");
+        }
+
         return RedirectToAction(nameof(Login));
     }
 

@@ -5,6 +5,8 @@ namespace Project_Sem2_WD07_NickVn.Models
 {
     public partial class Lienminh
     {
+        public const int NOT_SOLD = 0;
+        public const int SOLD = 1;
         public int Id { get; set; }
         public string Name { get; set; } = null!;
         public string Publisher { get; set; } = null!;
@@ -16,5 +18,6 @@ namespace Project_Sem2_WD07_NickVn.Models
         public int? Note { get; set; }
         public string ImgThumb { get; set; } = null!;
         public string ImgSrc { get; set; } = null!;
+        public int Sold { get; set; }
     }
 }

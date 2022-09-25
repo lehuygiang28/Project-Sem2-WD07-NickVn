@@ -1,0 +1,104 @@
+is_global = true
+build_property.TargetFramework = net6.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = Project_Sem2_WD07_NickVn
+build_property.RootNamespace = Project_Sem2_WD07_NickVn
+build_property.ProjectDir = C:\VTCA\SEM-2\Project-Sem2\Project_Sem2_WD07_NickVn\
+build_property.RazorLangVersion = 6.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\VTCA\SEM-2\Project-Sem2\Project_Sem2_WD07_NickVn
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/VTCA/SEM-2/Project-Sem2/Project_Sem2_WD07_NickVn/Views/Admin/Categories.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQ2F0ZWdvcmllcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VTCA/SEM-2/Project-Sem2/Project_Sem2_WD07_NickVn/Views/Admin/DetailCategory.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRGV0YWlsQ2F0ZWdvcnkuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VTCA/SEM-2/Project-Sem2/Project_Sem2_WD07_NickVn/Views/Admin/EditCategory.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRWRpdENhdGVnb3J5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VTCA/SEM-2/Project-Sem2/Project_Sem2_WD07_NickVn/Views/Admin/Error404.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRXJyb3I0MDQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VTCA/SEM-2/Project-Sem2/Project_Sem2_WD07_NickVn/Views/Admin/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VTCA/SEM-2/Project-Sem2/Project_Sem2_WD07_NickVn/Views/Admin/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cTG9naW4uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VTCA/SEM-2/Project-Sem2/Project_Sem2_WD07_NickVn/Views/Category/Garena.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcnlcR2FyZW5hLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VTCA/SEM-2/Project-Sem2/Project_Sem2_WD07_NickVn/Views/Category/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcnlcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VTCA/SEM-2/Project-Sem2/Project_Sem2_WD07_NickVn/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VTCA/SEM-2/Project-Sem2/Project_Sem2_WD07_NickVn/Views/Home/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VTCA/SEM-2/Project-Sem2/Project_Sem2_WD07_NickVn/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VTCA/SEM-2/Project-Sem2/Project_Sem2_WD07_NickVn/Views/Shared/_AdminLayout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9BZG1pbkxheW91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VTCA/SEM-2/Project-Sem2/Project_Sem2_WD07_NickVn/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VTCA/SEM-2/Project-Sem2/Project_Sem2_WD07_NickVn/Views/ShopAcc/Detail_LienMinh.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hvcEFjY1xEZXRhaWxfTGllbk1pbmguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VTCA/SEM-2/Project-Sem2/Project_Sem2_WD07_NickVn/Views/ShopAcc/LienMinh.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hvcEFjY1xMaWVuTWluaC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VTCA/SEM-2/Project-Sem2/Project_Sem2_WD07_NickVn/Views/User/ChangePassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxDaGFuZ2VQYXNzd29yZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VTCA/SEM-2/Project-Sem2/Project_Sem2_WD07_NickVn/Views/User/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxMb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VTCA/SEM-2/Project-Sem2/Project_Sem2_WD07_NickVn/Views/User/Profile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxQcm9maWxlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VTCA/SEM-2/Project-Sem2/Project_Sem2_WD07_NickVn/Views/User/Signup.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxTaWdudXAuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VTCA/SEM-2/Project-Sem2/Project_Sem2_WD07_NickVn/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VTCA/SEM-2/Project-Sem2/Project_Sem2_WD07_NickVn/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/VTCA/SEM-2/Project-Sem2/Project_Sem2_WD07_NickVn/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-b78t3f3s7u

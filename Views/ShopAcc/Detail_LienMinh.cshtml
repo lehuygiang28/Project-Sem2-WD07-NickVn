@@ -23,6 +23,41 @@
 <div class="c-layout-page">
     <!-- BEGIN: PAGE CONTENT -->
 
+        @{
+            var error = TempData["error"];
+        }
+
+        @if (error != null)
+        {
+            <div class="modal fade" id="errorModal" role="dialog" style="display: none;" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+
+                        <div class='modal-header'>
+                            <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                                <span aria-hidden='true'>×</span>
+                            </button>
+                            <h4 class='modal-title'>Thông báo</h4>
+                        </div>
+
+                        <div class="modal-body text-danger">@error</div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn c-theme-btn c-btn-square c-btn-uppercase c-btn-bold c-bg-green-4" data-dismiss="modal">Xác nhận</button>
+                            <button type="button" class="btn c-theme-btn c-btn-border-2x c-btn-square c-btn-bold c-btn-uppercase" data-dismiss="modal">Đóng</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                var a = $('#errorModal');
+                a.ready(function()
+                {
+                    a.modal('show');
+                });
+            </script>
+        }
+
     @{
         var detailAcc = ViewBag.accLienMinh;
         if (detailAcc is Lienminh)
@@ -138,7 +173,7 @@
 
                                         <button type="button"
                                         class="btn c-btn btn-lg btn-danger c-font-uppercase c-font-bold c-btn-square m-t-20 load-modal"
-                                        rel="/hire-purchase/467183">Trả góp</button>
+                                        rel="#">Trả góp</button>
 
 
                                         <a type="button"
@@ -225,8 +260,7 @@
                     <div class="buy-footer" style="text-align: center">
 
                         <button type="button"
-                        class="btn c-btn btn-lg c-theme-btn c-font-uppercase c-font-bold c-btn-square m-t-20 load-modal"
-                        rel="/buyacc/467183">Mua ngay</button>
+                        class="btn c-btn btn-lg c-theme-btn c-font-uppercase c-font-bold c-btn-square m-t-20 load-modal">Mua ngay</button>
 
 
                     </div>
@@ -565,7 +599,7 @@
                             }
                             else
                             {
-                                form = @"
+                                form = $@"
                                     <div class='form-group '>
                                         <label class='col-md-12 form-control-label text-danger'
                                             style='text-align: center;margin: 10px 0; '>
@@ -577,7 +611,7 @@
 
                                     <div class='modal-footer'>
 
-                                        <a class='btn c-theme-btn c-btn-square c-btn-uppercase c-btn-bold c-bg-green-4' href='#'>Xác nhận mua ngay</a>
+                                        <a class='btn c-theme-btn c-btn-square c-btn-uppercase c-btn-bold c-bg-green-4' href='/ShopAcc/BuyConfirmSolve?productId={accLienMinh.Id}'>Xác nhận mua ngay</a>
 
                                         <button type='button'
                                             class='btn c-theme-btn c-btn-border-2x c-btn-square c-btn-bold c-btn-uppercase'
@@ -586,6 +620,7 @@
                                     </div>";
                             }
                         }
+                    
                     @Html.Raw(form)
                 </form>
             </div>
@@ -605,147 +640,6 @@
 
     <!-- END: PAGE CONTENT -->
 </div>
-
-
-
-
-@* <script>
-    @{
-    string formString = @"
-    <form method='POST' asp-action='BuyAcc' asp-controller= 'ShopAcc' accept-charset='UTF-8'
-    class='form-horizontal' enctype='multipart/form-data'>
-    <input name='_token' type='hidden' value='HJ1Ev1SApzFP8sBSxWreqUtn2Hje5r3jhf8PosZO'>
-
-    <div class='modal-header'>
-    <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
-    <span aria-hidden='true'>×</span>
-    </button>
-    <h4 class='modal-title'>Xác nhận mua tài khoản</h4>
-    </div>
-
-    <div class='modal-body'>
-    <div class='c-content-tab-4 c-opt-3' role='tabpanel'>
-    <ul class='nav nav-justified' role='tablist'>
-    <li role='presentation' class='active'>
-    <a href='#p' role='tab' data-toggle='tab' class='c-font-16'>Thanh toán</a>
-    </li>
-    <li role='presentation'>
-    <a href='#' role='tab' data-toggle='tab' class='c-font-16'>Tài khoản</a>
-    </li>
-    </ul>
-    <div class='tab-content'>
-    <div role='tabpanel' class='tab-pane fade in active' id='payment'>
-    <ul class='c-tab-items p-t-0 p-b-0 p-l-5 p-r-5'>
-    <li class='c-font-dark'>
-    <table class='table table-striped'>
-    <tbody>
-    <tr>
-    <th colspan='2'>Thông tin tài khoản #@accLienMinh.id}</th>
-    </tr>
-    </tbody>
-    <tbody>
-    <tr>
-    <td>Nhà phát hành:</td>
-    <th>Garena</th>
-    </tr>
-    <tr>
-    <td>Tên game:</td>
-    <th>Liên minh</th>
-    </tr>
-    <tr>
-    <td>Giá tiền:</td>
-    <th class='text-info'>204,000đ</th>
-    </tr>
-    </tbody>
-    </table>
-    </li>
-    </ul>
-    </div>
-    <div role='tabpanel' class='tab-pane fade' id='info'>
-    <ul class='c-tab-items p-t-0 p-b-0 p-l-5 p-r-5'>
-    <li class='c-font-dark'>
-    <table class='table table-striped'>
-    <tbody>
-    <tr>
-    <th colspan='2'>Chi tiết tài khoản #467183</th>
-    </tr>
-
-    <tr>
-    <td style='width: 50%'>Tướng:</td>
-    <td class='text-danger' style='font-weight: 700'>58</td>
-    </tr>
-
-    <tr>
-    <td style='width: 50%'>Skin:</td>
-    <td class='text-danger' style='font-weight: 700'>34</td>
-    </tr>
-
-    <tr>
-    <td style='width: 50%'>Bảng Ngọc:</td>
-    <td class='text-danger' style='font-weight: 700'></td>
-    </tr>
-
-    <tr>
-    <td style='width:50%'>Rank:</td>
-    <td class='text-danger' style='font-weight: 700'>Chưa Rank</td>
-    </tr>
-
-    <tr>
-    <td style='width:50%'>Trạng Thái:</td>
-    <td class='text-danger' style='font-weight: 700'>Trắng thông tin
-    </td>
-    </tr>
-
-    </tbody>
-    </table>
-    </li>
-    </ul>
-    </div>
-    </div>
-    </div>
-    <div class='form-group '>
-    <label class='col-md-3 form-control-label'>Mã giảm giá:</label>
-    <div class='col-md-7'>
-    <input type='text' class='form-control c-square c-theme ' name='coupon'
-    placeholder='Mã giảm giá' value=''>
-    <span class='help-block'>Nhập mã giảm giá nếu có để nhận ưu đãi</span>
-    </div>
-    </div>
-
-    <div class='form-group '>
-    <label class='col-md-12 form-control-label text-danger'
-    style='text-align: center;margin: 10px 0; '>
-    Bạn phải đăng nhập mới có thể mua tài khoản tự động.
-    </label>
-
-
-    </div>
-
-    <div style='clear: both'></div>
-    </div>
-    <div class='modal-footer'>
-
-    <a class='btn c-theme-btn c-btn-square c-btn-uppercase c-btn-bold' href='/login'>Đăng nhập</a>
-
-    <button type='button'
-    class='btn c-theme-btn c-btn-border-2x c-btn-square c-btn-bold c-btn-uppercase'
-    data-dismiss='modal'>Đóng</button>
-
-    </div>
-    </form>";
-    }
-    $(document).ready(function () {
-    $('.load-modal').each(function (index, elem) {
-    $(elem).unbind().click(function (e) {
-    e.preventDefault();
-    e.preventDefault();
-    var curModal = $('#LoadModal');
-    curModal.find('.modal-content').html(@formString);
-    curModal.modal('show').find('.modal-content').load($(elem).attr('rel'));
-    });
-    });
-    });
-    </script> *@
 
 <script>
     $(document).ready(function () {

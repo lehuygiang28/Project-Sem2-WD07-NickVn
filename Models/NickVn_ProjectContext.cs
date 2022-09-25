@@ -20,6 +20,7 @@ namespace Project_Sem2_WD07_NickVn.Models
         public virtual DbSet<Googlerecaptcha> Googlerecaptchas { get; set; } = null!;
         public virtual DbSet<Image> Images { get; set; } = null!;
         public virtual DbSet<Lienminh> Lienminhs { get; set; } = null!;
+        public virtual DbSet<Oder> Oders { get; set; } = null!;
         public virtual DbSet<ProductCategory> ProductCategories { get; set; } = null!;
         public virtual DbSet<Role> Roles { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
@@ -167,9 +168,42 @@ namespace Project_Sem2_WD07_NickVn.Models
                     .HasColumnType("int(11)")
                     .HasColumnName("skin");
 
+                entity.Property(e => e.Sold)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("sold");
+
                 entity.Property(e => e.Status)
                     .HasColumnType("text")
                     .HasColumnName("status");
+            });
+
+            modelBuilder.Entity<Oder>(entity =>
+            {
+                entity.ToTable("oders");
+
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
+
+                entity.Property(e => e.CreateAt)
+                    .HasColumnType("datetime")
+                    .HasColumnName("create_at");
+
+                entity.Property(e => e.OderId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("oder_id");
+
+                entity.Property(e => e.ProductId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("product_id");
+
+                entity.Property(e => e.UpdateAt)
+                    .HasColumnType("datetime")
+                    .HasColumnName("update_at");
+
+                entity.Property(e => e.UserId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("user_id");
             });
 
             modelBuilder.Entity<ProductCategory>(entity =>
@@ -239,6 +273,10 @@ namespace Project_Sem2_WD07_NickVn.Models
                     .HasColumnType("int(11)")
                     .HasColumnName("id");
 
+                entity.Property(e => e.CoverImgSrc)
+                    .HasColumnType("text")
+                    .HasColumnName("cover_img_src");
+
                 entity.Property(e => e.CreateAt)
                     .HasColumnType("datetime")
                     .HasColumnName("create_at");
@@ -263,7 +301,9 @@ namespace Project_Sem2_WD07_NickVn.Models
                     .HasColumnType("text")
                     .HasColumnName("last_name");
 
-                entity.Property(e => e.Money).HasColumnName("money");
+                entity.Property(e => e.Money)
+                    .HasPrecision(10)
+                    .HasColumnName("money");
 
                 entity.Property(e => e.Note)
                     .HasColumnType("text")
