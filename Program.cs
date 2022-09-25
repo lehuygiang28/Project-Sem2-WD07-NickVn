@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 string connectionString = builder.Configuration.GetConnectionString("NickVn_Project");
-builder.Services.AddDbContext<NickVn_ProjectContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+builder.Services.AddDbContext<NickVn_ProjectContext>(options => options.UseMySql(connectionString, Microsoft.EntityFrameworkCore.ServerVersion.Parse("10.4.22-mariadb")));
 
 // UseUrls - change IpAdress and port to listen
 // builder.WebHost.UseKestrel(serverOptions =>
