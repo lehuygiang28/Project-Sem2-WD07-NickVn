@@ -121,7 +121,7 @@ public class ShopaccController : Controller
         int total = await _context.Lienminhs.Where(a => a.Sold == Lienminh.NOT_SOLD).CountAsync();
         Random r = new Random();
         int offset = r.Next(0, total);
-        var randomAcc = await _context.Lienminhs.OrderBy(a => a.Id).Skip(offset).FirstOrDefaultAsync();
+        var randomAcc = await _context.Lienminhs.OrderBy(a => a.Id).Skip(offset).Take(4).ToListAsync();
         ViewBag.randomAcc = randomAcc;
 
         return View();

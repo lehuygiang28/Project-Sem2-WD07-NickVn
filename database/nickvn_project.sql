@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 25, 2022 at 07:35 PM
--- Server version: 10.4.22-MariaDB
--- PHP Version: 8.1.2
+-- Generation Time: Sep 26, 2022 at 12:21 PM
+-- Server version: 10.4.24-MariaDB
+-- PHP Version: 8.1.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -45,8 +45,8 @@ CREATE TABLE `categories` (
 
 INSERT INTO `categories` (`id`, `name`, `title`, `action`, `img_sale_off`, `img_src`, `total`, `note`, `status`) VALUES
 (1, 'Liên Minh', 'Danh mục game liên minh', 'Garena', '/storage/images/sale-off-30.png', '/storage/images/lien-minh.gif', 12335, '', 1),
-(2, 'Liên Quân', 'Danh mục game Liên Quân', 'Garena', '/storage/images/sale-off-30.png', '/storage/images/lien-quan.gif', 24235, '', 1),
-(3, 'Ngọc Rồng', 'Danh mục game Ngọc Rồng', '#', '/storage/images/sale-off-30.png', '/storage\\images\\ngoc-rong.gif', 11241, '', 1);
+(2, 'Liên Quân', 'Danh mục game Liên Quân', '#', '/storage/images/sale-off-30.png', '/storage/images/lien-quan.gif', 24235, '', 1),
+(3, 'Ngọc Rồng', 'Danh mục game Ngọc Rồng', '#', '/storage/images/sale-off-30.png', '/storage/images/ngoc-rong.gif', 11241, '', 1);
 
 -- --------------------------------------------------------
 
@@ -183,6 +183,7 @@ INSERT INTO `oders` (`id`, `oder_id`, `user_id`, `product_id`, `create_at`, `upd
 --
 
 CREATE TABLE `product_category` (
+  `index_no` int(11) NOT NULL,
   `category_id` int(11) NOT NULL DEFAULT 0,
   `category_name` text NOT NULL,
   `action` text DEFAULT NULL,
@@ -196,9 +197,9 @@ CREATE TABLE `product_category` (
 -- Dumping data for table `product_category`
 --
 
-INSERT INTO `product_category` (`category_id`, `category_name`, `action`, `img_src`, `total`, `note`, `status`) VALUES
-(1, 'Liên Minh', 'LienMinh', '/storage/images/lien-minh.gif', 14441, 0, 1),
-(1, 'Thử Vận May Liên Minh', 'ThuVanMay', '/storage/images/thu-van-may.gif', 442, 1, 1);
+INSERT INTO `product_category` (`index_no`, `category_id`, `category_name`, `action`, `img_src`, `total`, `note`, `status`) VALUES
+(1, 1, 'Liên Minh', 'LienMinh', '/storage/images/lien-minh.gif', 14441, 0, 1),
+(2, 1, 'Thử Vận May Liên Minh', '#', '/storage/images/thu-van-may.gif', 442, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -250,8 +251,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `user_name`, `password`, `first_name`, `last_name`, `phone`, `email`, `money`, `role_id`, `img_src`, `cover_img_src`, `note`, `create_at`, `update_at`, `last_login`) VALUES
-(1, 'giangadmin', '0c40ca0420380a00b902308200d0cc05009a06f07508409b', 'giang', 'huy', '0981333332', 'giang@vtc.edu.vn', '18099000', 1, 'AdminAssets/img/userGiang.jpg', 'storage/images/unknown-cover.jpg', 'pw: 1', '2022-09-25 19:41:58', '2022-09-25 19:41:58', '2022-09-26 00:33:50'),
-(2, 'giang', '0c40ca0420380a00b902308200d0cc05009a06f07508409b', 'NickVn', '9/7/2022 19:24:54', '0123456789', '28122002g@gmail.com', '0', 2, 'storage/images/unknown-avatar.jpg', 'storage/images/unknown-cover.jpg', NULL, '2022-09-25 19:41:58', '2022-09-25 22:03:54', '2022-09-25 22:03:38');
+(1, 'giangadmin', '0c40ca0420380a00b902308200d0cc05009a06f07508409b', 'giang', 'huy', '0981333332', 'giang@vtc.edu.vn', '18099000', 1, 'AdminAssets/img/userGiang.jpg', 'storage/images/unknown-cover.jpg', 'pw: 1', '2022-09-25 19:41:58', '2022-09-25 19:41:58', '2022-09-25 18:31:38'),
+(2, 'giang', '0c40ca0420380a00b902308200d0cc05009a06f07508409b', 'NickVn', '9/7/2022 19:24:54', '0123456789', '28122002g@gmail.com', '0', 2, 'storage/images/unknown-avatar.jpg', 'storage/images/unknown-cover.jpg', NULL, '2022-09-25 19:41:58', '2022-09-25 22:03:54', '2022-09-25 17:44:24');
 
 --
 -- Indexes for dumped tables
@@ -286,6 +287,12 @@ ALTER TABLE `lienminh`
 --
 ALTER TABLE `oders`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `product_category`
+--
+ALTER TABLE `product_category`
+  ADD PRIMARY KEY (`index_no`);
 
 --
 -- Indexes for table `roles`
@@ -332,6 +339,12 @@ ALTER TABLE `lienminh`
 --
 ALTER TABLE `oders`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `product_category`
+--
+ALTER TABLE `product_category`
+  MODIFY `index_no` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `roles`

@@ -274,75 +274,75 @@
                             <h3 class="c-center c-font-uppercase c-font-bold">Tài khoản liên quan</h3>
                             <div class="c-line-center c-theme-bg"></div>
                         </div>
-                        @{
-                            var randomAcc = ViewBag.randomAcc;
-                            Lienminh random = (Lienminh)randomAcc;
-                        }
-                        <div class="row row-flex  item-list">
+                            <div class="row row-flex  item-list">
 
-                            <div class="col-sm-6 col-md-3">
-                                <div class="classWithPad">
-                                    <div class="image">
+                            @{
+                                var randomAcc = ViewBag.randomAcc;
+                                List<Lienminh> accRandom = (List<Lienminh>)randomAcc;
 
-                                        <a href='@Url.ActionLink("Detail_LienMinh", "ShopAcc", new {id = @random.Id})'>
-                                            <img src="@random.ImgThumb">
-                                            <span class="ms">MS: @random.Id</span>
-                                        </a>
+                                foreach(Lienminh random in accRandom)
+                                {
+                                    <div class="col-sm-6 col-md-3">
+                                        <div class="classWithPad">
+                                            <div class="image">
 
-                                    </div>
-                                    <div class="description">
+                                                <a href='@Url.ActionLink("Detail_LienMinh", "ShopAcc", new {id = @random.Id})'>
+                                                    <img src="@random.ImgThumb">
+                                                    <span class="ms">MS: @random.Id</span>
+                                                </a>
 
-                                    </div>
-                                    <div class="attribute_info">
-                                        <div class="row">
-
-                                            <div class="col-xs-6 a_att">
-                                                Tướng: <b>@random.Champ</b>
                                             </div>
+                                            <div class="description">
 
-
-                                            <div class="col-xs-6 a_att">
-                                                Skin: <b>@random.Skin</b>
                                             </div>
+                                            <div class="attribute_info">
+                                                <div class="row">
+
+                                                    <div class="col-xs-6 a_att">
+                                                        Tướng: <b>@random.Champ</b>
+                                                    </div>
 
 
-                                            <div class="col-xs-6 a_att">
-                                                Bảng Ngọc: <b></b>
+                                                    <div class="col-xs-6 a_att">
+                                                        Skin: <b>@random.Skin</b>
+                                                    </div>
+
+
+                                                    <div class="col-xs-6 a_att">
+                                                        Bảng Ngọc: <b></b>
+                                                    </div>
+
+
+
+                                                    <div class="col-xs-6 a_att">
+                                                        Rank: <b>@random.Status</b>
+                                                    </div>
+                                                </div>
                                             </div>
+                                            <div class="a-more">
+                                                <div class="row">
+                                                    <div class="col-xs-6">
+                                                        <div class="price_item">
+                                                            @vndFormat((int?)random.PriceAtm)
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-6 ">
+                                                        <div class="view">
+                                                            <a
+                                                            href='@Url.ActionLink("Detail_LienMinh", "ShopAcc", new {id = @random.Id})'>Chi
+                                                                tiết</a>
+                                                        </div>
+                                                    </div>
 
-
-
-                                            <div class="col-xs-6 a_att">
-                                                Rank: <b>@random.Status</b>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="a-more">
-                                        <div class="row">
-                                            <div class="col-xs-6">
-                                                <div class="price_item">
-                                                    @vndFormat((int?)random.PriceAtm)
-                                                </div>
-                                            </div>
-                                            <div class="col-xs-6 ">
-                                                <div class="view">
-                                                    <a
-                                                    href='@Url.ActionLink("Detail_LienMinh", "ShopAcc", new {id = @random.Id})'>Chi
-                                                        tiết</a>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
+                                }
+                            }
                         </div>
 
-
                     </div>
-
 
                     <div class="tab-vertical tutorial_area">
                         <div class="panel-group" id="accordion">
@@ -356,21 +356,21 @@
                                 </div>
                                 <div id="tab1" class="panel-collapse collapse in" aria-expanded="true" style="">
                                     <div class="panel-body">
-                                        <p>Ngo&agrave;i <a href="https://nick.vn/garena/lien-minh"
+                                        <p>Ngo&agrave;i <a href="#"
                                             target="_blank"><strong>B&aacute;n Nick Li&ecirc;n Minh Huyền
                                                     Thoại</strong></a>&nbsp;theo c&aacute;c th&ocirc;ng tin đ&atilde; show
-                                            sẵn.<strong><a href="https://nick.vn/mua-ban-nick-game-random" target="_blank">Shop
+                                            sẵn.<strong><a href="" target="_blank">Shop
                                                     chuy&ecirc;n b&aacute;n acc li&ecirc;n minh random</a></strong>&nbsp;cho
                                             c&aacute;c bạn thử vận may với c&aacute;c g&oacute;i ưu đ&atilde;i kh&aacute;c nhau
                                             :</p>
 
-                                        <p>-&nbsp;<strong><a href="https://nick.vn/garena/lien-minh-random-so-cap"
+                                        <p>-&nbsp;<strong><a href="#"
                                                 target="_blank">Random li&ecirc;n minh sơ cấp 12k&nbsp;</a></strong></p>
 
-                                        <p>-&nbsp;<strong><a href="https://nick.vn/garena/lien-minh-random-trung-cap"
+                                        <p>-&nbsp;<strong><a href="#"
                                                 target="_blank">Random li&ecirc;n minh trung cấp 18k</a></strong></p>
 
-                                        <p>-&nbsp;<strong><a href="https://nick.vn/garena/lien-minh-random-cao-cap"
+                                        <p>-&nbsp;<strong><a href="#"
                                                 target="_blank">Random li&ecirc;n minh cao cấp 60k</a></strong></p>
 
                                         <p>.C&aacute;c bạn sẽ c&oacute; cơ hội nhận được những&nbsp;<strong>acc LMHT -
@@ -394,13 +394,13 @@
                                 </div>
                                 <div id="tab1" class="panel-collapse collapse in" aria-expanded="true" style="">
                                     <div class="panel-body">
-                                        <p>Ngo&agrave;i shop <strong><a href="https://nick.vn/garena/lien-minh"
+                                        <p>Ngo&agrave;i shop <strong><a href="#"
                                                 target="_blank">b&aacute;n nick Li&ecirc;n Minh</a></strong> b&ecirc;n
                                             m&igrave;nh c&oacute; c&oacute; <strong>b&aacute;n&nbsp;RP li&ecirc;n minh
                                                 gi&aacute; rẻ</strong>&nbsp;v&agrave; <strong>C&agrave;y Thu&ecirc;&nbsp;Rank
                                                 Li&ecirc;n Minh</strong> nữa nh&eacute;.</p>
 
-                                        <p>C&aacute;c bạn c&oacute; thể l&ecirc;n web <strong><a href="https://dichvu.me/"
+                                        <p>C&aacute;c bạn c&oacute; thể l&ecirc;n web <strong><a href="#"
                                                 target="_blank">Dichvu.me</a></strong> - Website t&iacute;ch hợp tất cả
                                             c&aacute;c <strong>dịch vụ game online</strong></p>
                                     </div>

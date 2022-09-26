@@ -216,9 +216,14 @@ namespace Project_Sem2_WD07_NickVn.Models
 
             modelBuilder.Entity<ProductCategory>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => e.IndexNo)
+                    .HasName("PRIMARY");
 
                 entity.ToTable("product_category");
+
+                entity.Property(e => e.IndexNo)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("index_no");
 
                 entity.Property(e => e.Action)
                     .HasColumnType("text")
