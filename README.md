@@ -17,4 +17,6 @@
 ## Description<br/>
 * **This is a project semester 2 of WD07, WD07_Project 2**<br/>
 * **Name Project: _Shop Acc Game_**<br/>
-* **Contributor: _[Lê Huy Giang](https://github.com/lehuygiang28)_ & _[Vũ Văn Phúc](https://github.com/Phuc9x)_**<br/>
+* Contributor:
+  * **_[Lê Huy Giang](https://github.com/lehuygiang28)_**
+  * **_[Vũ Văn Phúc](https://github.com/Phuc9x)_**
