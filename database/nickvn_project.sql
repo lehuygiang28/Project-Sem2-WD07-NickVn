@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 18, 2022 at 09:12 PM
+-- Generation Time: Sep 25, 2022 at 07:35 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.2
 
@@ -44,7 +44,7 @@ CREATE TABLE `categories` (
 --
 
 INSERT INTO `categories` (`id`, `name`, `title`, `action`, `img_sale_off`, `img_src`, `total`, `note`, `status`) VALUES
-(1, 'Lien Minh', 'Danh mục game liên minh', 'Garena', '/storage/images/sale-off-30.png', '/storage/images/lien-minh.gif', 12335, '', 1),
+(1, 'Liên Minh', 'Danh mục game liên minh', 'Garena', '/storage/images/sale-off-30.png', '/storage/images/lien-minh.gif', 12335, '', 1),
 (2, 'Liên Quân', 'Danh mục game Liên Quân', 'Garena', '/storage/images/sale-off-30.png', '/storage/images/lien-quan.gif', 24235, '', 1),
 (3, 'Ngọc Rồng', 'Danh mục game Ngọc Rồng', '#', '/storage/images/sale-off-30.png', '/storage\\images\\ngoc-rong.gif', 11241, '', 1);
 
@@ -121,6 +121,9 @@ INSERT INTO `images` (`img_id`, `lienminh_id`, `img_link`) VALUES
 CREATE TABLE `lienminh` (
   `id` int(11) NOT NULL,
   `name` text NOT NULL,
+  `product_user_name` text NOT NULL,
+  `product_user_password` text NOT NULL,
+  `publisher` text NOT NULL,
   `price_atm` decimal(10,0) NOT NULL DEFAULT 0,
   `champ` int(11) NOT NULL DEFAULT 0,
   `skin` int(11) NOT NULL DEFAULT 0,
@@ -128,20 +131,50 @@ CREATE TABLE `lienminh` (
   `status` text NOT NULL,
   `note` int(11) DEFAULT NULL,
   `img_thumb` text NOT NULL,
-  `img_src` text NOT NULL
+  `img_src` text NOT NULL,
+  `sold` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `lienminh`
 --
 
-INSERT INTO `lienminh` (`id`, `name`, `price_atm`, `champ`, `skin`, `rank`, `status`, `note`, `img_thumb`, `img_src`) VALUES
-(4453, 'Liên Minh', '204000', 120, 33, 'Chưa Rank', 'Trắng Thông Tin', 0, '/storage/images/FSPfB05HiR_1632531414.jpg', '/storage/images/0qBPw7AiOQ_1632531413.jpg'),
-(4454, 'Liên Minh', '56000', 12, 33, 'Chưa Rank', 'Trắng Thông Tin', 0, '/storage/images/FSPfB05HiR_1632531414.jpg', ''),
-(45557, 'Liên Minh', '333221', 99, 100, 'Chưa Rank', 'Trắng Thông Tin', 0, '/storage/images/FSPfB05HiR_1632531414.jpg', ''),
-(45558, 'Liên Minh', '56000', 44, 15, 'Chưa Rank', 'Trắng Thông Tin', 0, '/storage/images/FSPfB05HiR_1632531414.jpg', ''),
-(45559, 'Liên Minh', '500000', 123, 123, 'Chưa Rank', 'Trắng Thông Tin', 0, '/storage/images/FSPfB05HiR_1632531414.jpg', ''),
-(45560, 'Liên Minh', '400001', 80, 70, 'Chưa Rank', 'Trắng Thông Tin', 0, '/storage/images/FSPfB05HiR_1632531414.jpg', '');
+INSERT INTO `lienminh` (`id`, `name`, `product_user_name`, `product_user_password`, `publisher`, `price_atm`, `champ`, `skin`, `rank`, `status`, `note`, `img_thumb`, `img_src`, `sold`) VALUES
+(4453, 'Liên Minh', 'giang', 'giang5555', 'Garena', '204000', 120, 33, 'Chưa Rank', 'Trắng Thông Tin', 0, '/storage/images/FSPfB05HiR_1632531414.jpg', '/storage/images/0qBPw7AiOQ_1632531413.jpg', 0),
+(4454, 'Liên Minh', 'giang', 'giang5555', 'Garena', '56000', 12, 33, 'Chưa Rank', 'Trắng Thông Tin', 0, '/storage/images/FSPfB05HiR_1632531414.jpg', '', 0),
+(45557, 'Liên Minh', 'giang', 'giang5555', 'Garena', '333221', 99, 100, 'Chưa Rank', 'Trắng Thông Tin', 0, '/storage/images/FSPfB05HiR_1632531414.jpg', '', 0),
+(45558, 'Liên Minh', 'giang', 'giang5555', 'Garena', '56000', 44, 15, 'Chưa Rank', 'Trắng Thông Tin', 0, '/storage/images/FSPfB05HiR_1632531414.jpg', '', 0),
+(45559, 'Liên Minh', 'giang', 'giang5555', 'Garena', '500000', 123, 123, 'Chưa Rank', 'Trắng Thông Tin', 0, '/storage/images/FSPfB05HiR_1632531414.jpg', '', 0),
+(45560, 'Liên Minh', 'giang', 'giang5555', 'Garena', '400001', 80, 70, 'Chưa Rank', 'Trắng Thông Tin', 0, '/storage/images/FSPfB05HiR_1632531414.jpg', '', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `oders`
+--
+
+CREATE TABLE `oders` (
+  `id` int(11) NOT NULL,
+  `oder_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `create_at` datetime NOT NULL,
+  `update_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `oders`
+--
+
+INSERT INTO `oders` (`id`, `oder_id`, `user_id`, `product_id`, `create_at`, `update_at`) VALUES
+(2, 2, 1, 45559, '2022-09-24 00:05:00', '2022-09-24 00:05:00'),
+(3, 3, 1, 45560, '2022-09-23 00:12:00', '2022-09-24 00:12:00'),
+(4, 4, 1, 45557, '2022-03-14 00:21:05', '2022-09-24 00:21:05'),
+(5, 5, 1, 4453, '2021-12-28 00:23:58', '2022-09-24 00:23:58'),
+(6, 6, 1, 45558, '2022-04-07 00:24:51', '2022-09-24 00:24:51'),
+(7, 7, 1, 4454, '2022-05-18 00:26:08', '2022-09-24 00:26:08'),
+(8, 8, 1, 4453, '2022-01-01 00:29:22', '2022-09-24 00:29:22'),
+(9, 9, 1, 4454, '2022-04-11 00:31:07', '2022-09-24 00:31:07');
 
 -- --------------------------------------------------------
 
@@ -155,16 +188,17 @@ CREATE TABLE `product_category` (
   `action` text DEFAULT NULL,
   `img_src` text NOT NULL,
   `total` int(11) NOT NULL DEFAULT 0,
-  `note` int(11) DEFAULT NULL
+  `note` int(11) DEFAULT NULL,
+  `status` int(11) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `product_category`
 --
 
-INSERT INTO `product_category` (`category_id`, `category_name`, `action`, `img_src`, `total`, `note`) VALUES
-(1, 'Liên Minh', 'LienMinh', '/storage/images/lien-minh.gif', 14441, 0),
-(1, 'Thử Vận May Liên Minh', 'ThuVanMay', '/storage/images/thu-van-may.gif', 442, 1);
+INSERT INTO `product_category` (`category_id`, `category_name`, `action`, `img_src`, `total`, `note`, `status`) VALUES
+(1, 'Liên Minh', 'LienMinh', '/storage/images/lien-minh.gif', 14441, 0, 1),
+(1, 'Thử Vận May Liên Minh', 'ThuVanMay', '/storage/images/thu-van-may.gif', 442, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -185,7 +219,7 @@ CREATE TABLE `roles` (
 
 INSERT INTO `roles` (`id`, `role_id`, `role_name`, `role_name_en`) VALUES
 (1, 100, 'Quản Trị Viên', 'admin'),
-(2, 1, 'Thành Viên', NULL);
+(2, 1, 'Thành Viên', 'user');
 
 -- --------------------------------------------------------
 
@@ -201,9 +235,10 @@ CREATE TABLE `users` (
   `last_name` text NOT NULL,
   `phone` text DEFAULT NULL,
   `email` text NOT NULL,
-  `money` float NOT NULL DEFAULT 0,
+  `money` decimal(10,0) NOT NULL DEFAULT 0,
   `role_id` int(11) NOT NULL DEFAULT 1,
   `img_src` text DEFAULT NULL,
+  `cover_img_src` text NOT NULL,
   `note` text DEFAULT NULL,
   `create_at` datetime DEFAULT NULL,
   `update_at` datetime DEFAULT NULL,
@@ -214,9 +249,9 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `user_name`, `password`, `first_name`, `last_name`, `phone`, `email`, `money`, `role_id`, `img_src`, `note`, `create_at`, `update_at`, `last_login`) VALUES
-(1, 'giangadmin', '0c40ca0420380a00b902308200d0cc05009a06f07508409b', 'giang', 'huy', '0981333332', 'giang@vtc.edu.vn', 145000, 1, 'AdminAssets/img/userGiang.jpg', 'pw: 1', '0001-01-01 00:00:00', '0001-01-01 00:00:00', '2022-09-18 20:40:32'),
-(2, 'giang', '0c40ca0420380a00b902308200d0cc05009a06f07508409b', 'NickVn', '9/7/2022 19:24:54', '0123456789', '28122002g@gmail.com', 0, 2, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `users` (`id`, `user_name`, `password`, `first_name`, `last_name`, `phone`, `email`, `money`, `role_id`, `img_src`, `cover_img_src`, `note`, `create_at`, `update_at`, `last_login`) VALUES
+(1, 'giangadmin', '0c40ca0420380a00b902308200d0cc05009a06f07508409b', 'giang', 'huy', '0981333332', 'giang@vtc.edu.vn', '18099000', 1, 'AdminAssets/img/userGiang.jpg', 'storage/images/unknown-cover.jpg', 'pw: 1', '2022-09-25 19:41:58', '2022-09-25 19:41:58', '2022-09-26 00:33:50'),
+(2, 'giang', '0c40ca0420380a00b902308200d0cc05009a06f07508409b', 'NickVn', '9/7/2022 19:24:54', '0123456789', '28122002g@gmail.com', '0', 2, 'storage/images/unknown-avatar.jpg', 'storage/images/unknown-cover.jpg', NULL, '2022-09-25 19:41:58', '2022-09-25 22:03:54', '2022-09-25 22:03:38');
 
 --
 -- Indexes for dumped tables
@@ -244,6 +279,12 @@ ALTER TABLE `images`
 -- Indexes for table `lienminh`
 --
 ALTER TABLE `lienminh`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `oders`
+--
+ALTER TABLE `oders`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -285,6 +326,12 @@ ALTER TABLE `images`
 --
 ALTER TABLE `lienminh`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45561;
+
+--
+-- AUTO_INCREMENT for table `oders`
+--
+ALTER TABLE `oders`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `roles`
