@@ -161,12 +161,6 @@ public class UserController : Controller
             return RedirectToAction("Index", "Home");
         }
 
-        // if (!ModelState.IsValid)
-        // {
-        //     TempData["error"] = "Đã xảy ra lỗi! Vui lòng thử lại";
-        //     return View(nameof(Signup));
-        // }
-
         var SecretKey = (await _context.Googlerecaptchas.Where(a => a.HostName == HostName).FirstAsync()).SecretKey;
         if (!await RecaptchaServices.Validate(Request, SecretKey))
         {
