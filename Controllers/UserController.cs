@@ -23,19 +23,29 @@ public class UserController : Controller
         _context = context;
     }
 
-    private bool IsLogin()
+    async Task RenewUserInformation()
+    {
+        var user = await _context.Users.Where(u => u.Id == HttpContext.Session.GetInt32(SessionKeyId)).FirstAsync();
+        if(user != null)
+        {
+            HttpContext.Session.SetInt32(SessionKeyMoney, Convert.ToInt32(user.Money));
+        }
+    }
+
+    private async Task<bool> IsLogin()
     {
         var sessionValueId = HttpContext.Session.GetInt32(SessionKeyId);
         if (sessionValueId == null)
         {
             return false;
         }
+        await RenewUserInformation();
         return true;
     }
 
     public async Task<IActionResult> Account()
     {
-        if (!IsLogin())
+        if (!await IsLogin())
         {
             return RedirectToAction("Index", "Home");
         }
@@ -73,7 +83,7 @@ public class UserController : Controller
 
     public async Task<IActionResult> ChangePasswordSolve(string oldPassword, string newPassword, string passwordConfirmation)
     {
-        if (!IsLogin())
+        if (!await IsLogin())
         {
             return RedirectToAction("Index", "Home");
         }
@@ -129,9 +139,9 @@ public class UserController : Controller
         return RedirectToAction(nameof(ChangePassword));
     }
 
-    public IActionResult ChangePassword()
+    public async Task<IActionResult> ChangePassword()
     {
-        if (!IsLogin())
+        if (!await IsLogin())
         {
             return RedirectToAction("Index", "Home");
         }
@@ -140,7 +150,7 @@ public class UserController : Controller
 
     public async Task<IActionResult> Profile()
     {
-        if (!IsLogin())
+        if (!await IsLogin())
         {
             return RedirectToAction(nameof(Login));
         }
@@ -156,7 +166,7 @@ public class UserController : Controller
 
     public async Task<IActionResult> SignupSolve(User userInput, string password_confirmation)
     {
-        if (IsLogin())
+        if (await IsLogin())
         {
             return RedirectToAction("Index", "Home");
         }
@@ -266,7 +276,7 @@ public class UserController : Controller
 
     public async Task<IActionResult> Signup()
     {
-        if (IsLogin())
+        if (await IsLogin())
         {
             return RedirectToAction("Index", "Home");
         }
@@ -288,7 +298,7 @@ public class UserController : Controller
 
     public async Task<IActionResult> LoginSolve(string UserName, string Password)
     {
-        if (IsLogin())
+        if (await IsLogin())
         {
             return RedirectToAction("Index", "Home");
         }
@@ -357,7 +367,7 @@ public class UserController : Controller
 
     public async Task<IActionResult> Login()
     {
-        if (IsLogin())
+        if (await IsLogin())
         {
             return RedirectToAction("Index", "Home");
         }
@@ -366,9 +376,9 @@ public class UserController : Controller
         return View();
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        if (IsLogin())
+        if (await IsLogin())
         {
             return RedirectToAction("Index", "Home");
         }
