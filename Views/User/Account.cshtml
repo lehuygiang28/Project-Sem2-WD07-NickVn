@@ -284,10 +284,10 @@
                                 <th>ID</th>
                                 <th>Game</th>
                                 <th>Tài khoản</th>
-                                <th class="hidden-lg hidden-md hidden-sm">Thao tác</th>
+                                <th>Mật khẩu</th>
                                 <th>Trị giá</th>
+                                <th>Thao tác</th>
 
-                                <th class="hidden-xs">Thao tác</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -308,13 +308,23 @@
                                     @foreach (var order in listOrders)
                                     {
                                         @if(product.Id == order.ProductId){
+                                            string divPassId = string.Format($"seepw{product.Id}");
+                                            string hidePassId = string.Format($"hidePw{product.Id}");
+                                            string btnPassId = string.Format($"btn{product.Id}");
                                             <tr>
                                                 <td>@order.CreateAt.ToString("dd/MM/yyyy")</td>
                                                 <td>@product.Id</td>
                                                 <td>@product.Name</td>
                                                 <td>@product.ProductUserName</td>
+                                                <td>
+                                                    <p id = '@hidePassId'>**********</p>
+                                                    <a id = '@divPassId' style="display: none;" onclick="CopyToClipboard('@divPassId')"
+                                                    data-toggle="tooltip" title="Copied" data-trigger="click">@product.ProductUserPassword</a>
+                                                </td>
                                                 <td>@vndFormat(product.PriceAtm)</td>
-                                                <td>Xem mật khẩu</td>
+                                                <td>
+                                                    <a id = '@btnPassId' class="btn btn-info text-info" onclick="seePassword('@divPassId', '@btnPassId', '@hidePassId')">Xem mật khẩu</a>
+                                                </td>
                                             </tr>
                                         }
                                     }
@@ -337,3 +347,37 @@
 </div>
 
 <!-- END: PAGE CONTAINER -->
+
+<script>
+    function seePassword(idpw, btnpw, hidepw)
+    {
+        var seePass = document.getElementById(idpw);
+        var btn = document.getElementById(btnpw);
+        var hide = document.getElementById(hidepw);
+
+        if (seePass.style.display == "none")
+        {
+            hide.style.display = "none";
+            seePass.style.display = "block";
+            btn.innerHTML = "Ẩn mật khẩu";
+        }
+        else
+        {
+            hide.style.display = "block";
+            seePass.style.display = "none";
+            btn.innerHTML = "Xem mật khẩu";
+        }
+    }
+
+    function CopyToClipboard(id)
+    {
+        var r = document.createRange();
+        r.selectNode(document.getElementById(id));
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(r);
+        document.execCommand('copy');
+        window.getSelection().removeAllRanges();
+        
+        @* $(id).tooltip('toggle'); *@
+    }
+</script>
