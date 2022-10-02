@@ -88,7 +88,7 @@ public class UserController : Controller
 
         if (string.IsNullOrEmpty(oldPassword) || string.IsNullOrWhiteSpace(oldPassword))
         {
-            TempData["error"] = "Mật khẩu cũ chưa hợp lệ";
+            TempData["error-change-pw"] = "Mật khẩu cũ không được để trống";
             return View(nameof(ChangePassword));
         }
 
@@ -97,7 +97,7 @@ public class UserController : Controller
         oldPassword = MD5.CreateMD5(oldPassword);
         if (string.Compare(oldPassword, currentUser.Password) != 0)
         {
-            TempData["error"] = "Sai mật khẩu";
+            TempData["error-change-pw"] = "Sai mật khẩu";
             return View(nameof(ChangePassword));
         }
 
@@ -111,14 +111,14 @@ public class UserController : Controller
 
         if (!IsValidPassword(newPassword))
         {
-            TempData["error"] = "Mật khẩu mới chưa hợp lệ";
+            TempData["error-change-pw"] = "Mật khẩu mới chưa hợp lệ";
             return View(nameof(ChangePassword));
         }
 
         //string.Compare(newPassword, passwordConfirmation, true): neu true thi se bo qua in hoa va in thuong
         if (string.Compare(newPassword, passwordConfirmation) != 0)
         {
-            TempData["error"] = "Mật khẩu nhập lại không khớp";
+            TempData["error-change-pw"] = "Mật khẩu nhập lại không khớp";
             return View(nameof(ChangePassword));
         }
 
@@ -131,7 +131,7 @@ public class UserController : Controller
         _context.Users.Update(currentUser);
         await _context.SaveChangesAsync();
 
-        TempData["success"] = "Đổi mật khẩu thành công";
+        TempData["success-change-pw"] = "Đổi mật khẩu thành công";
         _logger.LogInformation($"Change password successfully! ID: {currentUser.Id} - Time: {now.ToString("HH:mm:ss dd/MM/yyyy")}");
 
         return RedirectToAction(nameof(ChangePassword));
