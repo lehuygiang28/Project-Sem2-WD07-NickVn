@@ -5,6 +5,7 @@
 * Logging in
 * Signing up
 * Show product
+* Search product
 * Buy product
 * Show profile
 * Change password
