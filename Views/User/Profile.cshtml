@@ -1,11 +1,11 @@
 @{
     ViewData["Title"] = "Profile";
-    var u = TempData["user"];
-    var r = TempData["roles"];
+    var u = ViewData["user"];
+    var r = ViewData["roles"];
 
     User userProfile = new User();
     List<Role> roleUser = new List<Role>();
-    string roleName = "";
+    string roleName = "Thành Viên";
     if(u is User)
     {
         userProfile = (User)u;
@@ -16,15 +16,14 @@
     }
     if(roleUser != null)
     {
-        foreach(var i in roleUser)
+        foreach(var user in roleUser)
         {
-            if (i.RoleId == userProfile.RoleId)
+            if (user.RoleId == userProfile.RoleId)
             {
-                roleName = i.RoleName;
+                roleName = user.RoleName;
             }
         }
     }
-    
     string vndFormat(dynamic money)
     {
         money = Convert.ToInt64(money);

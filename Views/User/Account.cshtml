@@ -16,6 +16,12 @@
         listProducts = (List<Lienminh>)listProductsVar;
     }
 
+    bool isAnyData = true;
+    if(listOrders.Count() <= 0 || listProducts.Count() <= 0)
+    {
+        isAnyData = false;
+    }
+
     string vndFormat(dynamic money)
     {
         money = Convert.ToInt64(money);
@@ -288,9 +294,13 @@
                             @{
                                 
                             }
-                            @if(listOrders == null || listProducts == null){
+                            @if(isAnyData == false){
                                 <tr>
                                     <td colspan="6">Không có dữ liệu</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6">Bạn chưa mua tài khoản nào, <a 
+                                    asp-action="Garena" asp-controller="Category" class="text-info">click mua ngay </a>!</td>
                                 </tr>
                             } else {
                                 @foreach (var product in listProducts)

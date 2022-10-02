@@ -2,8 +2,6 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Project_Sem2_WD07_NickVn.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Net.Http.Headers;
-using Newtonsoft.Json;
 
 namespace Project_Sem2_WD07_NickVn.Controllers;
 
@@ -23,7 +21,7 @@ public class UserController : Controller
         _context = context;
     }
 
-    async Task RenewUserInformation()
+    private async Task RenewUserInformation()
     {
         var user = await _context.Users.Where(u => u.Id == HttpContext.Session.GetInt32(SessionKeyId)).FirstAsync();
         if(user != null)
@@ -159,8 +157,8 @@ public class UserController : Controller
         var user = await _context.Users.Where(a => a.Id == idSession).FirstAsync();
         var roles = await _context.Roles.OrderBy(a => a.Id).ToListAsync();
 
-        TempData["roles"] = roles;
-        TempData["user"] = user;
+        ViewData["roles"] = roles;
+        ViewData["user"] = user;
         return View();
     }
 
@@ -255,8 +253,8 @@ public class UserController : Controller
         string defaultAvatarUrl = @"storage/images/unknown-avatar.jpg";
         string defaultCoverUrl = @"storage/images/unknown-cover.jpg";
 
-        // int ROLE_ADMIN = 1;
-        int ROLE_USER = 2;
+        // int ROLE_ADMIN = 100;
+        int ROLE_USER = 1;
 
         userInput.LastName = localTime.ToString("yyyyMMdd'T'HHmmss");
         userInput.CreateAt = localTime;

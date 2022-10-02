@@ -19,7 +19,8 @@ public class CategoryController : Controller
 
     public IActionResult Index()
     {
-        return View();
+        return RedirectToAction(nameof(Garena));
+        // return View();
     }
     public async Task<IActionResult> Garena(int id)
     {

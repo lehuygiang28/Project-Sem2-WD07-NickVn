@@ -127,11 +127,63 @@ public class ShopaccController : Controller
         return View();
     }
 
-    public async Task<IActionResult> LienMinh()
+    public async Task<IActionResult> LienMinh(string? SearchKey, int? id, decimal? price, int? status)
     {
-        var shopacc = await _context.Lienminhs.Where(a => a.Sold == Lienminh.NOT_SOLD).OrderBy(a => a.Id).ToListAsync();
+        decimal priceSearchMin = decimal.Zero;
+        decimal priceSearchMax = decimal.Zero;
+        switch (price)
+        {
+            case 1:
+                priceSearchMin = 0;
+                priceSearchMax = 50000;
+                break;
+            case 2:
+                priceSearchMin = 50000;
+                priceSearchMax = 200000;
+                break;
+            case 3:
+                priceSearchMin = 200000;
+                priceSearchMax = 500000;
+                break;
+            case 4:
+                priceSearchMin = 500000;
+                priceSearchMax = 1000000;
+                break;
+            case 5:
+                priceSearchMin = 1000000;
+                priceSearchMax = decimal.MaxValue;
+                break;
+            case 6:
+                priceSearchMin = 5000000;
+                priceSearchMax = decimal.MaxValue;
+                break;
+            case 7:
+                priceSearchMin = 10000000;
+                priceSearchMax = decimal.MaxValue;
+                break;
+            default:
+                priceSearchMin = 0;
+                priceSearchMax = decimal.MaxValue;
+                break;
+        }
 
+        var query = from lienMinh in _context.Lienminhs
+                    where lienMinh.Sold == (status == null ? Lienminh.NOT_SOLD : status)
+                    && lienMinh.Name.Contains(SearchKey == null ? string.Empty : SearchKey)
+                    && (lienMinh.PriceAtm >= priceSearchMin && lienMinh.PriceAtm < priceSearchMax)
+                    select lienMinh;
+
+        var shopacc = await query.OrderBy(h => h.Id).ToListAsync();
+
+        // var query = from cate in _context.ProductCategories
+        //             where cate.Status == ENABLE_ACTIVE
+        //             select cate;
+
+        // var shopacc = await _context.Lienminhs.Where(a => a.Sold == Lienminh.NOT_SOLD).OrderBy(a => a.Id).ToListAsync();
+
+        // ViewBag.Shopacc = shopacc;
         ViewBag.Shopacc = shopacc;
+
         return View();
     }
 
