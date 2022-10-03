@@ -32,19 +32,21 @@
 
                         <div class="modal-body text-success">@buySuccess</div>
                         <div class="modal-footer">
-                            <button type="button" class="btn c-theme-btn c-btn-square c-btn-uppercase c-btn-bold c-bg-green-4" data-dismiss="modal">Xác nhận</button>
-                            <button type="button" class="btn c-theme-btn c-btn-border-2x c-btn-square c-btn-bold c-btn-uppercase" data-dismiss="modal">Đóng</button>
+                            <button type="button" class="btn c-theme-btn c-btn-square c-btn-uppercase c-btn-bold c-bg-green-4"
+                            data-dismiss="modal">Xác nhận</button>
+                            <button type="button"
+                            class="btn c-theme-btn c-btn-border-2x c-btn-square c-btn-bold c-btn-uppercase"
+                            data-dismiss="modal">Đóng</button>
                         </div>
 
                     </div>
                 </div>
             </div>
-            
+
 
             <script>
                 var a = $('#successModal');
-                a.ready(function()
-                {
+                a.ready(function () {
                     a.modal('show');
                 });
             </script>
@@ -137,46 +139,46 @@
                                 <option value="0" selected>Chưa bán</option>
                                 <option value="1">Đã bán</option>
                                 @* <option value="3">Đã đặt cọc</option>
-                                <option value="-999">Tất cả</option> *@
+                                    <option value="-999">Tất cả</option> *@
                             </select>
 
                         </div>
                     </div>
 
-
-                    @* <div class="col-md-3 col-sm-4 col-xs-12  p-5 field-search">
+                    @* <div class="col-md-3 col-sm-4 col-xs-12 p-5 field-search">
                         <div class="input-group c-square">
-                            <span class="input-group-addon">Rank</span>
-                            <select name="attribute_id_392" class="form-control c-square" title="-- Không chọn --">
-                                <option value="">-- Không chọn --</option>
-                                <option value="396">Chưa Rank</option>
-                                <option value="397">Đồng</option>
-                                <option value="398">Bạc</option>
-                                <option value="399">Vàng</option>
-                                <option value="400">Bạch Kim</option>
-                                <option value="401">Kim Cương</option>
-                                <option value="402">Cao Thủ</option>
-                                <option value="1309">Rank Thách Đấu</option>
-                            </select>
+                        <span class="input-group-addon">Rank</span>
+                        <select name="attribute_id_392" class="form-control c-square" title="-- Không chọn --">
+                        <option value="">-- Không chọn --</option>
+                        <option value="396">Chưa Rank</option>
+                        <option value="397">Đồng</option>
+                        <option value="398">Bạc</option>
+                        <option value="399">Vàng</option>
+                        <option value="400">Bạch Kim</option>
+                        <option value="401">Kim Cương</option>
+                        <option value="402">Cao Thủ</option>
+                        <option value="1309">Rank Thách Đấu</option>
+                        </select>
                         </div>
-                    </div> *@
+                        </div> *@
 
 
-                    @* <div class="col-md-3 col-sm-4 col-xs-12  p-5 field-search">
+                    @* <div class="col-md-3 col-sm-4 col-xs-12 p-5 field-search">
                         <div class="input-group c-square">
-                            <span class="input-group-addon">Trạng Thái</span>
-                            <select name="attribute_id_976" class="form-control c-square" title="-- Không chọn --">
-                                <option value="">-- Không chọn --</option>
-                                <option value="977">Trắng thông tin</option>
-                                <option value="978">SĐT Đổi + Trắng Mail</option>
-                                <option value="979">SĐT Đổi + Gửi Mail</option>
-                                <option value="980">Trắng SĐT + Gửi Mail</option>
-                            </select>
+                        <span class="input-group-addon">Trạng Thái</span>
+                        <select name="attribute_id_976" class="form-control c-square" title="-- Không chọn --">
+                        <option value="">-- Không chọn --</option>
+                        <option value="977">Trắng thông tin</option>
+                        <option value="978">SĐT Đổi + Trắng Mail</option>
+                        <option value="979">SĐT Đổi + Gửi Mail</option>
+                        <option value="980">Trắng SĐT + Gửi Mail</option>
+                        </select>
                         </div>
-                    </div> *@
+                        </div> *@
                     <div class="col-md-3 col-sm-4 p-5 no-radius">
                         <button type="submit" class="btn c-square c-theme c-btn-green">Tìm kiếm</button>
-                        <a class="btn c-square m-l-0 btn-danger" asp-action = "LienMinh" asp-controller="ShopAcc">Tất cả</a>
+                        <a class="btn c-square m-l-0 btn-danger" asp-action="LienMinh" asp-controller="ShopAcc">Tất
+                            cả</a>
                     </div>
                 </form>
             </div>
@@ -251,49 +253,47 @@
                                     <span class="input-group-addon">Trạng thái</span>
                                     <select class="form-control c-square" name="status">
                                         <option value="0" selected>Chưa bán</option>
-                                        <option value="1" >Đã bán</option>
+                                        <option value="1">Đã bán</option>
                                     </select>
                                 </div>
                             </div>
 
-
-
-                            @* <div class="col-md-3 col-sm-4 col-xs-12  p-5 field-search">
+                            @* <div class="col-md-3 col-sm-4 col-xs-12 p-5 field-search">
                                 <div class="input-group c-square">
-                                    <span class="input-group-addon">Rank</span>
-                                    <select name="attribute_id_392" class="form-control c-square"
-                                        title="-- Không chọn --">
-                                        <option value="">-- Không chọn --</option>
-                                        <option value="396">Chưa Rank</option>
-                                        <option value="397">Đồng</option>
-                                        <option value="398">Bạc</option>
-                                        <option value="399">Vàng</option>
-                                        <option value="400">Bạch Kim</option>
-                                        <option value="401">Kim Cương</option>
-                                        <option value="402">Cao Thủ</option>
-                                        <option value="1309">Rank Thách Đấu</option>
-                                    </select>
+                                <span class="input-group-addon">Rank</span>
+                                <select name="attribute_id_392" class="form-control c-square"
+                                title="-- Không chọn --">
+                                <option value="">-- Không chọn --</option>
+                                <option value="396">Chưa Rank</option>
+                                <option value="397">Đồng</option>
+                                <option value="398">Bạc</option>
+                                <option value="399">Vàng</option>
+                                <option value="400">Bạch Kim</option>
+                                <option value="401">Kim Cương</option>
+                                <option value="402">Cao Thủ</option>
+                                <option value="1309">Rank Thách Đấu</option>
+                                </select>
                                 </div>
-                            </div> *@
+                                </div> *@
 
 
-                            @* <div class="col-md-3 col-sm-4 col-xs-12  p-5 field-search">
+                            @* <div class="col-md-3 col-sm-4 col-xs-12 p-5 field-search">
                                 <div class="input-group c-square">
-                                    <span class="input-group-addon">Trạng Thái</span>
-                                    <select name="attribute_id_976" class="form-control c-square"
-                                        title="-- Không chọn --">
-                                        <option value="">-- Không chọn --</option>
-                                        <option value="977">Trắng thông tin</option>
-                                        <option value="978">SĐT Đổi + Trắng Mail</option>
-                                        <option value="979">SĐT Đổi + Gửi Mail</option>
-                                        <option value="980">Trắng SĐT + Gửi Mail</option>
-                                    </select>
+                                <span class="input-group-addon">Trạng Thái</span>
+                                <select name="attribute_id_976" class="form-control c-square"
+                                title="-- Không chọn --">
+                                <option value="">-- Không chọn --</option>
+                                <option value="977">Trắng thông tin</option>
+                                <option value="978">SĐT Đổi + Trắng Mail</option>
+                                <option value="979">SĐT Đổi + Gửi Mail</option>
+                                <option value="980">Trắng SĐT + Gửi Mail</option>
+                                </select>
                                 </div>
-                            </div> *@
+                                </div> *@
                             <div class="col-md-3 col-sm-4 p-5 no-radius">
                                 <button type="submit" class="btn c-square c-theme c-btn-green"
                                     style="margin-right: 15px;margin-top: 15px">Tìm kiếm</button>
-                                <a class="btn c-square m-l-0 btn-danger" href="https://nick.vn/garena/lien-minh"
+                                <a class="btn c-square m-l-0 btn-danger" asp-action="LienMinh" asp-controller="ShopAcc"
                                     style="margin-top: 15px">Tất cả</a>
                             </div>
                         </form>
@@ -381,7 +381,7 @@
             });
 
         </script>
-    
+
         <div class="row row-flex item-list">
             @{
                 var Acc = ViewBag.Shopacc;
@@ -432,7 +432,8 @@
                                         </div>
                                         <div class="col-xs-6 ">
                                             <div class="view">
-                                                <a href='@Url.ActionLink("Detail_LienMinh", "ShopAcc", new {id = @LOL.Id})'>Chi tiết</a>
+                                                <a href='@Url.ActionLink("Detail_LienMinh", "ShopAcc", new {id = @LOL.Id})'>Chi
+                                                    tiết</a>
                                                 <!-- <a href="/acc/467183">Chi tiết</a> -->
                                     </div>
                                         </div>
@@ -446,28 +447,186 @@
                 }
             }
         </div>
-        <div class="data_paginate paging_bootstrap paginations_custom" style="text-align: center">
 
-        </div>
+        @* Pagination section: START *@
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                @{
+                    int currentPage = ViewBag.currentPage ?? 1;
+                    int totalPage = ViewBag.totalPage ?? 1;
+                    int spacePage = 2;
+                    int nearLastPage = totalPage - 1;
 
-        <div class="data_paginate paging_bootstrap paginations_custom" style="text-align: center">
-            <input style="padding: 5px" type="number" min="1" id="page">
+                    if (totalPage >= 1)
+                    {
+                        // Previous button, disable if is first page
+                        if (currentPage == 1)
+                        {
+                            <li class="page-item disabled" aria-disabled="true" aria-label="&lsaquo; Previous">
+                                <span class="page-link" aria-hidden="true">&lsaquo;</span>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="page-item">
+                                <a class="page-link" href='@Url.Action("LienMinh", new {page = currentPage - 1 })'
+                            aria-label="&laquo; Previous">&lsaquo;</a>
+                            </li>
+                        }
+
+                        // Pages
+                        if (totalPage < 7 + (spacePage * 2))
+                        {
+                            for (int i = 1; i <= totalPage; i++)
+                            {
+                                // Disable if is current page
+                                if (currentPage == i)
+                                {
+                                    <li class="page-item active" aria-current="page">
+                                        <span class="page-link">@i</span>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link" href='@Url.Action("LienMinh", new {page = @i })'>@i</a>
+                                    </li>
+                                }
+                            }
+                        }
+                        else if (totalPage > 7 + (spacePage * 2))
+                        {
+                            if (currentPage < 1 + (spacePage * 2))
+                            {
+                                // Beginning only hide later pages
+                                for (int i = 1; i <= totalPage - (5 + 2 * spacePage); i++)
+                                {
+                                    // Disable if is current page
+                                    if (currentPage == i)
+                                    {
+                                        <li class="page-item active" aria-current="page">
+                                            <span class="page-link">@i</span>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="page-item">
+                                            <a class="page-link" href='@Url.Action("LienMinh", new {page = @i })'>@i</a>
+                                        </li>
+                                    }
+                                }
+                                <li class="page-item disabled" aria-disabled="true"><span class="page-link">...</span></li>
+                                <li class="page-item"><a class="page-link"
+                            href="@Url.Action("LienMinh", new {page = @totalPage - 1 })">@nearLastPage</a></li>
+                                <li class="page-item"><a class="page-link"
+                            href="@Url.Action("LienMinh", new {page = @totalPage })">@totalPage</a></li>
+                            }
+                            else if (totalPage - (2 * spacePage) > currentPage && currentPage > (spacePage * 2))
+                            {
+                                // Middle hide some front and some back
+                                <li class="page-item"><a class="page-link"
+                            href="@Url.Action("LienMinh", new {page = @totalPage - totalPage + 1 })">1</a></li>
+                                <li class="page-item"><a class="page-link"
+                            href="@Url.Action("LienMinh", new {page = @totalPage - totalPage + 2 })">2</a></li>
+                                <li class="page-item disabled" aria-disabled="true"><span class="page-link">...</span></li>
+
+                                for (int i = currentPage - spacePage; i <= currentPage + spacePage; i++)
+                                {
+                                    // Disable if is current page
+                                    if (currentPage == i)
+                                    {
+                                        <li class="page-item active" aria-current="page">
+                                            <span class="page-link">@i</span>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="page-item">
+                                            <a class="page-link" href='@Url.Action("LienMinh", new {page = @i })'>@i</a>
+                                        </li>
+                                    }
+                                }
+                                <li class="page-item disabled" aria-disabled="true"><span class="page-link">...</span></li>
+                                <li class="page-item"><a class="page-link"
+                            href="@Url.Action("LienMinh", new {page = @totalPage - 1 })">@nearLastPage</a></li>
+                                <li class="page-item"><a class="page-link"
+                            href="@Url.Action("LienMinh", new {page = @totalPage })">@totalPage</a></li>
+                            }
+                            else
+                            {
+                                // End only hide early pages
+                                <li class="page-item"><a class="page-link"
+                            href="@Url.Action("LienMinh", new {page = @totalPage - totalPage + 1 })">1</a></li>
+                                <li class="page-item"><a class="page-link"
+                            href="@Url.Action("LienMinh", new {page = @totalPage - totalPage + 2 })">2</a></li>
+                                <li class="page-item disabled" aria-disabled="true"><span class="page-link">...</span></li>
+
+                                for (int i = totalPage - (2 * spacePage + 2); i <= totalPage; i++)
+                                {
+                                    // Disable if is current page
+                                    if (currentPage == i)
+                                    {
+                                        <li class="page-item active" aria-current="page">
+                                            <span class="page-link">@i</span>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="page-item">
+                                            <a class="page-link" href='@Url.Action("LienMinh", new {page = @i })'>@i</a>
+                                        </li>
+                                    }
+                                }
+                            }
+                        }
+
+
+                        // Next button, disable if is last page
+                        if (currentPage == totalPage)
+                        {
+                            <li class="page-item disabled" aria-disabled="true" aria-label="Next &rsaquo;">
+                                <span class="page-link" aria-hidden="false">&rsaquo;</span>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="page-item">
+                                <a class="page-link" href="@Url.Action("LienMinh", new {page = currentPage + 1 })"
+                            aria-label="Next &rsaquo;">&rsaquo;</a>
+                            </li>
+                        }
+                    }
+                }
+            </ul>
+        </nav>
+        @* Pagination section: END *@
+
+        @* <div class="data_paginate paging_bootstrap paginations_custom" style="text-align: center">
+
+            </div>
+
+            <div class="data_paginate paging_bootstrap paginations_custom" style="text-align: center">
+            <form asp-action="LienMinh" asp-controller="ShopAcc">
+            <input style="padding: 5px" type="number" min="1" name="page">
+            <button style="padding: 5px" type="submit">Chuyển Trang</button>
+            </form>
             <input style="padding: 5px" type="button" id="search" value="Chuyển trang">
-        </div>
-        <script type="text/javascript">
+            </div> *@
+
+        @* <script type="text/javascript">
             $('#search').click(function () {
-                var page = $('a[rel=next]').parent().prev().find('.page-link').text();
-                if ($('#page').val() <= page) {
-                    page = $('#page').val();
-                }
-                if ($('#page').val() == 0) {
-                    page = 1;
-                }
-                if ($('#page').val() != "") {
-                    location.href = 'https://giang.cf/ShopAcc' + '/LienMinh?page=' + page;
-                }
+            var page = $('a[rel=next]').parent().prev().find('.page-link').text();
+            if ($('#page').val() <= page) {
+            page = $('#page').val();
+            }
+            if ($('#page').val() == 0) {
+            page = 1;
+            }
+            if ($('#page').val() != "") {
+            location.href = 'https://giang.cf/ShopAcc' + '/LienMinh?page=' + page;
+            }
             })
-        </script>
+            </script> *@
 
 
 
@@ -484,19 +643,18 @@
                     <div id="tab1" class="panel-collapse collapse in" aria-expanded="true" style="">
                         <div class="panel-body">
                             <p>Ngo&agrave;i&nbsp; <strong>shop b&aacute;n acc li&ecirc;n minh&nbsp;</strong>Shop
-                                c&ograve;n c&oacute; c&aacute;c dịch vụ kh&aacute;c như <strong><a
-                                        href="#" target="_blank">mua b&aacute;n RP
+                                c&ograve;n c&oacute; c&aacute;c dịch vụ kh&aacute;c như <strong><a href="#"
+                                        target="_blank">mua b&aacute;n RP
                                         li&ecirc;n minh gi&aacute; rẻ</a></strong><strong>&nbsp;,<span
                                         style="color:#e74c3c"><a href="#">b&aacute;n thẻ
                                             garena</a> gi&aacute;&nbsp; rẻ v&agrave; hơn 40 dịch vụ game
                                         kh&aacute;c</span></strong> tại&nbsp;<strong><a href="#"
-                                        target="_blank">https://giang.cf</a>&nbsp;(<a
-                                        href="#" target="_blank">click</a>)</strong></p>
+                                        target="_blank">https://giang.cf</a>&nbsp;(<a href="#"
+                                        target="_blank">click</a>)</strong></p>
 
-                            <p><strong>Link b&aacute;n RP li&ecirc;n minh</strong>&nbsp;:&nbsp;<strong><a
-                                        href="#"
-                                        target="_blank">https://giang.cf</a>&nbsp;(<a
-                                        href="#" target="_blank">click</a>)</strong></p>
+                            <p><strong>Link b&aacute;n RP li&ecirc;n minh</strong>&nbsp;:&nbsp;<strong><a href="#"
+                                        target="_blank">https://giang.cf</a>&nbsp;(<a href="#"
+                                        target="_blank">click</a>)</strong></p>
                         </div>
                     </div>
                 </div>
@@ -513,8 +671,7 @@
                             <p>M&igrave;nh c&oacute; tạo group về li&ecirc;n qu&acirc;n&nbsp;để anh em giao lưu. Ae ấn
                                 tham gia group v&agrave; like page nh&eacute;</p>
 
-                            <p>Link :&nbsp;<a href="#"
-                                    target="_blank">#</a></p>
+                            <p>Link :&nbsp;<a href="#" target="_blank">#</a></p>
                         </div>
                     </div>
                 </div>

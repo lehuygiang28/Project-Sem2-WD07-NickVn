@@ -127,8 +127,9 @@ public class ShopaccController : Controller
         return View();
     }
 
-    public async Task<IActionResult> LienMinh(string? SearchKey, int? id, decimal? price, int? status)
+    public async Task<IActionResult> LienMinh(int page, string? SearchKey, int? id, decimal? price, int? status)
     {
+
         decimal priceSearchMin = decimal.Zero;
         decimal priceSearchMax = decimal.Zero;
         switch (price)
@@ -173,16 +174,26 @@ public class ShopaccController : Controller
                     && (lienMinh.PriceAtm >= priceSearchMin && lienMinh.PriceAtm < priceSearchMax)
                     select lienMinh;
 
-        var shopacc = await query.OrderBy(h => h.Id).ToListAsync();
+        // Pagination
+        if(page == 0 || page.Equals(null))
+        {
+            page = 1;
+        }
+        
+        // Max size of page is 8
+        int totalPage = 0;
+        int totalRecord = 0;
+        int pageSize = 8;
 
-        // var query = from cate in _context.ProductCategories
-        //             where cate.Status == ENABLE_ACTIVE
-        //             select cate;
+        totalRecord = await query.CountAsync();
+        totalPage = (totalRecord / pageSize) + ((totalRecord % pageSize) > 0 ? 1 : 0);
 
-        // var shopacc = await _context.Lienminhs.Where(a => a.Sold == Lienminh.NOT_SOLD).OrderBy(a => a.Id).ToListAsync();
+        var shopacc = await query.OrderBy(h => h.Id).Skip((page - 1) * pageSize)
+                                                    .Take(pageSize).ToListAsync();
 
-        // ViewBag.Shopacc = shopacc;
         ViewBag.Shopacc = shopacc;
+        ViewBag.totalPage = totalPage;
+        ViewBag.currentPage = page;
 
         return View();
     }

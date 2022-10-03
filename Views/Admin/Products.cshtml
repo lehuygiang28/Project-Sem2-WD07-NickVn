@@ -11,8 +11,8 @@
                     <tr>
                         <th scope="col">ID</th>
                         <th scope="col">Product Name</th>
-                        <th scope="col">Product Title</th>
-                        <th scope="col">Total</th>
+                        <th scope="col">User Name</th>
+                        <th scope="col">Price</th>
                         <th scope="col">&nbsp;</th>
                         <th scope="col">&nbsp;</th>
                         <th scope="col">&nbsp;</th>
@@ -20,29 +20,27 @@
                 </thead>
                 <tbody>
                     @{
-                        var cate = ViewBag.listCateQuery;
+                        var lienMinhAcc = ViewBag.listLienMinhAcc;
                         var totalPage = ViewBag.totalPage;
-                        var currentPage = ViewBag.currentPage; ;
+                        var currentPage = ViewBag.currentPage;
 
-                        List<Category> list = (List<Category>)cate;
+                        List<Lienminh> list = (List<Lienminh>)lienMinhAcc;
 
                         foreach (var item in list)
                         {
                             <tr>
                                 <th scope="row">@item.Id</th>
                                 <td>@item.Name</td>
-                                <td>@item.Title</td>
-                                <td>@item.Total</td>
-                                <td>@Html.ActionLink("Details", "DetailCategory", new { id = item.Id }, new { @class =
-                            "text-info"})</td>
-                                <td>@Html.ActionLink("Edit", "EditCategory", new { id = item.Id }, new { @class = "text-light"})
-                                </td>
-                                @* <td>@Html.ActionLink("Delete", "DeleteCategory", new { id = item.Id }, new { @class =
+                                <td>@item.ProductUserName</td>
+                                <td>@item.PriceAtm</td>
+                                <td>@Html.ActionLink("Details", "DetailProduct", new { id = item.Id }, new { @class = "text-info"})</td>
+                                <td>@Html.ActionLink("Edit", "EditProduct", new { id = item.Id }, new { @class = "text-light"})</td>
+                                @* <td>@Html.ActionLink("Delete", "DeleteProduct", new { id = item.Id }, new { @class =
                                     "text-danger"})</td> *@
 
                                 <!-- Button trigger modal -->
 
-                            <td>
+                                <td>
                                     <a type="button" class="text-danger" data-bs-toggle="modal"
                                     data-bs-target="#DeleteCategoryPopup_@item.Id">
                                         Delete
@@ -52,22 +50,22 @@
 
                             <!-- Modal -->
                             <div class="modal fade" id="DeleteCategoryPopup_@item.Id" tabindex="-1"
-                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            aria-labelledby="DeleteModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title text-secondary" id="exampleModalLabel">Confirmation to
+                                            <h5 class="modal-title text-secondary" id="DeleteModalLabel">Confirmation to
                                                 delete?</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            Are you sure to delete this Category?
+                                            Are you sure to delete this Product?
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary"
                                             data-bs-dismiss="modal">Close</button>
-                                            @Html.ActionLink("Confirm Delete", "DeleteCategory", new { id = item.Id }, new {
+                                            @Html.ActionLink("Confirm Delete", "DeleteProduct", new { id = item.Id }, new {
                                                 @class = "btn btn-danger text-white"})
                                         </div>
                                     </div>

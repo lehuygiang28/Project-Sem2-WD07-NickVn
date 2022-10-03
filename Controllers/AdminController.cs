@@ -38,12 +38,12 @@ public class AdminController : Controller
         return rd.NextInt64(min, max);
     }
 
-    public async Task<IActionResult> GenerateProductData(int? amount)
+    public async Task<IActionResult> GenerateProductData(int? dataCount)
     {
         // Define number of data
-        if(amount == null)
+        if(dataCount == null)
         {
-            amount = 3;
+            dataCount = 3;
         }
         Random random = new Random();
         string[] rankRandomArray = {"Chưa Rank", "Sắt", "Đồng", "Bạc", "Vàng", "Bạch Kim", "Kim Cương", "Cao Thủ", "Đại Cao Thủ", "Thách Đấu"};
@@ -81,7 +81,7 @@ public class AdminController : Controller
         }
 
         // Generate `lienminh` clone data
-        for (int i = 0; i < amount; i++)
+        for (int i = 0; i <= dataCount; i++)
         {
             lienMinhID++;
             Lienminh newProduct = new Lienminh();
@@ -189,10 +189,6 @@ public class AdminController : Controller
                     && (lienMinh.PriceAtm >= priceSearchMin && lienMinh.PriceAtm < priceSearchMax)
                     select lienMinh;
 
-        if (page == 0 || page.Equals(null))
-        {
-            page = 1;
-        }
 
         int totalPage = 0;
         int totalRecord = 0;
