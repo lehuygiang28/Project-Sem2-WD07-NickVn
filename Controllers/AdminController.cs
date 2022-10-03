@@ -38,10 +38,12 @@ public class AdminController : Controller
         return rd.NextInt64(min, max);
     }
 
-    public async Task<IActionResult> GenerateProductData(int? dataCount)
+    public async Task<IActionResult> GenerateProductData(int? s)
     {
+        var watch = System.Diagnostics.Stopwatch.StartNew();
+        int? dataCount = s;
         // Define number of data
-        if(dataCount == null)
+        if(dataCount == null || dataCount.Equals(null))
         {
             dataCount = 3;
         }
@@ -101,7 +103,6 @@ public class AdminController : Controller
             newProduct.ImgSrc = @"/storage/images/0qBPw7AiOQ_1632531413.jpg";
             newProduct.Sold = Lienminh.NOT_SOLD;
 
-
             // Generate clone image path
             for (int j = 0; j < urlImageLength; j++)
             {
@@ -111,9 +112,9 @@ public class AdminController : Controller
                 productImage.ImgId = lastImgID;
                 productImage.LienminhId = lienMinhID;
                 productImage.ImgLink = urlImage[j];
-                System.Console.WriteLine($"ID: {productImage.ImgId}");
-                System.Console.WriteLine($"LOL ID: {productImage.LienminhId}");
-                System.Console.WriteLine($"Index {j}: " + productImage.ImgLink);
+                // System.Console.WriteLine($"ID: {productImage.ImgId}");
+                // System.Console.WriteLine($"LOL ID: {productImage.LienminhId}");
+                // System.Console.WriteLine($"Index {j}: " + productImage.ImgLink);
 
                 // Save image path clone to database
                 await _context.Images.AddAsync(productImage);
@@ -125,16 +126,22 @@ public class AdminController : Controller
             await _context.SaveChangesAsync();
 
             // Log data
-            System.Console.WriteLine("IMG TOTAL: " + urlImageLength);
-            System.Console.WriteLine("Id: " + newProduct.Id);
-            System.Console.WriteLine("ProductUserName: " + newProduct.ProductUserName);
-            System.Console.WriteLine("ProductUserPassword: " + newProduct.ProductUserPassword);
-            System.Console.WriteLine("NEW PRICE: "+newProduct.PriceAtm);
-            System.Console.WriteLine("Champ: " + newProduct.Champ);
-            System.Console.WriteLine("Skin: " + newProduct.Skin);
-            System.Console.WriteLine("Rank: " + newProduct.Rank);
-            System.Console.WriteLine("---------------------");
+            // System.Console.WriteLine("IMG TOTAL: " + urlImageLength);
+            // System.Console.WriteLine("Id: " + newProduct.Id);
+            // System.Console.WriteLine("ProductUserName: " + newProduct.ProductUserName);
+            // System.Console.WriteLine("ProductUserPassword: " + newProduct.ProductUserPassword);
+            // System.Console.WriteLine("NEW PRICE: "+newProduct.PriceAtm);
+            // System.Console.WriteLine("Champ: " + newProduct.Champ);
+            // System.Console.WriteLine("Skin: " + newProduct.Skin);
+            // System.Console.WriteLine("Rank: " + newProduct.Rank);
+            // System.Console.WriteLine("---------------------");
         }
+        watch.Stop();
+        var elapseTime = watch.Elapsed;
+        System.Console.WriteLine("---------------------");
+        System.Console.WriteLine($"Data count: {dataCount}");
+        System.Console.WriteLine($"Generate Data Done, time: {elapseTime}");
+        System.Console.WriteLine("---------------------");
         return RedirectToAction(nameof(Index));
     }
 
