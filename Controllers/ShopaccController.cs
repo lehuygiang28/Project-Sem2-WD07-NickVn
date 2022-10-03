@@ -180,10 +180,10 @@ public class ShopaccController : Controller
             page = 1;
         }
         
-        // Max size of page is 8
+        // Max size of page is 12
         int totalPage = 0;
         int totalRecord = 0;
-        int pageSize = 8;
+        int pageSize = 12;
 
         totalRecord = await query.CountAsync();
         totalPage = (totalRecord / pageSize) + ((totalRecord % pageSize) > 0 ? 1 : 0);
