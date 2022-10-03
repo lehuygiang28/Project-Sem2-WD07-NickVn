@@ -29,9 +29,22 @@ public class CategoryController : Controller
                     select cate;
 
         var cateProduct = await query.ToListAsync();
+        int totalProduct = await _context.Lienminhs.CountAsync();
+
+        var updateTotal = await query.Where(a => a.Action == "LienMinh").FirstAsync();
+
+        foreach(var cat in cateProduct)
+        {
+            if(cat.Action == "LienMinh")
+            {
+                cat.Total = totalProduct;
+                _context.ProductCategories.Update(cat);
+                await _context.SaveChangesAsync();
+            }
+        }
 
         ViewBag.cateProduct  = cateProduct;
-        _logger.LogInformation("ID selected: " + id);
+
         return View();
     }
 
