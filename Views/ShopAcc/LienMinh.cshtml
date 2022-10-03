@@ -449,7 +449,7 @@
         </div>
 
         @* Pagination section: START *@
-        <nav aria-label="Page navigation">
+        <nav aria-label="Page navigation" class="text-right">
             <ul class="pagination">
                 @{
                     int currentPage = ViewBag.currentPage ?? 1;
@@ -475,6 +475,7 @@
                         }
 
                         // Pages
+                        // if total of page (less than) < 
                         if (totalPage < 7 + (spacePage * 2))
                         {
                             for (int i = 1; i <= totalPage; i++)
@@ -499,7 +500,7 @@
                             if (currentPage < 1 + (spacePage * 2))
                             {
                                 // Beginning only hide later pages
-                                for (int i = 1; i <= totalPage - (5 + 2 * spacePage); i++)
+                                for (int i = 1; i <= totalPage - (8 + 2 * spacePage); i++)
                                 {
                                     // Disable if is current page
                                     if (currentPage == i)
@@ -516,18 +517,16 @@
                                     }
                                 }
                                 <li class="page-item disabled" aria-disabled="true"><span class="page-link">...</span></li>
-                                <li class="page-item"><a class="page-link"
-                            href="@Url.Action("LienMinh", new {page = @totalPage - 1 })">@nearLastPage</a></li>
-                                <li class="page-item"><a class="page-link"
-                            href="@Url.Action("LienMinh", new {page = @totalPage })">@totalPage</a></li>
+                                <li class="page-item"><a class="page-link" href='@Url.Action("LienMinh", new {page = @totalPage - 1 })'>@nearLastPage</a></li>
+                                <li class="page-item"><a class="page-link" href='@Url.Action("LienMinh", new {page = @totalPage })'>@totalPage</a></li>
                             }
                             else if (totalPage - (2 * spacePage) > currentPage && currentPage > (spacePage * 2))
                             {
                                 // Middle hide some front and some back
                                 <li class="page-item"><a class="page-link"
-                            href="@Url.Action("LienMinh", new {page = @totalPage - totalPage + 1 })">1</a></li>
+                            href='@Url.Action("LienMinh", new {page = @totalPage - totalPage + 1 })'>1</a></li>
                                 <li class="page-item"><a class="page-link"
-                            href="@Url.Action("LienMinh", new {page = @totalPage - totalPage + 2 })">2</a></li>
+                            href='@Url.Action("LienMinh", new {page = @totalPage - totalPage + 2 })'>2</a></li>
                                 <li class="page-item disabled" aria-disabled="true"><span class="page-link">...</span></li>
 
                                 for (int i = currentPage - spacePage; i <= currentPage + spacePage; i++)
@@ -550,18 +549,18 @@
                                 <li class="page-item"><a class="page-link"
                             href="@Url.Action("LienMinh", new {page = @totalPage - 1 })">@nearLastPage</a></li>
                                 <li class="page-item"><a class="page-link"
-                            href="@Url.Action("LienMinh", new {page = @totalPage })">@totalPage</a></li>
+                            href='@Url.Action("LienMinh", new {page = @totalPage })'>@totalPage</a></li>
                             }
                             else
                             {
                                 // End only hide early pages
                                 <li class="page-item"><a class="page-link"
-                            href="@Url.Action("LienMinh", new {page = @totalPage - totalPage + 1 })">1</a></li>
+                            href='@Url.Action("LienMinh", new {page = @totalPage - totalPage + 1 })'>1</a></li>
                                 <li class="page-item"><a class="page-link"
-                            href="@Url.Action("LienMinh", new {page = @totalPage - totalPage + 2 })">2</a></li>
+                            href='@Url.Action("LienMinh", new {page = @totalPage - totalPage + 2 })'>2</a></li>
                                 <li class="page-item disabled" aria-disabled="true"><span class="page-link">...</span></li>
 
-                                for (int i = totalPage - (2 * spacePage + 2); i <= totalPage; i++)
+                                for (int i = totalPage - (1 + 2 * spacePage); i <= totalPage; i++)
                                 {
                                     // Disable if is current page
                                     if (currentPage == i)
