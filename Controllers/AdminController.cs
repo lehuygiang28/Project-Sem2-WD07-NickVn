@@ -40,6 +40,10 @@ public class AdminController : Controller
 
     public async Task<IActionResult> GenerateProductData(int? s)
     {
+        if(!await IsLogin())
+        {
+            return RedirectToAction(nameof(Index));
+        }
         var watch = System.Diagnostics.Stopwatch.StartNew();
         int? dataCount = s;
         // Define number of data
