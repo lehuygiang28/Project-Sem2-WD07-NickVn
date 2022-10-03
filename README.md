@@ -7,6 +7,7 @@
 * Show product
 * Search product
 * Buy product
+* Paginations
 * Show profile
 * Change password
 * Show purchased
