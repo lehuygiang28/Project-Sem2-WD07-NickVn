@@ -23,6 +23,193 @@ public class AdminController : Controller
         this._context = context;
         this._hostEnvironment = hostEnvironment;
     }
+    
+    private string RandomString(int length)
+    {
+        Random random = new Random();
+        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghiklmnopqrstuvwxyz";
+        return new string(Enumerable.Repeat(chars, length)
+            .Select(s => s[random.Next(s.Length)]).ToArray());
+    }
+
+    private decimal RandomDecimal(int min, int max)
+    {
+        Random rd = new Random();
+        return rd.NextInt64(min, max);
+    }
+
+    public async Task<IActionResult> GenerateProductData(int? amount)
+    {
+        // Define number of data
+        if(amount == null)
+        {
+            amount = 3;
+        }
+        Random random = new Random();
+        string[] rankRandomArray = {"Chưa Rank", "Sắt", "Đồng", "Bạc", "Vàng", "Bạch Kim", "Kim Cương", "Cao Thủ", "Đại Cao Thủ", "Thách Đấu"};
+
+        string[] urlImage ={
+            @"/storage/images/0qBPw7AiOQ_1632531413.jpg",
+            @"/storage/images/CM9q56zAnM_1632531413.jpg",
+            @"/storage/images/pTWDgoJQuz_1632531413.jpg",
+            @"/storage/images/zwRCsqMtyo_1632531413.jpg",
+            @"/storage/images/HLpEr7ojZm_1632531414.jpg",
+            @"/storage/images/xxuC88f0h9_1632531414.jpg"
+        };
+        int urlImageLength = urlImage.Length;
+
+        int lienMinhID;
+        var lastLienMinhID = await _context.Lienminhs.OrderBy(a => a.Id).LastAsync();
+        if(lastLienMinhID == null)
+        {
+            lienMinhID = 1;
+        }
+        else
+        {
+            lienMinhID = lastLienMinhID.Id;
+        }
+
+        int lastImgID;
+        var varimg = await _context.Images.OrderBy(b => b.ImgId).LastAsync();
+        if (varimg == null)
+        {
+            lastImgID = 1;
+        }
+        else
+        {
+            lastImgID = varimg.ImgId;
+        }
+
+        // Generate `lienminh` clone data
+        for (int i = 0; i < amount; i++)
+        {
+            lienMinhID++;
+            Lienminh newProduct = new Lienminh();
+
+            newProduct.Id = lienMinhID;
+            newProduct.Name = "Liên Minh";
+            newProduct.ProductUserName = "shop" + RandomString(6);
+            newProduct.ProductUserPassword = "passw" + RandomString(8);
+            newProduct.Publisher = "Garena";
+            newProduct.PriceAtm = RandomDecimal(10000, int.MaxValue/100);
+            newProduct.Champ = (int)RandomDecimal(1, 150);
+            newProduct.Skin = (int)RandomDecimal(1, 555);
+            newProduct.Rank = rankRandomArray[random.Next(0, rankRandomArray.Length)];
+            newProduct.Status = "Trắng Thông Tin";
+            newProduct.Note = 0;
+            newProduct.ImgThumb = @"/storage/images/FSPfB05HiR_1632531414.jpg";
+            newProduct.ImgSrc = @"/storage/images/0qBPw7AiOQ_1632531413.jpg";
+            newProduct.Sold = Lienminh.NOT_SOLD;
+
+
+            // Generate clone image path
+            for (int j = 0; j < urlImageLength; j++)
+            {
+                lastImgID++;
+                Image productImage = new Image();
+
+                productImage.ImgId = lastImgID;
+                productImage.LienminhId = lienMinhID;
+                productImage.ImgLink = urlImage[j];
+                System.Console.WriteLine($"ID: {productImage.ImgId}");
+                System.Console.WriteLine($"LOL ID: {productImage.LienminhId}");
+                System.Console.WriteLine($"Index {j}: " + productImage.ImgLink);
+
+                // Save image path clone to database
+                await _context.Images.AddAsync(productImage);
+                await _context.SaveChangesAsync();
+            }
+
+            // Save data to database
+            await _context.Lienminhs.AddAsync(newProduct);
+            await _context.SaveChangesAsync();
+
+            // Log data
+            System.Console.WriteLine("IMG TOTAL: " + urlImageLength);
+            System.Console.WriteLine("Id: " + newProduct.Id);
+            System.Console.WriteLine("ProductUserName: " + newProduct.ProductUserName);
+            System.Console.WriteLine("ProductUserPassword: " + newProduct.ProductUserPassword);
+            System.Console.WriteLine("NEW PRICE: "+newProduct.PriceAtm);
+            System.Console.WriteLine("Champ: " + newProduct.Champ);
+            System.Console.WriteLine("Skin: " + newProduct.Skin);
+            System.Console.WriteLine("Rank: " + newProduct.Rank);
+            System.Console.WriteLine("---------------------");
+        }
+        return RedirectToAction(nameof(Index));
+    }
+
+    public async Task<IActionResult> Products(int page, string? SearchKey, int? id, decimal? price, int? status)
+    {
+        if (!await IsLogin())
+        {
+            return RedirectToAction(nameof(Index));
+        }
+
+        decimal priceSearchMin = decimal.Zero;
+        decimal priceSearchMax = decimal.Zero;
+        switch (price)
+        {
+            case 1:
+                priceSearchMin = 0;
+                priceSearchMax = 50000;
+                break;
+            case 2:
+                priceSearchMin = 50000;
+                priceSearchMax = 200000;
+                break;
+            case 3:
+                priceSearchMin = 200000;
+                priceSearchMax = 500000;
+                break;
+            case 4:
+                priceSearchMin = 500000;
+                priceSearchMax = 1000000;
+                break;
+            case 5:
+                priceSearchMin = 1000000;
+                priceSearchMax = decimal.MaxValue;
+                break;
+            case 6:
+                priceSearchMin = 5000000;
+                priceSearchMax = decimal.MaxValue;
+                break;
+            case 7:
+                priceSearchMin = 10000000;
+                priceSearchMax = decimal.MaxValue;
+                break;
+            default:
+                priceSearchMin = 0;
+                priceSearchMax = decimal.MaxValue;
+                break;
+        }
+
+        var query = from lienMinh in _context.Lienminhs
+                    where lienMinh.Sold == (status == null ? Lienminh.NOT_SOLD : status)
+                    && lienMinh.Name.Contains(SearchKey == null ? string.Empty : SearchKey)
+                    && (lienMinh.PriceAtm >= priceSearchMin && lienMinh.PriceAtm < priceSearchMax)
+                    select lienMinh;
+
+        if (page == 0 || page.Equals(null))
+        {
+            page = 1;
+        }
+
+        int totalPage = 0;
+        int totalRecord = 0;
+        int pageSize = 9;
+
+        totalRecord = await query.CountAsync();
+        totalPage = (totalRecord / pageSize) + ((totalRecord % pageSize) > 0 ? 1 : 0);
+
+        List<Lienminh> listLienMinhAcc = await query.OrderBy(prod => prod.Id)
+                                                    .Skip((page - 1) * pageSize)
+                                                    .Take(pageSize).ToListAsync();
+
+        ViewBag.listLienMinhAcc = listLienMinhAcc;
+        ViewBag.totalPage = totalPage;
+        ViewBag.currentPage = page;
+        return View();
+    }
 
     //Delete Category
     public async Task<IActionResult> DeleteCategory(int id)
@@ -36,7 +223,7 @@ public class AdminController : Controller
 
         var find = await _context.Categories.Where(c => c.Id == id).FirstAsync();
         find.Status = DISABLE_DELETE;
-        
+
         _context.Categories.Update(find);
         await _context.SaveChangesAsync();
 
@@ -72,7 +259,7 @@ public class AdminController : Controller
                     fileName = fileName + DateTime.Now.ToString("yymmssfff") + extension;
                     // path = Path.Combine("/img", fileName);
                     path = Path.Combine(wwwRootPath + slashImg, fileName);
-                    System.Console.WriteLine("PATHHHHHHHHHHHH"+path);
+                    System.Console.WriteLine("PATHHHHHHHHHHHH" + path);
                     using (var fileStream = new FileStream(path, FileMode.Create))
                     {
                         await posted.CopyToAsync(fileStream);
@@ -118,7 +305,7 @@ public class AdminController : Controller
             return RedirectToAction(nameof(Categories));
         }
 
-        return RedirectToAction(nameof(DetailCategory), new {id = otherCategory.Id});
+        return RedirectToAction(nameof(DetailCategory), new { id = otherCategory.Id });
     }
 
     public async Task<IActionResult> EditCategory(int? id)
@@ -229,7 +416,7 @@ public class AdminController : Controller
         Password = MD5.CreateMD5(Password);
 
         // Get role id
-        var roleid = await _context.Roles.OrderBy(a => a.RoleNameEn == "admin").FirstAsync();
+        var roleid = await _context.Roles.Where(a => a.RoleNameEn == "Admin").FirstAsync();
 
         if (!await _context.Users.AnyAsync(u => u.UserName == UserName && u.Password == Password && u.RoleId == roleid.RoleId))
         {
@@ -253,9 +440,9 @@ public class AdminController : Controller
         var role = HttpContext.Session.GetInt32(SessionKeyAdminRole);
         var uname = HttpContext.Session.GetString(SessionKeyAdminUserName);
 
-        _logger.LogInformation("Session key ID: {id}", id);
-        _logger.LogInformation("Session key Role Id: {role}", role);
-        _logger.LogInformation("Session key UName: {uname}", uname);
+        _logger.LogInformation($"Session key {roleid.RoleNameEn} ID: {id}");
+        _logger.LogInformation($"Session key {roleid.RoleNameEn} Role Id: {role}");
+        _logger.LogInformation($"Session key {roleid.RoleNameEn} UName: {uname}");
 
         loginUser.LastLogin = DateTime.Now;
         _context.Update(loginUser);
