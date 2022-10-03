@@ -9,7 +9,7 @@
             return "0";
         }
         var info = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
-        return String.Format(info, "{0:c}", money);
+        return String.Format(info, "{0:c0}", money);
     }
 }
 
