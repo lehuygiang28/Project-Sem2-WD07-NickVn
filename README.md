@@ -11,6 +11,7 @@
 * Show profile
 * Change password
 * Show purchased
+* Catch error(400, 401, 404)
 
 ### Admin
 * Admin logging in
