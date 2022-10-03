@@ -1,6 +1,5 @@
 using Project_Sem2_WD07_NickVn.Models;
 using Microsoft.EntityFrameworkCore;
-// using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,21 +7,11 @@ string connectionString = builder.Configuration.GetConnectionString("NickVn_Proj
 builder.Services.AddDbContext<NickVn_ProjectContext>(options => options.UseMySql(connectionString, Microsoft.EntityFrameworkCore.ServerVersion.Parse("10.4.22-mariadb")));
 
 // UseUrls - change IpAdress and port to listen
-// builder.WebHost.UseKestrel(serverOptions =>
-// {
-//     serverOptions.ListenLocalhost(911, listenOptions => listenOptions.UseHttps());
-//     // serverOptions.ListenAnyIP(443, listenOptions => listenOptions.UseHttps());
-// });
 builder.WebHost.UseUrls().UseKestrel(serverOptions =>
 {
     serverOptions.ListenAnyIP(80);
     serverOptions.ListenAnyIP(443, listenOptions => listenOptions.UseHttps());
 });
-
-// builder.Services.Configure<ForwardedHeadersOptions>(options =>{
-//     options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
-// });
-
 
 // Add session services
 builder.Services.AddDistributedMemoryCache();
@@ -46,22 +35,18 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-// app.UseForwardedHeaders(new ForwardedHeadersOptions
-// {
-//     ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-// });
-
 // Handle error 404
-// app.Use(async (context, next) =>
-// {
-//     await next();
+app.Use(async (context, next) =>
+{
+    await next();
+    var statusCode = context.Response.StatusCode;
+    if (statusCode == 400 || statusCode == 401 || statusCode == 404)
+    {
+        context.Request.Path = "/Home/Error";
+        await next();
+    }
+});
 
-//     if (context.Response.StatusCode == 404)
-//     {
-//         context.Request.Path = "/Admin/Error404";
-//         await next();
-//     }
-// });
 // app.UseStatusCodePages();
 
 app.UseHttpsRedirection();
