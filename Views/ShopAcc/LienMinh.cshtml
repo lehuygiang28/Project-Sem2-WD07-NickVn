@@ -1,13 +1,14 @@
 @{
     ViewData["Title"] = "Game liên minh";
-    string vndFormat(int? money)
-    {
+    string vndFormat(dynamic money)
+    {   
+        money = Convert.ToInt64(money);
         if (money == null)
         {
             return "0";
         }
         var info = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
-        return String.Format(info, "{0:c0}", money);
+        return String.Format(info, "{0:c0}", money); 
     }
 }
 
@@ -65,25 +66,23 @@
                             thể loại game mobile nhập do <a href="https://www.garena.vn/" target="_blank"><span
                                     style="color:#e74c3c"><strong>GARENA</strong></span></a>&nbsp;độc quyền ph&aacute;t
                             h&agrave;nh tại Việt Nam.</li>
-                        <li><a href="https://nick.vn/garena/lien-minh" target="_blank"><strong>Web Mua B&aacute;n Nick
+                        <li><a href="#" target="_blank"><strong>Web Mua B&aacute;n Nick
                                     LI&Ecirc;N MINH&nbsp;UY T&Iacute;N - GI&Aacute;
-                                    RẺ</strong></a>&nbsp;&nbsp;<strong><a href="https://webnick.vn/"
-                                    target="_blank"><span style="color:#e74c3c">WEBNICK.VN</span></a> ( Website mua
+                                    RẺ</strong></a>&nbsp;&nbsp;<strong><a href="#" target="_blank"><span
+                                        style="color:#e74c3c">WEBNICK.VN</span></a> ( Website mua
                                 b&aacute;n nick li&ecirc;n qu&acirc;n - LMHT lớn nhất Việt Nam
-                                )&nbsp;</strong>.&nbsp;<strong><a href="https://nick.vn/garena/lien-minh"
-                                    target="_blank">Shop b&aacute;n acc - t&agrave;i khoản LMHT VIP</a></strong>.&nbsp;
+                                )&nbsp;</strong>.&nbsp;<strong><a href="#" target="_blank">Shop b&aacute;n acc -
+                                    t&agrave;i khoản LMHT VIP</a></strong>.&nbsp;
                         </li>
                         <li>Ngo&agrave;i <strong>mua&nbsp;b&aacute;n nick lq</strong>&nbsp;website c&ograve;n <strong><a
-                                    href="https://nick.vn/mua-the" target="_blank"><span
-                                        style="color:#e74c3c">b&aacute;n thẻ Garena</span></a></strong><span
-                                style="color:#e74c3c">&nbsp;,</span><strong><a href="https://nick.vn/dich-vu/lien-minh"
-                                    target="_blank"><span style="color:#e74c3c">B&aacute;n RP li&ecirc;n minh gi&aacute;
-                                        rẻ</span></a></strong><span style="color:#e74c3c">,</span><a
-                                href="https://nick.vn/mua-ban-nick-game-random" target="_blank"><span
-                                    style="color:#e74c3c"> <strong>b&aacute;n acc li&ecirc;n minh
+                                    href="#" target="_blank"><span style="color:#e74c3c">b&aacute;n thẻ
+                                        Garena</span></a></strong><span style="color:#e74c3c">&nbsp;,</span><strong><a
+                                    href="#" target="_blank"><span style="color:#e74c3c">B&aacute;n RP li&ecirc;n minh
+                                        gi&aacute;
+                                        rẻ</span></a></strong><span style="color:#e74c3c">,</span><a href="#"
+                                target="_blank"><span style="color:#e74c3c"> <strong>b&aacute;n acc li&ecirc;n minh
                                         random</strong></span></a>&nbsp;v&agrave; rất nhiều dịch vụ kh&aacute;c về
-                            <strong><a href="https://www.youtube.com/channel/UCpnQwjzvDm1MOMtZV2zkVpA"
-                                    target="_blank">game LQM</a></strong>
+                            <strong><a href="#" target="_blank">game LQM</a></strong>
                         </li>
                     </ul>
                     </p>
@@ -427,17 +426,16 @@
                                 </div>
                                 <div class="a-more">
                                     <div class="row">
-                                        <div class="col-xs-6">
-                                            <div class="price_item">@vndFormat((int?)LOL.PriceAtm)</div>
+                                        <div class="col-xs-6" style="width: 51%;">
+                                            <div class="price_item">@vndFormat(LOL.PriceAtm)</div>
                                         </div>
-                                        <div class="col-xs-6 ">
+                                        <div class="col-xs-6" style="width: 49%;">
                                             <div class="view">
                                                 <a href='@Url.ActionLink("Detail_LienMinh", "ShopAcc", new {id = @LOL.Id})'>Chi
                                                     tiết</a>
                                                 <!-- <a href="/acc/467183">Chi tiết</a> -->
                                     </div>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
@@ -476,7 +474,7 @@
                         }
 
                         // Pages
-                        // if total of page (less than) < 
+                        // if total of page (less than) <
                         if (totalPage <= (spacePage * he_so) + 5)
                         {
                             for (int i = 1; i <= totalPage; i++)
@@ -519,14 +517,18 @@
                                     }
                                 }
                                 <li class="page-item disabled" aria-disabled="true"><span class="page-link">...</span></li>
-                                <li class="page-item"><a class="page-link" href='@Url.Action("LienMinh", new {page = @totalPage - 1 })'>@nearLastPage</a></li>
-                                <li class="page-item"><a class="page-link" href='@Url.Action("LienMinh", new {page = @totalPage })'>@totalPage</a></li>
+                                <li class="page-item"><a class="page-link"
+                            href='@Url.Action("LienMinh", new {page = @totalPage - 1 })'>@nearLastPage</a></li>
+                                <li class="page-item"><a class="page-link"
+                            href='@Url.Action("LienMinh", new {page = @totalPage })'>@totalPage</a></li>
                             }
                             else if (currentPage >= (spacePage + 3) && currentPage < totalPage - (spacePage * he_so))
                             {
                                 // Middle hide some front and some back
-                                <li class="page-item"><a class="page-link" href='@Url.Action("LienMinh", new {page = @totalPage - totalPage + 1 })'>1</a></li>
-                                <li class="page-item"><a class="page-link" href='@Url.Action("LienMinh", new {page = @totalPage - totalPage + 2 })'>2</a></li>
+                                <li class="page-item"><a class="page-link"
+                            href='@Url.Action("LienMinh", new {page = @totalPage - totalPage + 1 })'>1</a></li>
+                                <li class="page-item"><a class="page-link"
+                            href='@Url.Action("LienMinh", new {page = @totalPage - totalPage + 2 })'>2</a></li>
                                 <li class="page-item disabled" aria-disabled="true"><span class="page-link">...</span></li>
 
                                 for (int i = currentPage - spacePage; i <= currentPage + spacePage; i++)
@@ -546,14 +548,18 @@
                                     }
                                 }
                                 <li class="page-item disabled" aria-disabled="true"><span class="page-link">...</span></li>
-                                <li class="page-item"><a class="page-link" href="@Url.Action("LienMinh", new {page = @totalPage - 1 })">@nearLastPage</a></li>
-                                <li class="page-item"><a class="page-link" href='@Url.Action("LienMinh", new {page = @totalPage })'>@totalPage</a></li>
+                                <li class="page-item"><a class="page-link"
+                            href="@Url.Action("LienMinh", new {page = @totalPage - 1 })">@nearLastPage</a></li>
+                                <li class="page-item"><a class="page-link"
+                            href='@Url.Action("LienMinh", new {page = @totalPage })'>@totalPage</a></li>
                             }
                             else
                             {
                                 // End only hide early pages
-                                <li class="page-item"><a class="page-link" href='@Url.Action("LienMinh", new {page = @totalPage - totalPage + 1 })'>1</a></li>
-                                <li class="page-item"><a class="page-link" href='@Url.Action("LienMinh", new {page = @totalPage - totalPage + 2 })'>2</a></li>
+                                <li class="page-item"><a class="page-link"
+                            href='@Url.Action("LienMinh", new {page = @totalPage - totalPage + 1 })'>1</a></li>
+                                <li class="page-item"><a class="page-link"
+                            href='@Url.Action("LienMinh", new {page = @totalPage - totalPage + 2 })'>2</a></li>
                                 <li class="page-item disabled" aria-disabled="true"><span class="page-link">...</span></li>
 
                                 for (int i = totalPage - (spacePage * he_so); i <= totalPage; i++)
