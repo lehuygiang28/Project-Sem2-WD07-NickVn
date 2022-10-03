@@ -6,6 +6,7 @@
 * Signing up
 * Show product
 * Search product
+* Paginations
 * Buy product
 * Show profile
 * Change password
