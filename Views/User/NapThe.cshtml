@@ -1,0 +1,201 @@
+@{
+    ViewData["Title"] = "Đổi Mật Khẩu";
+}
+
+
+<!-- BEGIN: PAGE CONTAINER -->
+<div class="c-layout-page">
+    <!-- BEGIN: PAGE CONTENT -->
+    <div class="m-t-20 visible-sm visible-xs"></div>
+
+    <div class="c-layout-page" style="margin-top: 20px;">
+        <div class="container">
+            <div class="c-layout-sidebar-menu c-theme ">
+                <div class="row">
+                    <div class="col-md-12 col-sm-6 col-xs-6 m-t-15 m-b-20">
+                        <!-- BEGIN: LAYOUT/SIDEBARS/SHOP-SIDEBAR-DASHBOARD -->
+                        <div class="c-content-title-3 c-title-md c-theme-border">
+                            <h3 class="c-left c-font-uppercase">Menu tài khoản</h3>
+                            <div class="c-line c-dot c-dot-left "></div>
+                        </div>
+
+                        <div class="c-content-ver-nav">
+                            <ul class="c-menu c-arrow-dot c-square c-theme">
+                                <li><a asp-action="Profile" asp-controller="User" class="">Thông tin tài khoản</a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 col-sm-6 col-xs-6 m-t-15">
+                        <div class="c-content-title-3 c-title-md c-theme-border">
+                            <h3 class="c-left c-font-uppercase">Menu giao dịch</h3>
+                            <div class="c-line c-dot c-dot-left "></div>
+                        </div>
+                        <div class="c-content-ver-nav m-b-20">
+                            <ul class="c-menu c-arrow-dot c-square c-theme">
+                                <li><a asp-action="NapThe" asp-controller="User" class="Active"><b>Nạp thẻ tự
+                                            động</b></a></li>
+
+                                @* <li><a href="#" class="">Lịch sử nạp thẻ</a></li>
+                                    <li><a href="/recharge" class="">Nạp Ví / ATM tự động</a></li> *@
+
+                                <li><a asp-action="Account" asp-controller="User">Tài khoản đã mua</a></li>
+                                @* <li><a href="#" class="">Tài khoản trả góp</a></li>
+                                    <li><a href="#" class="">Dịch vụ đã mua</a></li>
+                                    <li><a href="#" class="">Lịch sử mua phụ kiện</a></li>
+                                    <li><a href="#" class="">Thẻ cào đã mua</a></li>
+                                    <li><a href="#" class="">Chuyển tiền</a></li> *@
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="c-layout-sidebar-content ">
+                <!-- BEGIN: PAGE CONTENT -->
+                <div class="c-layout-sidebar-content ">
+
+
+                    <div class="c-content-title-1">
+                        <h3 class="c-font-uppercase c-font-bold">Nạp thẻ</h3>
+                        <div class="c-line-left"></div>
+                    </div>
+                    <p style="text-align: center;color: red">*Chú ý: Nạp thẻ sai mệnh giá mất 100% giá trị thẻ</p>
+                    <form method="POST" action="https://nick.vn/nap-the" accept-charset="UTF-8"
+                        class="form-horizontal form-charge"><input name="_token" type="hidden"
+                            value="i2DZIc8KasifWRE1lGvZQgl2neQepDINJL5tFmIl">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Tài khoản:</label>
+                            <div class="col-md-6">
+                                <input class="form-control  c-square c-theme" type="text" value="mailgenshin044"
+                                    readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Loại thẻ:</label>
+                            <div class="col-md-6">
+                                <select class="form-control  c-square c-theme" name="type" id="type">
+                                    <option value="VIETTEL">VIETTEL</option>
+                                    <option value="MOBIFONE">MOBIFONE</option>
+                                    <option value="VINAPHONE">VINAPHONE</option>
+                                    <option value="VIETNAMMOBILE">VIETNAMMOBILE</option>
+                                    <option value="ZING">ZING</option>
+                                    <option value="GATE">GATE</option>
+                                    <option value="VCOIN">VCOIN</option>
+                                    <option value="GARENA">GARENA</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Mệnh giá:</label>
+                            <div class="col-md-6">
+                                <select class="form-control  c-square c-theme" name="amount" id="amount" required>
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Mã số thẻ:</label>
+                            <div class="col-md-6">
+                                <input class="form-control  c-square c-theme " name="pin" type="text" maxlength="16"
+                                    required placeholder="" required="" autofocus="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Số serial:</label>
+                            <div class="col-md-6">
+                                <input class="form-control c-square c-theme " name="serial" type="text" maxlength="16"
+                                    required placeholder="" required="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Mã bảo vệ (*):</label>
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <input type="text" class="form-control c-square" id="captcha" name="captcha"
+                                        placeholder="Mã bảo vệ" maxlength="3" autocomplete="off" required="">
+                                    <span class="input-group-addon" style="padding: 1px;">
+                                        <img src="https://nick.vn/captcha/flat?EzXp0cNS" height="30px" id="imgcaptcha"
+                                            onclick="document.getElementById('imgcaptcha').src ='https://nick.vn/captcha/flat?oiBXvhEa'+Math.random();document.getElementById('captcha').focus();">
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group c-margin-t-40">
+                            <div class="col-md-offset-3 col-md-6">
+                                <button type="submit"
+                                    class="btn btn-submit c-theme-btn c-btn-square c-btn-uppercase c-btn-bold btn-block"
+                                    data-loading-text="<i class='fa fa-spinner fa-spin '></i>">Nạp
+                                    thẻ
+                                </button>
+                                <script>
+                                    $(".form-charge").submit(function () {
+                                        $('.btn-submit').button('loading');
+                                    });
+                                </script>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="alert alert-info">
+                        <p><span style="color:#e74c3c"><strong>LƯU &Yacute; : Chọn Đ&uacute;ng Mệnh Gi&aacute; Thẻ .
+                                    Chọn Sai Mệnh Gi&aacute;&nbsp;Thẻ&nbsp;Bị Trừ 100% Kh&ocirc;ng Được Ho&agrave;n
+                                    Tiền.</strong></span></p>
+                        <p>Nạp bằng ATM - V&iacute; Điện Tử tỷ lệ 1 :1</p>
+                    </div>
+
+                    <table id="hand_card_recent" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Thời gian</th>
+                                <th>Nhà mạng</th>
+                                <th>Mã thẻ</th>
+                                <th>Serial</th>
+                                <th>Kiểu nạp</th>
+                                <th>Mệnh giá</th>
+                                <th>Kết quả</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="7">Không có dữ liệu</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <script>
+                GetAmount();
+                $("#type").on('change', function () {
+
+                    GetAmount();
+
+                });
+                function GetAmount() {
+
+                    var telecom_key = $("#type").val();
+
+
+                    var getamount = $.get("/nap-the/get-auto-amount?telecom_key=" + telecom_key, function (data, status) {
+
+                        $("#amount").find('option').remove();
+                        $("#amount").html(data).val($("#amount option:first").val());;
+
+                    }).done(function () {
+
+                    }).fail(function () {
+
+                        alert("Không tìm thấy mệnh giá phù hợp");
+                    })
+                }
+            </script>
+        </div>
+
+    </div>
+
+    <!-- END: PAGE CONTENT -->
+
+    <!-- END: PAGE CONTAINER -->
+</div>
