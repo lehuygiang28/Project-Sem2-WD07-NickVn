@@ -23,13 +23,14 @@ namespace Project_Sem2_WD07_NickVn.Models
         public virtual DbSet<Oder> Oders { get; set; } = null!;
         public virtual DbSet<ProductCategory> ProductCategories { get; set; } = null!;
         public virtual DbSet<Role> Roles { get; set; } = null!;
+        public virtual DbSet<TheNapDatum> TheNapData { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseMySql("name=ConnectionStrings:NickVn_Project", Microsoft.EntityFrameworkCore.ServerVersion.Parse("10.4.22-mariadb"));
+                optionsBuilder.UseMySql("name=ConnectionStrings:NickVn_Project", Microsoft.EntityFrameworkCore.ServerVersion.Parse("10.4.24-mariadb"));
             }
         }
 
@@ -276,6 +277,39 @@ namespace Project_Sem2_WD07_NickVn.Models
                 entity.Property(e => e.RoleNameEn)
                     .HasColumnType("text")
                     .HasColumnName("role_name_en");
+            });
+
+            modelBuilder.Entity<TheNapDatum>(entity =>
+            {
+                entity.ToTable("the_nap_data");
+
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
+
+                entity.Property(e => e.Amount).HasColumnType("int(11)");
+
+                entity.Property(e => e.CreateAt)
+                    .HasColumnType("datetime")
+                    .HasColumnName("create_at");
+
+                entity.Property(e => e.IsUse).HasColumnName("is_use");
+
+                entity.Property(e => e.Pin)
+                    .HasColumnType("text")
+                    .HasColumnName("pin");
+
+                entity.Property(e => e.Serial)
+                    .HasColumnType("text")
+                    .HasColumnName("serial");
+
+                entity.Property(e => e.TelecomName)
+                    .HasColumnType("text")
+                    .HasColumnName("telecom_name");
+
+                entity.Property(e => e.UpdateAt)
+                    .HasColumnType("datetime")
+                    .HasColumnName("update_at");
             });
 
             modelBuilder.Entity<User>(entity =>
