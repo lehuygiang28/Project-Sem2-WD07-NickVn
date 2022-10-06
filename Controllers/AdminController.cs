@@ -15,7 +15,7 @@ public class AdminController : Controller
     private const string HostName = "GoogleReCaptcha";
     private const string NotLogin = null;
     private readonly IWebHostEnvironment _hostEnvironment;
-    private const int DISABLE_DELETE = 0;
+    private const int DISABLE_OR_DELETE = 0;
 
     public AdminController(ILogger<AdminController> logger, NickVn_ProjectContext context, IWebHostEnvironment hostEnvironment)
     {
@@ -229,7 +229,7 @@ public class AdminController : Controller
         }
 
         var find = await _context.Categories.Where(c => c.Id == id).FirstAsync();
-        find.Status = DISABLE_DELETE;
+        find.Status = DISABLE_OR_DELETE;
 
         _context.Categories.Update(find);
         await _context.SaveChangesAsync();
