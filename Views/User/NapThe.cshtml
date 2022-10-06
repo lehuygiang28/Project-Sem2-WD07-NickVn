@@ -1,7 +1,8 @@
 @{
-    ViewData["Title"] = "Đổi Mật Khẩu";
+    ViewData["Title"] = "Nạp thẻ tự động";
 }
 
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
 <!-- BEGIN: PAGE CONTAINER -->
 <div class="c-layout-page">
@@ -62,21 +63,35 @@
                         <h3 class="c-font-uppercase c-font-bold">Nạp thẻ</h3>
                         <div class="c-line-left"></div>
                     </div>
-                    <p style="text-align: center;color: red">*Chú ý: Nạp thẻ sai mệnh giá mất 100% giá trị thẻ</p>
-                    <form method="POST" action="https://nick.vn/nap-the" accept-charset="UTF-8"
-                        class="form-horizontal form-charge"><input name="_token" type="hidden"
-                            value="i2DZIc8KasifWRE1lGvZQgl2neQepDINJL5tFmIl">
+                    <p style="text-align: center;color: red">*Chú ý: Nạp thẻ sai mệnh giá mất 60% giá trị thẻ</p>
+                    <form asp-action="NapTheSolve" asp-controller="User" accept-charset="UTF-8"
+                        class="form-horizontal form-charge">
+                        @if (TempData["error"] != null)
+                        {
+                            <div class="alert alert-danger alert-dismissible" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                                    aria-hidden="true">×</span></button>@TempData["error"]
+                            </div>
+                        }
+                        if (TempData["success"] != null)
+                        {
+                            <div class="alert alert-success alert-dismissible" role="alert" style="color: #3c763d;background-color: #dff0d8;border-color: #d6e9c6;">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                                    aria-hidden="true">×</span></button>@TempData["success"]
+                            </div>
+                        }
                         <div class="form-group">
+                            <input type="hidden" name="id" value='@Context.Session.GetInt32("_Id")'>
                             <label class="col-md-3 control-label">Tài khoản:</label>
                             <div class="col-md-6">
-                                <input class="form-control  c-square c-theme" type="text" value="mailgenshin044"
-                                    readonly>
+                                <input class="form-control  c-square c-theme" type="text" name="UserName"
+                                    value='@Context.Session.GetString("_Name")' readonly>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-3 control-label">Loại thẻ:</label>
                             <div class="col-md-6">
-                                <select class="form-control  c-square c-theme" name="type" id="type">
+                                <select class="form-control  c-square c-theme" name="telecom" id="type">
                                     <option value="VIETTEL">VIETTEL</option>
                                     <option value="MOBIFONE">MOBIFONE</option>
                                     <option value="VINAPHONE">VINAPHONE</option>
@@ -92,6 +107,7 @@
                             <label class="col-md-3 control-label">Mệnh giá:</label>
                             <div class="col-md-6">
                                 <select class="form-control  c-square c-theme" name="amount" id="amount" required>
+                                    <option value="">---Chọn Mệnh Giá---</option>
                                 </select>
 
                             </div>
@@ -110,39 +126,50 @@
                                     required placeholder="" required="">
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group text-center">
+                            <label class="col-md-3"></label>
+                            <div class="g-recaptcha col-md-6" data-sitekey='@TempData["siteKey"]'></div>
+                        </div>
+                        @* <div class="form-group">
                             <label class="col-md-3 control-label">Mã bảo vệ (*):</label>
                             <div class="col-md-6">
-                                <div class="input-group">
-                                    <input type="text" class="form-control c-square" id="captcha" name="captcha"
-                                        placeholder="Mã bảo vệ" maxlength="3" autocomplete="off" required="">
-                                    <span class="input-group-addon" style="padding: 1px;">
-                                        <img src="https://nick.vn/captcha/flat?EzXp0cNS" height="30px" id="imgcaptcha"
-                                            onclick="document.getElementById('imgcaptcha').src ='https://nick.vn/captcha/flat?oiBXvhEa'+Math.random();document.getElementById('captcha').focus();">
-                                    </span>
-                                </div>
+                            <div class="input-group">
+                            <input type="text" class="form-control c-square" id="captcha" name="captcha"
+                            placeholder="Mã bảo vệ" maxlength="3" autocomplete="off" required="">
+                            <span class="input-group-addon" style="padding: 1px;">
+                            <img src="https://nick.vn/captcha/flat?EzXp0cNS" height="30px" id="imgcaptcha"
+                            onclick="document.getElementById('imgcaptcha').src
+                            ='https://nick.vn/captcha/flat?oiBXvhEa'+Math.random();document.getElementById('captcha').focus();">
+                            </span>
                             </div>
-                        </div>
+                            </div>
+                            </div> *@
+                            @* <i class="fas fa-spinner fa-spin"></i> *@
+                            @{
+                                string spiner = @"<i class='fa fa-refresh fa-spin'></i>";
+                            }
                         <div class="form-group c-margin-t-40">
                             <div class="col-md-offset-3 col-md-6">
                                 <button type="submit"
                                     class="btn btn-submit c-theme-btn c-btn-square c-btn-uppercase c-btn-bold btn-block"
-                                    data-loading-text="<i class='fa fa-spinner fa-spin '></i>">Nạp
-                                    thẻ
+                                    data-loading-text="<i class='fa fa-refresh fa-spin'></i>">
+                                    Nạp thẻ
                                 </button>
                                 <script>
                                     $(".form-charge").submit(function () {
                                         $('.btn-submit').button('loading');
                                     });
+                                    
+                                    @* $(".form-charge").submit(function () {
+                                        $('.btn-submit').html('<i class="fa fa-spiner fa-spin"></i>');
+                                    }); *@
                                 </script>
                             </div>
                         </div>
                     </form>
                     <div class="alert alert-info">
-                        <p><span style="color:#e74c3c"><strong>LƯU &Yacute; : Chọn Đ&uacute;ng Mệnh Gi&aacute; Thẻ .
-                                    Chọn Sai Mệnh Gi&aacute;&nbsp;Thẻ&nbsp;Bị Trừ 100% Kh&ocirc;ng Được Ho&agrave;n
-                                    Tiền.</strong></span></p>
-                        <p>Nạp bằng ATM - V&iacute; Điện Tử tỷ lệ 1 :1</p>
+                        <p><span style="color:#e74c3c"><strong>LƯU Ý : Chọn Đúng Mệnh Giá Thẻ. Chọn Sai Mệnh Giá Thẻ Bị Trừ 60% Không Được Hoàn Tiền.</strong></span></p>
+                        <p>Nạp bằng ATM - Ví Điện Tử tỷ lệ 1:1</p>
                     </div>
 
                     <table id="hand_card_recent" class="table table-striped">
@@ -167,7 +194,8 @@
             </div>
 
             <script>
-                GetAmount();
+                @* Lay menh gia the *@
+                    GetAmount();
                 $("#type").on('change', function () {
 
                     GetAmount();
@@ -177,18 +205,17 @@
 
                     var telecom_key = $("#type").val();
 
+                    var getamount = $.get("/User/LayMenhGiaThe?telecom_key=" + telecom_key,
+                        function (data, status) {
+                            $("#amount").find('option').remove();
+                            $("#amount").html(data).val($("#amount option:first").val());;
 
-                    var getamount = $.get("/nap-the/get-auto-amount?telecom_key=" + telecom_key, function (data, status) {
+                        }).done(function () {
 
-                        $("#amount").find('option').remove();
-                        $("#amount").html(data).val($("#amount option:first").val());;
+                        }).fail(function () {
 
-                    }).done(function () {
-
-                    }).fail(function () {
-
-                        alert("Không tìm thấy mệnh giá phù hợp");
-                    })
+                            alert("Không tìm thấy mệnh giá phù hợp");
+                        })
                 }
             </script>
         </div>
