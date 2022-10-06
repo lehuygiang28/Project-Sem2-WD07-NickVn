@@ -73,7 +73,7 @@
                                     aria-hidden="true">×</span></button>@TempData["error"]
                             </div>
                         }
-                        if (TempData["success"] != null)
+                        @if (TempData["success"] != null)
                         {
                             <div class="alert alert-success alert-dismissible" role="alert" style="color: #3c763d;background-color: #dff0d8;border-color: #d6e9c6;">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
@@ -145,14 +145,11 @@
                             </div>
                             </div> *@
                             @* <i class="fas fa-spinner fa-spin"></i> *@
-                            @{
-                                string spiner = @"<i class='fa fa-refresh fa-spin'></i>";
-                            }
                         <div class="form-group c-margin-t-40">
                             <div class="col-md-offset-3 col-md-6">
                                 <button type="submit"
                                     class="btn btn-submit c-theme-btn c-btn-square c-btn-uppercase c-btn-bold btn-block"
-                                    data-loading-text="<i class='fa fa-refresh fa-spin'></i>">
+                                    data-loading-text='<i class="fa fa-spinner fa-spin"></i>'>
                                     Nạp thẻ
                                 </button>
                                 <script>

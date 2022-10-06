@@ -24,7 +24,7 @@ public class UserController : Controller
     private async Task RenewUserInformation()
     {
         var user = await _context.Users.Where(u => u.Id == HttpContext.Session.GetInt32(SessionKeyId)).FirstAsync();
-        if(user != null)
+        if (user != null)
         {
             HttpContext.Session.SetInt32(SessionKeyMoney, Convert.ToInt32(user.Money));
         }
@@ -39,6 +39,118 @@ public class UserController : Controller
         }
         await RenewUserInformation();
         return true;
+    }
+
+    public string? LayMenhGiaThe(string telecom_key)
+    {
+        string? htmlMenhGia = "";
+
+        string gia10k = @"<option value='10000'>10.000 ₫</option>";
+        string gia20k = @"<option value='20000'>20.000 ₫</option>";
+        string gia30k = @"<option value='30000'>30.000 ₫</option>";
+        string gia50k = @"<option value='50000'>50.000 ₫</option>";
+        string gia100k = @"<option value='100000'>100.000 ₫</option>";
+        string gia200k = @"<option value='200000'>200.000 ₫</option>";
+        string gia300k = @"<option value='300000'>300.000 ₫</option>";
+        string gia500k = @"<option value='500000'>500.000 ₫</option>";
+        string gia1000k = @"<option value='1000000'>1.000.000 ₫</option>";
+
+        switch (telecom_key)
+        {
+            case "VIETTEL":
+            case "ZING":
+            case "GATE":
+            case "VCOIN":
+                htmlMenhGia = gia10k + gia20k + gia30k + gia50k + gia100k + gia200k + gia300k + gia500k + gia1000k;
+                break;
+            case "MOBIFONE":
+            case "VINAPHONE":
+                htmlMenhGia = gia10k + gia20k + gia30k + gia50k + gia100k + gia200k + gia300k + gia500k;
+                break;
+            case "VIETNAMMOBILE":
+                htmlMenhGia = gia10k + gia20k + gia50k + gia100k + gia200k + gia300k + gia500k;
+                break;
+            case "GARENA":
+                htmlMenhGia = gia20k + gia50k + gia100k + gia200k + gia500k;
+                break;
+            default:
+                htmlMenhGia = null;
+                break;
+        }
+
+        return htmlMenhGia;
+    }
+
+    public async Task<IActionResult> NapTheSolve(int? id, string? UserName, string? telecom, decimal? amount, string? pin, string? serial)
+    {
+        System.Console.WriteLine($"Telecom: {telecom} - Amount: {amount}\nPin: {pin} - Serial: {serial}");
+        var SecretKey = (await _context.Googlerecaptchas.Where(a => a.HostName == HostName).FirstAsync()).SecretKey;
+        if (!await RecaptchaServices.Validate(Request, SecretKey))
+        {
+            _logger.LogInformation("Captcha Validate: FALSE");
+            ModelState.AddModelError(string.Empty, "Xác minh bạn không phải là robot");
+            // ViewBag.Error = "Xác minh bạn không phải là robot";
+            TempData["error"] = "Xác minh bạn không phải là robot";
+            return RedirectToAction(nameof(NapThe));
+        }
+        else
+        {
+            _logger.LogInformation("Captcha Validate: TRUE");
+        }
+
+        var napthe = await _context.TheNapData.Where(t => t.TelecomName == telecom && t.Pin == pin && t.Serial == serial && t.IsUse == false).FirstAsync();
+
+        if (amount == null)
+        {
+            TempData["error"] = "Hãy chọn mệnh giá thẻ!";
+            return RedirectToAction(nameof(NapThe));
+        }
+
+        if (napthe == null)
+        {
+            TempData["error"] = "Thông tin thẻ không chính xác! Vui lòng thử lại.";
+            return RedirectToAction(nameof(NapThe));
+        }
+
+        if (id == null && UserName == null)
+        {
+            TempData["error"] = "Có lỗi xảy ra! Hãy đăng nhập và thử lại!";
+            return RedirectToAction(nameof(NapThe));
+        }
+
+        var user = await _context.Users.Where(u => u.Id == id && u.UserName == UserName).FirstAsync();
+        if (user == null)
+        {
+            TempData["error"] = "Có lỗi xảy ra! Hãy đăng nhập và thử lại!";
+            return RedirectToAction(nameof(NapThe));
+        }
+
+        if(napthe.Amount != amount)
+        {
+            amount = napthe.Amount / 100 * 40;
+            TempData["error"] = "Chọn sai mệnh giá thẻ, bị trừ 60% giá trị thẻ. Bạn nhận được " + amount;
+            System.Console.WriteLine(amount);
+        }
+
+        user.Money += (decimal)amount;
+        _context.Users.Update(user);
+        await _context.SaveChangesAsync();
+        TempData["success"] = "Nạp thẻ thành công!";
+
+        HttpContext.Session.SetInt32(SessionKeyMoney, (int)user.Money);
+        _logger.LogInformation($"Update user session money\nID: {user.Id} - Money: {user.Money} - Time: {DateTime.Now}");
+
+        return RedirectToAction(nameof(NapThe));
+    }
+
+    public async Task<IActionResult> NapThe()
+    {
+        if (!await IsLogin())
+        {
+            return RedirectToAction(nameof(Login));
+        }
+        TempData["siteKey"] = (await _context.Googlerecaptchas.Where(i => i.Id == 1).FirstAsync()).SiteKey;
+        return View();
     }
 
     public async Task<IActionResult> Account()

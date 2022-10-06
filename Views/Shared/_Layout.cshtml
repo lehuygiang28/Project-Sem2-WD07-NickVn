@@ -40,7 +40,7 @@
 }
 
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 
 <head>
 
@@ -51,7 +51,6 @@
     <meta name="keywords"
         content="Web mua bán nick game, Web mua bán Acc Game, Shop mua bán Nick game,  Ngọc rồng - nro, ninja school - nso, avatar, Hải Tặc - HTTH, Làng Lá - LLPLK, Liên Quân - LQM, Liên Minh - LMHT - LOL , Đột kích - CF, Truy Kích, Army 2, Hiệp Sĩ - HSO, nick vip, giá rẻ , uy tín">
     <link rel="shortcut icon" href="~/favicon.ico" type="image/x-icon">
-    <!-- <meta property="og:image" content="https://nick.vn/assets/frontend/images/image-share.jpg" /> -->
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1.0, user-scalable=no" name="viewport" />
@@ -59,7 +58,7 @@
 
 
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
-    <meta name="csrf-token" content="BttyiGSU3gNxJeCfYHqG7i5bEDxAlWNXl0BDc4R6">
+    @* <meta name="csrf-token" content="BttyiGSU3gNxJeCfYHqG7i5bEDxAlWNXl0BDc4R6"> *@
     <link
         href='https://fonts.googleapis.com/css?family=Roboto+Condensed:300italic,400italic,700italic,400,300,700&amp;subset=all'
         rel='stylesheet' type='text/css'>
@@ -234,8 +233,9 @@
                             <li class="c-menu-type-classic"><a rel="" href="#" class="c-link dropdown-toggle ">Nạp
                                     tiền<span class="c-arrow c-toggler"></span></a>
                                 <ul id="children-of-41" class="dropdown-menu c-menu-type-classic c-pull-left ">
-                                    <li class="c-menu-type-classic"><a rel="" href="#" class="">Nạp thẻ
-                                            c&agrave;o</a></li>
+                                    <li class="c-menu-type-classic">
+                                        <a rel="" asp-action="NapThe" asp-controller="User" class="">Nạp thẻ cào</a>
+                                    </li>
                                     <li class="c-menu-type-classic"><a rel="" href="#" class="">Nạp ATM tự
                                             động</a></li>
                                     <li class="c-menu-type-classic"><a target='_blank' rel=""
