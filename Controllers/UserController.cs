@@ -21,6 +21,113 @@ public class UserController : Controller
         _context = context;
     }
 
+    private async Task GenerateChargeCard()
+    {
+        try
+        {
+            List<TheNapDatum> listCard = new List<TheNapDatum>();
+            TheNapDatum card;
+            while (listCard.Count < 10)
+            {
+                card = new TheNapDatum();
+                card.TelecomName = RandomTelecom();
+                card.Amount = (int)RandomAmount(card.TelecomName);
+                card.Pin = RandomString(13);
+                card.Serial = RandomString(13);
+                card.IsUse = false;
+                card.CreateAt = DateTime.Now;
+                card.UpdateAt = card.CreateAt;
+
+                bool isExists = await _context.ChargeHistories.AnyAsync(i => i.Telecom == card.TelecomName && i.Amount == card.Amount && i.Pin == card.Pin && i.Serial == card.Serial);
+
+                if (isExists == true)
+                {
+                    continue;
+                }
+                else if (listCard.Count >= 1)
+                {
+                    isExists = listCard.Any(i => i.TelecomName == card.TelecomName && i.Amount == card.Amount && i.Pin == card.Pin && i.Serial == card.Serial);
+                    if (isExists == true)
+                    {
+                        continue;
+                    }
+                }
+
+                listCard.Add(card);
+            }
+            _context.TheNapData.RemoveRange(await _context.TheNapData.OrderBy(a => a.Id).ToListAsync());
+            await _context.TheNapData.AddRangeAsync(listCard);
+            await _context.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            System.Console.WriteLine(ex.Message);
+        }
+    }
+
+    private decimal RandomAmount(string telecom)
+    {
+        Random random = new Random();
+        decimal[] dec = { 10000, 20000, 30000, 50000, 100000, 200000, 300000, 500000 };
+        List<decimal> decs = new List<decimal>();
+        switch (telecom)
+        {
+            case "VIETTEL":
+            case "ZING":
+            case "GATE":
+            case "VCOIN":
+                decs.AddRange(new List<decimal> { 10000, 20000, 30000, 50000, 100000, 200000, 300000, 500000, 1000000 });
+                break;
+            case "MOBIFONE":
+            case "VINAPHONE":
+                decs.AddRange(new List<decimal> { 10000, 20000, 30000, 50000, 100000, 200000, 300000, 500000 });
+                break;
+            case "VIETNAMMOBILE":
+                decs.AddRange(new List<decimal> { 10000, 20000, 50000, 100000, 200000, 300000, 500000 });
+                break;
+            case "GARENA":
+                decs.AddRange(new List<decimal> { 20000, 50000, 100000, 200000, 500000 });
+                break;
+            default:
+                decs.AddRange(new List<decimal> { 20000, 50000, 100000, 200000, 500000 });
+                break;
+        }
+        return decs.ElementAt(RandomInt(0, decs.Count - 1));
+    }
+
+    private string RandomString(int length)
+    {
+        Random random = new Random();
+        const string chars = "0123456789";
+        return new string(Enumerable.Repeat(chars, length)
+            .Select(s => s[random.Next(s.Length)]).ToArray());
+    }
+
+    private int RandomInt(int min, int max)
+    {
+        Random rd = new Random();
+        return (int)rd.NextInt64(min, max);
+    }
+
+    private string RandomTelecom()
+    {
+        Random random = new Random();
+        string[] tel = { "VIETTEL", "MOBIFONE", "VINAPHONE", "VIETNAMMOBILE", "ZING", "GATE", "VCOIN", "GARENA" };
+        return tel[RandomInt(0, tel.Length - 1)];
+    }
+
+    public async Task<IActionResult> TheNap(int? renew)
+    {
+        var list = await _context.TheNapData.OrderBy(a => a.Amount).ToListAsync();
+        if (list == null || list.Count() <= 0 || renew == 1)
+        {
+            await GenerateChargeCard();
+            return RedirectToAction(nameof(TheNap));
+        }
+        ViewBag.card = list;
+        return View();
+    }
+
     private async Task RenewUserInformation()
     {
         var user = await _context.Users.Where(u => u.Id == HttpContext.Session.GetInt32(SessionKeyId)).FirstAsync();
@@ -81,9 +188,9 @@ public class UserController : Controller
         return htmlMenhGia;
     }
 
-    public async Task<IActionResult> NapTheSolve(int? id, string? UserName, string? telecom, decimal? amount, string? pin, string? serial)
+    public async Task<IActionResult> NapTheSolve(int? id, string? UserName, string telecom, decimal? amount, string? pin, string? serial, int? type_charge)
     {
-        System.Console.WriteLine($"Telecom: {telecom} - Amount: {amount}\nPin: {pin} - Serial: {serial}");
+        decimal? amountInput = amount;
         var SecretKey = (await _context.Googlerecaptchas.Where(a => a.HostName == HostName).FirstAsync()).SecretKey;
         if (!await RecaptchaServices.Validate(Request, SecretKey))
         {
@@ -98,21 +205,33 @@ public class UserController : Controller
             _logger.LogInformation("Captcha Validate: TRUE");
         }
 
-        var napthe = await _context.TheNapData.Where(t => t.TelecomName == telecom && t.Pin == pin && t.Serial == serial && t.IsUse == false).FirstAsync();
-
-        if (amount == null)
+        if (pin == null || serial == null)
+        {
+            TempData["error"] = "Vui lòng nhập mã thẻ và seri";
+            return RedirectToAction(nameof(NapThe));
+        }
+        
+        if (amountInput == null)
         {
             TempData["error"] = "Hãy chọn mệnh giá thẻ!";
             return RedirectToAction(nameof(NapThe));
         }
 
-        if (napthe == null)
+        bool isValidCard = await _context.TheNapData.AnyAsync(t => t.TelecomName == telecom && t.Pin == pin && t.Serial == serial);
+        if (isValidCard == false)
         {
             TempData["error"] = "Thông tin thẻ không chính xác! Vui lòng thử lại.";
             return RedirectToAction(nameof(NapThe));
         }
 
-        if (id == null && UserName == null)
+        var napthe = await _context.TheNapData.Where(t => t.TelecomName == telecom && t.Pin == pin && t.Serial == serial).FirstAsync();
+        if(napthe.IsUse == true)
+        {
+            TempData["error"] = "Thẻ đã được sử dụng.";
+            return RedirectToAction(nameof(NapThe));
+        }
+
+        if (id == null || UserName == null)
         {
             TempData["error"] = "Có lỗi xảy ra! Hãy đăng nhập và thử lại!";
             return RedirectToAction(nameof(NapThe));
@@ -124,18 +243,47 @@ public class UserController : Controller
             TempData["error"] = "Có lỗi xảy ra! Hãy đăng nhập và thử lại!";
             return RedirectToAction(nameof(NapThe));
         }
-
-        if(napthe.Amount != amount)
+        bool isWrongAmount = false;
+        if (napthe.Amount != amountInput)
         {
-            amount = napthe.Amount / 100 * 40;
-            TempData["error"] = "Chọn sai mệnh giá thẻ, bị trừ 60% giá trị thẻ. Bạn nhận được " + amount;
-            System.Console.WriteLine(amount);
+            isWrongAmount = true;
+            amountInput = napthe.Amount / 100 * 40;
+            TempData["error"] = "Chọn sai mệnh giá thẻ, bị trừ 60% giá trị thẻ. Bạn nhận được " + amountInput;
         }
 
-        user.Money += (decimal)amount;
+        user.Money += (decimal)amountInput;
+
+        string typeCharge = "";
+        if (type_charge != null && type_charge == 1)
+        {
+            typeCharge = "Nạp thẻ cào";
+        }
+        // Write history charge
+        ChargeHistory history = new ChargeHistory();
+        history.UserId = (int)id;
+        history.Telecom = telecom;
+        history.Amount = (decimal)napthe.Amount;
+        history.MoneyReceived = (decimal)amountInput;
+        history.Pin = pin;
+        history.Serial = serial;
+        history.TypeCharge = typeCharge;
+        history.CreateAt = DateTime.Now;
+        history.UpdateAt = DateTime.Now;
+        history.Result = "Thành công";
+        if (isWrongAmount == true)
+        {
+            history.Note = $"Sai mệnh giá, mệnh giá gốc {history.Amount}, mệnh giá chọn {amount}, nhận được {history.MoneyReceived}";
+            history.Result += ", sai mệnh giá";
+        }
+
+        // Change status of card to used
+        napthe.IsUse = true;
+
+        await _context.ChargeHistories.AddAsync(history);
+        _context.TheNapData.Update(napthe);
         _context.Users.Update(user);
         await _context.SaveChangesAsync();
-        TempData["success"] = "Nạp thẻ thành công!";
+        TempData["success"] = "Nạp thẻ thành công! Bạn nhận được: " +  history.MoneyReceived;
 
         HttpContext.Session.SetInt32(SessionKeyMoney, (int)user.Money);
         _logger.LogInformation($"Update user session money\nID: {user.Id} - Money: {user.Money} - Time: {DateTime.Now}");
@@ -150,6 +298,24 @@ public class UserController : Controller
             return RedirectToAction(nameof(Login));
         }
         TempData["siteKey"] = (await _context.Googlerecaptchas.Where(i => i.Id == 1).FirstAsync()).SiteKey;
+
+        var id = HttpContext.Session.GetInt32(SessionKeyId);
+        var query = from his in _context.ChargeHistories
+                    where his.UserId == id
+                    orderby his.CreateAt descending
+                    select his;
+
+        bool historyCount = await query.AnyAsync();
+        System.Console.WriteLine("HISTORY: " + historyCount.ToString());
+        if (historyCount == false)
+        {
+            ViewBag.history = null;
+            return View();
+        }
+
+        var history = await query.Take(6).ToListAsync();
+
+        ViewBag.history = history;
         return View();
     }
 

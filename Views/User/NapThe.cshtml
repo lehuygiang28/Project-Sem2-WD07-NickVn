@@ -1,5 +1,15 @@
 @{
     ViewData["Title"] = "Nạp thẻ tự động";
+    var his = ViewBag.history;
+    List<ChargeHistory> listHistory;
+    if (his is List<ChargeHistory>)
+    {
+        listHistory = (List<ChargeHistory>)his;
+    }
+    else
+    {
+        listHistory = new List<ChargeHistory>();
+    }
 }
 
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
@@ -75,13 +85,15 @@
                         }
                         @if (TempData["success"] != null)
                         {
-                            <div class="alert alert-success alert-dismissible" role="alert" style="color: #3c763d;background-color: #dff0d8;border-color: #d6e9c6;">
+                            <div class="alert alert-success alert-dismissible" role="alert"
+                            style="color: #3c763d;background-color: #dff0d8;border-color: #d6e9c6;">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
                                     aria-hidden="true">×</span></button>@TempData["success"]
                             </div>
                         }
                         <div class="form-group">
                             <input type="hidden" name="id" value='@Context.Session.GetInt32("_Id")'>
+                            <input type="hidden" name="type_charge" value="1">
                             <label class="col-md-3 control-label">Tài khoản:</label>
                             <div class="col-md-6">
                                 <input class="form-control  c-square c-theme" type="text" name="UserName"
@@ -144,7 +156,7 @@
                             </div>
                             </div>
                             </div> *@
-                            @* <i class="fas fa-spinner fa-spin"></i> *@
+                        @* <i class="fas fa-spinner fa-spin"></i> *@
                         <div class="form-group c-margin-t-40">
                             <div class="col-md-offset-3 col-md-6">
                                 <button type="submit"
@@ -156,17 +168,20 @@
                                     $(".form-charge").submit(function () {
                                         $('.btn-submit').button('loading');
                                     });
-                                    
+
                                     @* $(".form-charge").submit(function () {
                                         $('.btn-submit').html('<i class="fa fa-spiner fa-spin"></i>');
-                                    }); *@
+                                        }); *@
                                 </script>
                             </div>
                         </div>
                     </form>
                     <div class="alert alert-info">
-                        <p><span style="color:#e74c3c"><strong>LƯU Ý : Chọn Đúng Mệnh Giá Thẻ. Chọn Sai Mệnh Giá Thẻ Bị Trừ 60% Không Được Hoàn Tiền.</strong></span></p>
-                        <p>Nạp bằng ATM - Ví Điện Tử tỷ lệ 1:1</p>
+                        <p><span class="text-danger"><strong>LƯU Ý : Chọn Đúng Mệnh Giá Thẻ. Chọn Sai Mệnh Giá Thẻ Bị
+                                    Trừ 60% Không Được Hoàn Tiền.</strong></span></p>
+                        <p>Nạp bằng ATM - Ví Điện Tử tỷ lệ 1:1</p><br>
+                        <a class="text-info" asp-action="TheNap" asp-controller="User" target="_blank">Bấm để lấy thẻ
+                            nạp!<span class="text-danger">(Click)</span></a>
                     </div>
 
                     <table id="hand_card_recent" class="table table-striped">
@@ -182,9 +197,30 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td colspan="7">Không có dữ liệu</td>
-                            </tr>
+                            @{
+                                if (listHistory.Count() <= 0)
+                                {
+                                    <tr>
+                                        <td colspan="7">Không có dữ liệu</td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    foreach (var h in listHistory)
+                                    {
+                                        <tr>
+                                            <td>@h.CreateAt.ToString("dd/MM/yyyy")</td>
+                                            <td>@h.Telecom</td>
+                                            <td>@h.Pin</td>
+                                            <td>@h.Serial</td>
+                                            <td>@h.TypeCharge</td>
+                                            <td>@h.Amount</td>
+                                            <td>@h.Result</td>
+                                        </tr>
+
+                                    }
+                                }
+                            }
                         </tbody>
                     </table>
                 </div>
