@@ -109,3 +109,42 @@ VALUES ('20221005051456_Init_Migration', '6.0.5');
 
 COMMIT;
 
+START TRANSACTION;
+
+ALTER TABLE `users` MODIFY COLUMN `money` decimal(10) NOT NULL;
+
+ALTER TABLE `lienminh` MODIFY COLUMN `price_atm` decimal(10) NOT NULL;
+
+CREATE TABLE `charge_history` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `user_id` int(11) NOT NULL,
+    `telecom` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `pin` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `serial` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `type_charge` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `amount` decimal(11) NOT NULL,
+    `money_received` decimal(11) NOT NULL,
+    `note` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL,
+    `result` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `create_at` datetime NOT NULL,
+    `update_at` datetime NOT NULL,
+    CONSTRAINT `PK_charge_history` PRIMARY KEY (`id`)
+) CHARACTER SET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `the_nap_data` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `telecom_name` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `Amount` decimal(11) NOT NULL,
+    `pin` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `serial` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    `is_use` tinyint(1) NOT NULL,
+    `create_at` datetime NOT NULL,
+    `update_at` datetime NOT NULL,
+    CONSTRAINT `PK_the_nap_data` PRIMARY KEY (`id`)
+) CHARACTER SET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO `__EFMigrationsHistory` (`MigrationId`, `ProductVersion`)
+VALUES ('20221007200928_ChargeCard', '6.0.5');
+
+COMMIT;
+
