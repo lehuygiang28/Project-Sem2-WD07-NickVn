@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Project_Sem2_WD07_NickVn.Models;
 
@@ -10,9 +11,10 @@ using Project_Sem2_WD07_NickVn.Models;
 namespace Project_Sem2_WD07_NickVn.Migrations
 {
     [DbContext(typeof(NickVn_ProjectContext))]
-    partial class NickVn_ProjectContextModelSnapshot : ModelSnapshot
+    [Migration("20221007200928_ChargeCard")]
+    partial class ChargeCard
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
