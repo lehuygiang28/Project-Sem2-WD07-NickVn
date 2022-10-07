@@ -17,6 +17,7 @@ namespace Project_Sem2_WD07_NickVn.Models
         }
 
         public virtual DbSet<Category> Categories { get; set; } = null!;
+        public virtual DbSet<ChargeHistory> ChargeHistories { get; set; } = null!;
         public virtual DbSet<Googlerecaptcha> Googlerecaptchas { get; set; } = null!;
         public virtual DbSet<Image> Images { get; set; } = null!;
         public virtual DbSet<Lienminh> Lienminhs { get; set; } = null!;
@@ -80,6 +81,59 @@ namespace Project_Sem2_WD07_NickVn.Models
                 entity.Property(e => e.Total)
                     .HasColumnType("int(11)")
                     .HasColumnName("total");
+            });
+
+            modelBuilder.Entity<ChargeHistory>(entity =>
+            {
+                entity.ToTable("charge_history");
+
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
+
+                entity.Property(e => e.Amount)
+                    .HasPrecision(11)
+                    .HasColumnName("amount");
+
+                entity.Property(e => e.CreateAt)
+                    .HasColumnType("datetime")
+                    .HasColumnName("create_at");
+
+                entity.Property(e => e.MoneyReceived)
+                    .HasPrecision(11)
+                    .HasColumnName("money_received");
+
+                entity.Property(e => e.Note)
+                    .HasColumnType("text")
+                    .HasColumnName("note");
+
+                entity.Property(e => e.Pin)
+                    .HasColumnType("text")
+                    .HasColumnName("pin");
+
+                entity.Property(e => e.Result)
+                    .HasColumnType("text")
+                    .HasColumnName("result");
+
+                entity.Property(e => e.Serial)
+                    .HasColumnType("text")
+                    .HasColumnName("serial");
+
+                entity.Property(e => e.Telecom)
+                    .HasColumnType("text")
+                    .HasColumnName("telecom");
+
+                entity.Property(e => e.TypeCharge)
+                    .HasColumnType("text")
+                    .HasColumnName("type_charge");
+
+                entity.Property(e => e.UpdateAt)
+                    .HasColumnType("datetime")
+                    .HasColumnName("update_at");
+
+                entity.Property(e => e.UserId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("user_id");
             });
 
             modelBuilder.Entity<Googlerecaptcha>(entity =>
@@ -287,7 +341,7 @@ namespace Project_Sem2_WD07_NickVn.Models
                     .HasColumnType("int(11)")
                     .HasColumnName("id");
 
-                entity.Property(e => e.Amount).HasColumnType("int(11)");
+                entity.Property(e => e.Amount).HasPrecision(11);
 
                 entity.Property(e => e.CreateAt)
                     .HasColumnType("datetime")

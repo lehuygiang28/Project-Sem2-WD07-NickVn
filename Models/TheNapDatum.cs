@@ -7,7 +7,7 @@ namespace Project_Sem2_WD07_NickVn.Models
     {
         public int Id { get; set; }
         public string TelecomName { get; set; } = null!;
-        public int Amount { get; set; }
+        public decimal Amount { get; set; }
         public string Pin { get; set; } = null!;
         public string Serial { get; set; } = null!;
         public bool IsUse { get; set; }
