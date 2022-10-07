@@ -23,7 +23,7 @@ public class AdminController : Controller
         this._context = context;
         this._hostEnvironment = hostEnvironment;
     }
-    
+
     private string RandomString(int length)
     {
         Random random = new Random();
@@ -100,7 +100,7 @@ public class AdminController : Controller
             newProduct.PriceAtm = RandomDecimal(10000, int.MaxValue/100);
             newProduct.Champ = (int)RandomDecimal(1, 150);
             newProduct.Skin = (int)RandomDecimal(1, 555);
-            newProduct.Rank = rankRandomArray[random.Next(0, rankRandomArray.Length)];
+            newProduct.Rank = rankRandomArray[random.Next(0, rankRandomArray.Length-1)];
             newProduct.Status = "Trắng Thông Tin";
             newProduct.Note = 0;
             newProduct.ImgThumb = @"/storage/images/FSPfB05HiR_1632531414.jpg";
