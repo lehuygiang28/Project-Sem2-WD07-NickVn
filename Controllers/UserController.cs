@@ -21,6 +21,46 @@ public class UserController : Controller
         _context = context;
     }
 
+    public async Task<IActionResult> DepositHistory(int? page)
+    {
+        if(!await IsLogin())
+        {
+            return RedirectToAction(nameof(Login));
+        }
+
+        int userId = Convert.ToInt32(HttpContext.Session.GetInt32(SessionKeyId));
+        var query = from his in _context.ChargeHistories
+                    where his.UserId == userId
+                    orderby his.CreateAt descending
+                    select his;
+
+        if(page <= 0 || page == null)
+        {
+            page = 1;
+        }
+                    
+        // Max size of page is 8
+        int totalPage = 0;
+        int totalRecord = 0;
+        int pageSize = 8;
+
+        totalRecord = await query.CountAsync();
+        totalPage = (totalRecord / pageSize) + ((totalRecord % pageSize) > 0 ? 1 : 0);
+
+        var history = await query.Skip((Convert.ToInt32(page) - 1) * pageSize)
+                                .Take(pageSize).ToListAsync();
+
+
+        var hisALL = await query.ToListAsync();
+        System.Console.WriteLine($"Count all: {hisALL.Count}");
+
+        ViewBag.hisAll = hisALL;
+        ViewBag.history = history;
+        ViewBag.totalPage = totalPage;
+        ViewBag.currentPage = page;
+        return View();
+    }
+
     private async Task GenerateChargeCard()
     {
         try
