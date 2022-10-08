@@ -3,8 +3,8 @@
 ## Current features
 
 ### Member
-* Logging in
-* Signing up
+* Login
+* Register
 * Show product
 * Search product
 * Buy product
