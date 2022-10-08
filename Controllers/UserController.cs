@@ -190,6 +190,13 @@ public class UserController : Controller
 
     public async Task<IActionResult> NapTheSolve(int? id, string? UserName, string telecom, decimal? amount, string? pin, string? serial, int? type_charge)
     {
+        // If not login, return to login
+        if(!await IsLogin())
+        {
+            return RedirectToAction(nameof(Login));
+        }
+
+        // Check recaptcha, if invalid return msg
         decimal? amountInput = amount;
         var SecretKey = (await _context.Googlerecaptchas.Where(a => a.HostName == HostName).FirstAsync()).SecretKey;
         if (!await RecaptchaServices.Validate(Request, SecretKey))
@@ -205,44 +212,51 @@ public class UserController : Controller
             _logger.LogInformation("Captcha Validate: TRUE");
         }
 
-        if (pin == null || serial == null)
+        // Check if not input pin or serial, return msg
+        if (string.IsNullOrEmpty(pin) || string.IsNullOrEmpty(serial))
         {
             TempData["error"] = "Vui lòng nhập mã thẻ và seri";
             return RedirectToAction(nameof(NapThe));
         }
-        
+
         if (amountInput == null)
         {
             TempData["error"] = "Hãy chọn mệnh giá thẻ!";
             return RedirectToAction(nameof(NapThe));
         }
+        
+        // Check if user invalid (null), return msg
+        if (string.IsNullOrEmpty(id.ToString()) || string.IsNullOrEmpty(UserName))
+        {
+            TempData["error"] = "Có lỗi xảy ra! Hãy đăng nhập và thử lại!";
+            return RedirectToAction(nameof(NapThe));
+        }
 
-        bool isValidCard = await _context.TheNapData.AnyAsync(t => t.TelecomName == telecom && t.Pin == pin && t.Serial == serial);
-        if (isValidCard == false)
+        bool isFindCard = await _context.TheNapData.AnyAsync(t => t.TelecomName == telecom && t.Pin == pin && t.Serial == serial);
+        // If not find card in database, return msg
+        if (isFindCard == false)
         {
             TempData["error"] = "Thông tin thẻ không chính xác! Vui lòng thử lại.";
             return RedirectToAction(nameof(NapThe));
         }
 
         var napthe = await _context.TheNapData.Where(t => t.TelecomName == telecom && t.Pin == pin && t.Serial == serial).FirstAsync();
+        // If card was use, return msg error
         if(napthe.IsUse == true)
         {
             TempData["error"] = "Thẻ đã được sử dụng.";
             return RedirectToAction(nameof(NapThe));
         }
 
-        if (id == null || UserName == null)
-        {
-            TempData["error"] = "Có lỗi xảy ra! Hãy đăng nhập và thử lại!";
-            return RedirectToAction(nameof(NapThe));
-        }
-
+        // if not found user, return msg error
         var user = await _context.Users.Where(u => u.Id == id && u.UserName == UserName).FirstAsync();
         if (user == null)
         {
             TempData["error"] = "Có lỗi xảy ra! Hãy đăng nhập và thử lại!";
             return RedirectToAction(nameof(NapThe));
         }
+        
+        // Check if wrong amount seclected, send message and subtraction %
         bool isWrongAmount = false;
         if (napthe.Amount != amountInput)
         {
@@ -250,7 +264,6 @@ public class UserController : Controller
             amountInput = napthe.Amount / 100 * 40;
             TempData["error"] = "Chọn sai mệnh giá thẻ, bị trừ 60% giá trị thẻ. Bạn nhận được " + amountInput;
         }
-
         user.Money += (decimal)amountInput;
 
         string typeCharge = "";
@@ -258,12 +271,13 @@ public class UserController : Controller
         {
             typeCharge = "Nạp thẻ cào";
         }
+        
         // Write history charge
         ChargeHistory history = new ChargeHistory();
-        history.UserId = (int)id;
+        history.UserId = Convert.ToInt32(id);
         history.Telecom = telecom;
-        history.Amount = (decimal)napthe.Amount;
-        history.MoneyReceived = (decimal)amountInput;
+        history.Amount = Convert.ToDecimal(napthe.Amount);
+        history.MoneyReceived = Convert.ToDecimal(amountInput);
         history.Pin = pin;
         history.Serial = serial;
         history.TypeCharge = typeCharge;
@@ -279,12 +293,16 @@ public class UserController : Controller
         // Change status of card to used
         napthe.IsUse = true;
 
+        // Save history, update money of user, status card to used
         await _context.ChargeHistories.AddAsync(history);
         _context.TheNapData.Update(napthe);
         _context.Users.Update(user);
         await _context.SaveChangesAsync();
+
+        // Send message success to view
         TempData["success"] = "Nạp thẻ thành công! Bạn nhận được: " +  history.MoneyReceived;
 
+        // Update session value
         HttpContext.Session.SetInt32(SessionKeyMoney, (int)user.Money);
         _logger.LogInformation($"Update user session money\nID: {user.Id} - Money: {user.Money} - Time: {DateTime.Now}");
 
@@ -297,25 +315,26 @@ public class UserController : Controller
         {
             return RedirectToAction(nameof(Login));
         }
+        // Define site key of recaptcha
         TempData["siteKey"] = (await _context.Googlerecaptchas.Where(i => i.Id == 1).FirstAsync()).SiteKey;
 
+        // Define a query string
         var id = HttpContext.Session.GetInt32(SessionKeyId);
         var query = from his in _context.ChargeHistories
                     where his.UserId == id
                     orderby his.CreateAt descending
                     select his;
 
-        bool historyCount = await query.AnyAsync();
-        System.Console.WriteLine("HISTORY: " + historyCount.ToString());
-        if (historyCount == false)
+        // Query to database, if find display to view, otherwise return null
+        bool isAnyHistory = await query.AnyAsync();
+        if (isAnyHistory == false)
         {
             ViewBag.history = null;
             return View();
         }
-
         var history = await query.Take(6).ToListAsync();
-
         ViewBag.history = history;
+
         return View();
     }
 
@@ -345,8 +364,6 @@ public class UserController : Controller
         List<Lienminh> listProducts = new List<Lienminh>();
         foreach (Oder itemInList in listAccountId)
         {
-            System.Console.WriteLine("ID LIST: " + itemInList.ProductId);
-            System.Console.WriteLine("ID ");
             Lienminh item = await _context.Lienminhs.Where(o => o.Id == itemInList.ProductId).FirstAsync();
             await addList(item, listProducts);
         }
