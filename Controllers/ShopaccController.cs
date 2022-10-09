@@ -56,6 +56,7 @@ public class ShopaccController : Controller
         oderUser.OderId = maxOderId + 1;
         oderUser.UserId = userBuy.Id;
         oderUser.ProductId = lienMinhProduct.Id;
+        oderUser.Status = "Paid";
         oderUser.CreateAt = DateTime.Now;
         oderUser.UpdateAt = DateTime.Now;
 
@@ -70,6 +71,7 @@ public class ShopaccController : Controller
 
         await _context.SaveChangesAsync();
 
+        HttpContext.Session.SetInt32(UserController.SessionKeyMoney, (int)userBuy.Money);
 
         TempData["buy-success"] = "Mua thành công";
         return RedirectToAction(nameof(Index));
