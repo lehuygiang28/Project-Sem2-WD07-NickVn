@@ -1,74 +1,177 @@
 @{
     ViewData["Title"] = "Admin Panel";
+
+    var data = ViewData["listOderProd"];
+    List<Tuple<Oder, Lienminh>> listOderProduct;
+    if (data != null)
+    {
+        listOderProduct = (List<Tuple<Oder, Lienminh>>)data;
+        System.Console.WriteLine("Count in views: " + listOderProduct.Count());
+    }
+    else
+    {
+        listOderProduct = new List<Tuple<Oder, Lienminh>>();
+    }
+
+    string vndFormat(dynamic? money)
+    {
+        if (money == null)
+        {
+            money = "0";
+        }
+        var info = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+        return String.Format(info, "{0:c0}", money);
+    }
+
+    var todaySale = ViewData["todaySale"];
+    var totalSale = ViewData["totalSale"];
+    var todayRevenue = ViewData["todayRevenue"];
+    var totalRevenue = ViewData["totalRevenue"];
+    var labels = ViewData["labels"];
+    var dataSales = ViewData["dataSales"];
+    var dataRevenues = ViewData["dataRevenues"];
+
+    string label = "";
+    string sale = "";
+    string revenue = "";
+    if (labels != null)
+    {
+        label = (string)labels;
+    }
+    if (dataSales != null)
+    {
+        sale = (string)dataSales;
+    }
+    if (dataRevenues != null)
+    {
+        revenue = (string)dataRevenues;
+    }
 }
 
-<!-- Sale & Revenue Start -->
-<div class="container-fluid pt-4 px-4">
+@* <!-- Sale & Revenue Start -->
+    <div class="container-fluid pt-4 px-4">
     <div class="row g-4">
-        <div class="col-sm-6 col-xl-3">
-            <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
-                <i class="fa fa-chart-line fa-3x text-primary"></i>
-                <div class="ms-3">
-                    <p class="mb-2">Today Sale</p>
-                    <h6 class="mb-0">$1234</h6>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-xl-3">
-            <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
-                <i class="fa fa-chart-bar fa-3x text-primary"></i>
-                <div class="ms-3">
-                    <p class="mb-2">Total Sale</p>
-                    <h6 class="mb-0">$1234</h6>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-xl-3">
-            <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
-                <i class="fa fa-chart-area fa-3x text-primary"></i>
-                <div class="ms-3">
-                    <p class="mb-2">Today Revenue</p>
-                    <h6 class="mb-0">$1234</h6>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-xl-3">
-            <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
-                <i class="fa fa-chart-pie fa-3x text-primary"></i>
-                <div class="ms-3">
-                    <p class="mb-2">Total Revenue</p>
-                    <h6 class="mb-0">$1234</h6>
-                </div>
-            </div>
-        </div>
+    <div class="col-sm-6 col-xl-3">
+    <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+    <i class="fa fa-chart-line fa-3x text-primary"></i>
+    <div class="ms-3">
+    <p class="mb-2">Today Sale</p>
+    <h6 class="mb-0">$1234</h6>
     </div>
-</div>
-<!-- Sale & Revenue End -->
+    </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+    <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+    <i class="fa fa-chart-bar fa-3x text-primary"></i>
+    <div class="ms-3">
+    <p class="mb-2">Total Sale</p>
+    <h6 class="mb-0">$1234</h6>
+    </div>
+    </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+    <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+    <i class="fa fa-chart-area fa-3x text-primary"></i>
+    <div class="ms-3">
+    <p class="mb-2">Today Revenue</p>
+    <h6 class="mb-0">$1234</h6>
+    </div>
+    </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+    <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+    <i class="fa fa-chart-pie fa-3x text-primary"></i>
+    <div class="ms-3">
+    <p class="mb-2">Total Revenue</p>
+    <h6 class="mb-0">$1234</h6>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    <!-- Sale & Revenue End --> *@
 
 
 <!-- Sales Chart Start -->
 <div class="container-fluid pt-4 px-4">
     <div class="row g-4">
-        <div class="col-sm-12 col-xl-6">
-            <div class="bg-secondary text-center rounded p-4">
-                <div class="d-flex align-items-center justify-content-between mb-4">
-                    <h6 class="mb-0">Worldwide Sales</h6>
-                    <a href="">Show All</a>
+        <div class="col-sm-12 col-xl-3">
+            <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4 mb-4">
+                <i class="fa fa-chart-line fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Today Sale</p>
+                    <h6 class="mb-0 float-end">@vndFormat(ViewData["todaySale"])</h6>
                 </div>
-                <canvas id="worldwide-sales"></canvas>
+            </div>
+            <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4 mb-4">
+                <i class="fa fa-chart-bar fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Total Sale</p>
+                    <h6 class="mb-0 float-end">@vndFormat(ViewData["totalSale"])</h6>
+                </div>
+            </div>
+            <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4 mb-4">
+                <i class="fa fa-chart-area fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Today Revenue</p>
+                    <h6 class="mb-0 float-end">@vndFormat(ViewData["todayRevenue"])</h6>
+                </div>
+            </div>
+            <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4 mb-4">
+                <i class="fa fa-chart-pie fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Total Revenue</p>
+                    <h6 class="mb-0 float-end">@vndFormat(ViewData["totalRevenue"])</h6>
+                </div>
             </div>
         </div>
-        <div class="col-sm-12 col-xl-6">
+
+        <div class="col-sm-12 col-xl-9">
             <div class="bg-secondary text-center rounded p-4">
                 <div class="d-flex align-items-center justify-content-between mb-4">
                     <h6 class="mb-0">Salse & Revenue</h6>
-                    <a href="">Show All</a>
+                    @* <a href="">Show All</a> *@
                 </div>
                 <canvas id="salse-revenue"></canvas>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    // Chart Global Color
+    Chart.defaults.color = "#6C7293";
+    Chart.defaults.borderColor = "#000000";
+
+    var labels = @Html.Raw(labels);
+    var dataSale = @Html.Raw(dataSales);
+    var dataRevenue = @Html.Raw(dataRevenues);
+
+    // Salse & Revenue Chart
+    var ctx2 = $("#salse-revenue").get(0).getContext("2d");
+    var myChart2 = new Chart(ctx2, {
+        type: "line",
+        data: {
+            labels: labels,
+            datasets: [{
+                label: "Salse",
+                data: dataSale,
+                backgroundColor: "rgba(235, 22, 22, .7)",
+                fill: true
+            },
+            {
+                label: "Revenue",
+                data: dataRevenue,
+                backgroundColor: "rgba(235, 22, 22, .5)",
+                fill: true
+            }
+            ]
+        },
+        options: {
+            responsive: true
+        }
+    });
+</script>
 <!-- Sales Chart End -->
 
 
@@ -146,7 +249,7 @@
 <!-- Recent Sales End -->
 
 
-<!-- Widgets Start -->
+@* <!-- Widgets Start -->
 <div class="container-fluid pt-4 px-4">
     <div class="row g-4">
         <div class="col-sm-12 col-md-6 col-xl-4">
@@ -156,7 +259,7 @@
                     <a href="">Show All</a>
                 </div>
                 <div class="d-flex align-items-center border-bottom py-3">
-                    <img class="rounded-circle flex-shrink-0" src="img/user.jpg" alt=""
+                    <img class="rounded-circle flex-shrink-0" src="~/AdminAssets/img/user.jpg" alt=""
                         style="width: 40px; height: 40px;">
                     <div class="w-100 ms-3">
                         <div class="d-flex w-100 justify-content-between">
@@ -167,7 +270,7 @@
                     </div>
                 </div>
                 <div class="d-flex align-items-center border-bottom py-3">
-                    <img class="rounded-circle flex-shrink-0" src="img/user.jpg" alt=""
+                    <img class="rounded-circle flex-shrink-0" src="~/AdminAssets/img/user.jpg" alt=""
                         style="width: 40px; height: 40px;">
                     <div class="w-100 ms-3">
                         <div class="d-flex w-100 justify-content-between">
@@ -178,7 +281,7 @@
                     </div>
                 </div>
                 <div class="d-flex align-items-center border-bottom py-3">
-                    <img class="rounded-circle flex-shrink-0" src="img/user.jpg" alt=""
+                    <img class="rounded-circle flex-shrink-0" src="~/AdminAssets/img/user.jpg" alt=""
                         style="width: 40px; height: 40px;">
                     <div class="w-100 ms-3">
                         <div class="d-flex w-100 justify-content-between">
@@ -189,7 +292,7 @@
                     </div>
                 </div>
                 <div class="d-flex align-items-center pt-3">
-                    <img class="rounded-circle flex-shrink-0" src="img/user.jpg" alt=""
+                    <img class="rounded-circle flex-shrink-0" src="~/AdminAssets/img/user.jpg" alt=""
                         style="width: 40px; height: 40px;">
                     <div class="w-100 ms-3">
                         <div class="d-flex w-100 justify-content-between">
@@ -269,4 +372,4 @@
         </div>
     </div>
 </div>
-<!-- Widgets End -->
+<!-- Widgets End --> *@

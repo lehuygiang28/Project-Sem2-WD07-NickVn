@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Project_Sem2_WD07_NickVn.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace Project_Sem2_WD07_NickVn.Controllers;
 
@@ -24,6 +25,85 @@ public class AdminController : Controller
         this._hostEnvironment = hostEnvironment;
     }
 
+    public async Task<IActionResult> Sample()
+    {
+        // var dataOrders = _context.Oders.OrderBy(a => a.CreateAt).ToListAsync();
+        // Note REVENUE > SALES
+        var query = from od in _context.Oders
+                    join pd in _context.Lienminhs on od.ProductId equals pd.Id
+                    select Tuple.Create<Oder, Lienminh>(od, pd);
+
+        int count = await query.CountAsync();
+        var list = await query.ToListAsync();
+
+        // Sort by Descending date
+        list.Sort((a, b) => b.Item1.CreateAt.CompareTo(a.Item1.CreateAt));
+
+        DateTime today = DateTime.Now.Date;
+        decimal todayRevenue = list.Where(a => a.Item1.CreateAt.Date == today).Sum(s => s.Item2.PriceAtm);
+        decimal totalRevenue = list.Sum(s => s.Item2.PriceAtm);
+        decimal todaySale = Math.Round(todayRevenue / 100 * 35);
+        decimal totalSale = Math.Round(totalRevenue / 100 * 35);
+
+        // System.Console.WriteLine($"Tday sal: {todaySale}");
+        // System.Console.WriteLine($"Ttal sal: {totalSale}");
+        // System.Console.WriteLine($"Tday re: {todayRevenue}");
+        // System.Console.WriteLine($"Ttal re: {totalRevenue}");
+
+        int thisMonth = DateTime.Now.Month;
+        int thisYear = DateTime.Now.Year;
+
+        int startMonth = 0;
+        int startYear = 0;
+        int THANG12 = 12;
+
+        if (thisMonth <= 8)
+        {
+            int temp = 8 - thisMonth;
+            startMonth = THANG12 - temp;
+            startYear = thisYear - 1;
+        }
+        else
+        {
+            startMonth = thisMonth - 8;
+            startYear = thisYear;
+        }
+        System.Console.WriteLine($"StartM {startMonth} - Y {startYear} - thisY {thisYear}");
+        string labels = "[";
+        string dataRevenues = "[";
+        string dataSales = "[";
+        for (int i = 1; i <= 8; i++)
+        {
+            if (startMonth > 12)
+            {
+                startMonth = 1;
+                startYear++;
+            }
+            decimal thisMonthTotal = list.Where(a => a.Item1.CreateAt.Month == startMonth).Sum(b => b.Item2.PriceAtm);
+            dataRevenues += string.Format($"\"{thisMonthTotal}\",");
+            dataSales += string.Format($"\"{Math.Round(thisMonthTotal / 100 * 35)}\",");
+            labels += string.Format($"\"{startMonth}/{startYear}\",");
+            startMonth++;
+        }
+        labels += "]";
+        dataRevenues += "]";
+        dataSales += "]";
+
+        System.Console.WriteLine($"Labels {labels}\nDatas {dataRevenues}\nDatasRe {dataSales}");
+
+
+        // ViewData["listOderProd"] = list;
+
+        ViewData["todaySale"] = todaySale;
+        ViewData["totalSale"] = totalSale;
+        ViewData["todayRevenue"] = todayRevenue;
+        ViewData["totalRevenue"] = totalRevenue;
+        ViewData["labels"]  = labels;
+        ViewData["dataSales"] = dataSales;
+        ViewData["dataRevenues"] = dataRevenues;
+        return View(nameof(Index));
+    }
+
     private string RandomString(int length)
     {
         Random random = new Random();
@@ -40,19 +120,19 @@ public class AdminController : Controller
 
     public async Task<IActionResult> GenerateProductData(int? s)
     {
-        if(!await IsLogin())
+        if (!await IsLogin())
         {
             return RedirectToAction(nameof(Index));
         }
         var watch = System.Diagnostics.Stopwatch.StartNew();
         int? dataCount = s;
         // Define number of data
-        if(dataCount == null || dataCount.Equals(null))
+        if (dataCount == null || dataCount.Equals(null))
         {
             dataCount = 3;
         }
         Random random = new Random();
-        string[] rankRandomArray = {"Chưa Rank", "Sắt", "Đồng", "Bạc", "Vàng", "Bạch Kim", "Kim Cương", "Cao Thủ", "Đại Cao Thủ", "Thách Đấu"};
+        string[] rankRandomArray = { "Chưa Rank", "Sắt", "Đồng", "Bạc", "Vàng", "Bạch Kim", "Kim Cương", "Cao Thủ", "Đại Cao Thủ", "Thách Đấu" };
 
         string[] urlImage ={
             @"/storage/images/0qBPw7AiOQ_1632531413.jpg",
@@ -66,7 +146,7 @@ public class AdminController : Controller
 
         int lienMinhID;
         var lastLienMinhID = await _context.Lienminhs.OrderBy(a => a.Id).LastAsync();
-        if(lastLienMinhID == null)
+        if (lastLienMinhID == null)
         {
             lienMinhID = 1;
         }
@@ -97,10 +177,10 @@ public class AdminController : Controller
             newProduct.ProductUserName = "shop" + RandomString(6);
             newProduct.ProductUserPassword = "passw" + RandomString(8);
             newProduct.Publisher = "Garena";
-            newProduct.PriceAtm = RandomDecimal(10000, int.MaxValue/100);
+            newProduct.PriceAtm = RandomDecimal(10000, int.MaxValue / 100);
             newProduct.Champ = (int)RandomDecimal(1, 150);
             newProduct.Skin = (int)RandomDecimal(1, 555);
-            newProduct.Rank = rankRandomArray[random.Next(0, rankRandomArray.Length-1)];
+            newProduct.Rank = rankRandomArray[random.Next(0, rankRandomArray.Length - 1)];
             newProduct.Status = "Trắng Thông Tin";
             newProduct.Note = 0;
             newProduct.ImgThumb = @"/storage/images/FSPfB05HiR_1632531414.jpg";
@@ -149,7 +229,7 @@ public class AdminController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    public async Task<IActionResult> Products(int page, string? SearchKey, int? id, decimal? price, int? status)
+    public async Task<IActionResult> Products(int? page, string? SearchKey, int? id, decimal? price, int? status)
     {
         if (!await IsLogin())
         {
@@ -200,6 +280,10 @@ public class AdminController : Controller
                     && (lienMinh.PriceAtm >= priceSearchMin && lienMinh.PriceAtm < priceSearchMax)
                     select lienMinh;
 
+        if (page == null || page == 0)
+        {
+            page = 1;
+        }
 
         int totalPage = 0;
         int totalRecord = 0;
@@ -209,7 +293,7 @@ public class AdminController : Controller
         totalPage = (totalRecord / pageSize) + ((totalRecord % pageSize) > 0 ? 1 : 0);
 
         List<Lienminh> listLienMinhAcc = await query.OrderBy(prod => prod.Id)
-                                                    .Skip((page - 1) * pageSize)
+                                                    .Skip((Convert.ToInt32(page) - 1) * pageSize)
                                                     .Take(pageSize).ToListAsync();
 
         ViewBag.listLienMinhAcc = listLienMinhAcc;
@@ -493,7 +577,81 @@ public class AdminController : Controller
             _logger.LogInformation("Not Login, returning to login action ...");
             return RedirectToAction(nameof(Login));
         }
+        
+        // var dataOrders = _context.Oders.OrderBy(a => a.CreateAt).ToListAsync();
+        // Note REVENUE > SALES
+        var query = from od in _context.Oders
+                    join pd in _context.Lienminhs on od.ProductId equals pd.Id
+                    select Tuple.Create<Oder, Lienminh>(od, pd);
 
+        int count = await query.CountAsync();
+        var list = await query.ToListAsync();
+
+        // Sort by Descending date
+        list.Sort((a, b) => b.Item1.CreateAt.CompareTo(a.Item1.CreateAt));
+
+        DateTime today = DateTime.Now.Date;
+        decimal todayRevenue = list.Where(a => a.Item1.CreateAt.Date == today).Sum(s => s.Item2.PriceAtm);
+        decimal totalRevenue = list.Sum(s => s.Item2.PriceAtm);
+        decimal todaySale = Math.Round(todayRevenue / 100 * 35);
+        decimal totalSale = Math.Round(totalRevenue / 100 * 35);
+
+        // System.Console.WriteLine($"Tday sal: {todaySale}");
+        // System.Console.WriteLine($"Ttal sal: {totalSale}");
+        // System.Console.WriteLine($"Tday re: {todayRevenue}");
+        // System.Console.WriteLine($"Ttal re: {totalRevenue}");
+
+        int thisMonth = DateTime.Now.Month;
+        int thisYear = DateTime.Now.Year;
+
+        int startMonth = 0;
+        int startYear = 0;
+        int THANG12 = 12;
+
+        if (thisMonth <= 8)
+        {
+            int temp = 8 - thisMonth;
+            startMonth = THANG12 - temp;
+            startYear = thisYear - 1;
+        }
+        else
+        {
+            startMonth = thisMonth - 8;
+            startYear = thisYear;
+        }
+        System.Console.WriteLine($"StartM {startMonth} - Y {startYear} - thisY {thisYear}");
+        string labels = "[";
+        string dataRevenues = "[";
+        string dataSales = "[";
+        for (int i = 1; i <= 8; i++)
+        {
+            if (startMonth > 12)
+            {
+                startMonth = 1;
+                startYear++;
+            }
+            decimal thisMonthTotal = list.Where(a => a.Item1.CreateAt.Month == startMonth).Sum(b => b.Item2.PriceAtm);
+            dataRevenues += string.Format($"\"{thisMonthTotal}\",");
+            dataSales += string.Format($"\"{Math.Round(thisMonthTotal / 100 * 35)}\",");
+            labels += string.Format($"\"{startMonth}/{startYear}\",");
+            startMonth++;
+        }
+        labels += "]";
+        dataRevenues += "]";
+        dataSales += "]";
+
+        System.Console.WriteLine($"Labels {labels}\nDatas {dataRevenues}\nDatasRe {dataSales}");
+
+
+        // ViewData["listOderProd"] = list;
+
+        ViewData["todaySale"] = todaySale;
+        ViewData["totalSale"] = totalSale;
+        ViewData["todayRevenue"] = todayRevenue;
+        ViewData["totalRevenue"] = totalRevenue;
+        ViewData["labels"]  = labels;
+        ViewData["dataSales"] = dataSales;
+        ViewData["dataRevenues"] = dataRevenues;
         return View();
     }
 
