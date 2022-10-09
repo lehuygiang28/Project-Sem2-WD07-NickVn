@@ -1,14 +1,14 @@
 @{
     ViewData["Title"] = "Game liên minh";
     string vndFormat(dynamic money)
-    {   
+    {
         money = Convert.ToInt64(money);
         if (money == null)
         {
             return "0";
         }
         var info = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
-        return String.Format(info, "{0:c0}", money); 
+        return String.Format(info, "{0:c0}", money);
     }
 }
 
@@ -62,26 +62,25 @@
                     <p>
                     <ul>
                         <li>Game <strong><a href="https://lienminh.garena.vn/" target="_blank"><span
-                                        style="color:#e74c3c">LI&Ecirc;N MINH HUYỀN THOẠI</span></a></strong>&nbsp;thuộc
+                                        style="color:#e74c3c">LIÊN MINH HUYỀN THOẠI</span></a></strong>&nbsp;thuộc
                             thể loại game mobile nhập do <a href="https://www.garena.vn/" target="_blank"><span
-                                    style="color:#e74c3c"><strong>GARENA</strong></span></a>&nbsp;độc quyền ph&aacute;t
-                            h&agrave;nh tại Việt Nam.</li>
-                        <li><a href="#" target="_blank"><strong>Web Mua B&aacute;n Nick
-                                    LI&Ecirc;N MINH&nbsp;UY T&Iacute;N - GI&Aacute;
-                                    RẺ</strong></a>&nbsp;&nbsp;<strong><a href="#" target="_blank"><span
-                                        style="color:#e74c3c">WEBNICK.VN</span></a> ( Website mua
-                                b&aacute;n nick li&ecirc;n qu&acirc;n - LMHT lớn nhất Việt Nam
-                                )&nbsp;</strong>.&nbsp;<strong><a href="#" target="_blank">Shop b&aacute;n acc -
-                                    t&agrave;i khoản LMHT VIP</a></strong>.&nbsp;
+                                    style="color:#e74c3c"><strong>GARENA</strong></span></a>&nbsp;độc quyền phát
+                            hành tại Việt Nam.</li>
+                        <li><a href="#" target="_blank"><strong>Web Mua Bán Nick
+                                    LIÊN MINH UY TÍN - GIÁ RẺ</strong></a>&nbsp;&nbsp;<strong><a href="#"
+                                    target="_blank"><span style="color:#e74c3c">GIANG.CF</span></a> ( Website mua
+                                bán nick liên quân - LMHT lớn nhất Việt Nam )&nbsp;</strong>.&nbsp;<strong><a href="#"
+                                    target="_blank">Shop bán acc -
+                                    tài khoản LMHT VIP</a></strong>.&nbsp;
                         </li>
-                        <li>Ngo&agrave;i <strong>mua&nbsp;b&aacute;n nick lq</strong>&nbsp;website c&ograve;n <strong><a
-                                    href="#" target="_blank"><span style="color:#e74c3c">b&aacute;n thẻ
-                                        Garena</span></a></strong><span style="color:#e74c3c">&nbsp;,</span><strong><a
-                                    href="#" target="_blank"><span style="color:#e74c3c">B&aacute;n RP li&ecirc;n minh
-                                        gi&aacute;
+                        <li>Ngoài <strong>mua bán nick lq</strong> website còn <strong><a href="#" target="_blank"><span
+                                        style="color:#e74c3c">bán thẻ
+                                        Garena</span></a></strong><span style="color:#e74c3c"> ,</span><strong><a
+                                    href="#" target="_blank"><span style="color:#e74c3c">Bán RP liên minh
+                                        giá;
                                         rẻ</span></a></strong><span style="color:#e74c3c">,</span><a href="#"
-                                target="_blank"><span style="color:#e74c3c"> <strong>b&aacute;n acc li&ecirc;n minh
-                                        random</strong></span></a>&nbsp;v&agrave; rất nhiều dịch vụ kh&aacute;c về
+                                target="_blank"><span style="color:#e74c3c"> <strong>bán acc liên minh
+                                        random</strong></span></a>&nbsp;và rất nhiều dịch vụ khác về
                             <strong><a href="#" target="_blank">game LQM</a></strong>
                         </li>
                     </ul>
@@ -133,47 +132,15 @@
 
                     <div class="col-md-3 col-sm-4 p-5 field-search">
                         <div class="input-group c-square">
-                            <span class="input-group-addon">Trạng thái</span>
-                            <select style="" class="form-control c-square" name="status">
-                                <option value="0" selected>Chưa bán</option>
-                                <option value="1">Đã bán</option>
-                                @* <option value="3">Đã đặt cọc</option>
-                                    <option value="-999">Tất cả</option> *@
+                            <span class="input-group-addon">Sắp xếp</span>
+                            <select class="form-control c-square" name="sort_price">
+                                <option value="1" selected>Giá tăng dần</option>
+                                <option value="0">Giá giảm dần</option>
                             </select>
 
                         </div>
                     </div>
 
-                    @* <div class="col-md-3 col-sm-4 col-xs-12 p-5 field-search">
-                        <div class="input-group c-square">
-                        <span class="input-group-addon">Rank</span>
-                        <select name="attribute_id_392" class="form-control c-square" title="-- Không chọn --">
-                        <option value="">-- Không chọn --</option>
-                        <option value="396">Chưa Rank</option>
-                        <option value="397">Đồng</option>
-                        <option value="398">Bạc</option>
-                        <option value="399">Vàng</option>
-                        <option value="400">Bạch Kim</option>
-                        <option value="401">Kim Cương</option>
-                        <option value="402">Cao Thủ</option>
-                        <option value="1309">Rank Thách Đấu</option>
-                        </select>
-                        </div>
-                        </div> *@
-
-
-                    @* <div class="col-md-3 col-sm-4 col-xs-12 p-5 field-search">
-                        <div class="input-group c-square">
-                        <span class="input-group-addon">Trạng Thái</span>
-                        <select name="attribute_id_976" class="form-control c-square" title="-- Không chọn --">
-                        <option value="">-- Không chọn --</option>
-                        <option value="977">Trắng thông tin</option>
-                        <option value="978">SĐT Đổi + Trắng Mail</option>
-                        <option value="979">SĐT Đổi + Gửi Mail</option>
-                        <option value="980">Trắng SĐT + Gửi Mail</option>
-                        </select>
-                        </div>
-                        </div> *@
                     <div class="col-md-3 col-sm-4 p-5 no-radius">
                         <button type="submit" class="btn c-square c-theme c-btn-green">Tìm kiếm</button>
                         <a class="btn c-square m-l-0 btn-danger" asp-action="LienMinh" asp-controller="ShopAcc">Tất
@@ -249,10 +216,10 @@
 
                             <div class="col-md-3 col-sm-4 p-5 field-search">
                                 <div class="input-group c-square">
-                                    <span class="input-group-addon">Trạng thái</span>
-                                    <select class="form-control c-square" name="status">
-                                        <option value="0" selected>Chưa bán</option>
-                                        <option value="1">Đã bán</option>
+                                    <span class="input-group-addon">Sắp xếp</span>
+                                    <select class="form-control c-square" name="sort_price">
+                                        <option value="1" selected>Giá tăng dần</option>
+                                        <option value="0">Giá giảm dần</option>
                                     </select>
                                 </div>
                             </div>
@@ -581,7 +548,6 @@
                             }
                         }
 
-
                         // Next button, disable if is last page
                         if (currentPage == totalPage)
                         {
@@ -602,35 +568,6 @@
         </nav>
         @* Pagination section: END *@
 
-        @* <div class="data_paginate paging_bootstrap paginations_custom" style="text-align: center">
-
-            </div>
-
-            <div class="data_paginate paging_bootstrap paginations_custom" style="text-align: center">
-            <form asp-action="LienMinh" asp-controller="ShopAcc">
-            <input style="padding: 5px" type="number" min="1" name="page">
-            <button style="padding: 5px" type="submit">Chuyển Trang</button>
-            </form>
-            <input style="padding: 5px" type="button" id="search" value="Chuyển trang">
-            </div> *@
-
-        @* <script type="text/javascript">
-            $('#search').click(function () {
-            var page = $('a[rel=next]').parent().prev().find('.page-link').text();
-            if ($('#page').val() <= page) {
-            page = $('#page').val();
-            }
-            if ($('#page').val() == 0) {
-            page = 1;
-            }
-            if ($('#page').val() != "") {
-            location.href = 'https://giang.cf/ShopAcc' + '/LienMinh?page=' + page;
-            }
-            })
-            </script> *@
-
-
-
         <div class="tab-vertical tutorial_area">
             <div class="panel-group" id="accordion">
 
@@ -643,17 +580,16 @@
                     </div>
                     <div id="tab1" class="panel-collapse collapse in" aria-expanded="true" style="">
                         <div class="panel-body">
-                            <p>Ngo&agrave;i&nbsp; <strong>shop b&aacute;n acc li&ecirc;n minh&nbsp;</strong>Shop
-                                c&ograve;n c&oacute; c&aacute;c dịch vụ kh&aacute;c như <strong><a href="#"
-                                        target="_blank">mua b&aacute;n RP
-                                        li&ecirc;n minh gi&aacute; rẻ</a></strong><strong>&nbsp;,<span
-                                        style="color:#e74c3c"><a href="#">b&aacute;n thẻ
-                                            garena</a> gi&aacute;&nbsp; rẻ v&agrave; hơn 40 dịch vụ game
-                                        kh&aacute;c</span></strong> tại&nbsp;<strong><a href="#"
+                            <p>Ngoài&nbsp; <strong>shop bán acc liên minh&nbsp;</strong>Shop
+                                còn có; các dịch vụ khác như <strong><a href="#" target="_blank">mua bán RP
+                                        liên minh giá rẻ</a></strong><strong>&nbsp;,<span style="color:#e74c3c"><a
+                                            href="#">bán thẻ
+                                            garena</a> giá&nbsp; rẻ và hơn 40 dịch vụ game
+                                        khác</span></strong> tại&nbsp;<strong><a href="#"
                                         target="_blank">https://giang.cf</a>&nbsp;(<a href="#"
                                         target="_blank">click</a>)</strong></p>
 
-                            <p><strong>Link b&aacute;n RP li&ecirc;n minh</strong>&nbsp;:&nbsp;<strong><a href="#"
+                            <p><strong>Link bán RP liên minh</strong>&nbsp;:&nbsp;<strong><a href="#"
                                         target="_blank">https://giang.cf</a>&nbsp;(<a href="#"
                                         target="_blank">click</a>)</strong></p>
                         </div>
@@ -669,8 +605,8 @@
                     </div>
                     <div id="tab1" class="panel-collapse collapse in" aria-expanded="true" style="">
                         <div class="panel-body">
-                            <p>M&igrave;nh c&oacute; tạo group về li&ecirc;n qu&acirc;n&nbsp;để anh em giao lưu. Ae ấn
-                                tham gia group v&agrave; like page nh&eacute;</p>
+                            <p>Mình có; tạo group về liên quân&nbsp;để anh em giao lưu. Ae ấn
+                                tham gia group và like page nhé</p>
 
                             <p>Link :&nbsp;<a href="#" target="_blank">#</a></p>
                         </div>
@@ -686,34 +622,34 @@
                     </div>
                     <div id="tab1" class="panel-collapse collapse in" aria-expanded="true" style="">
                         <div class="panel-body">
-                            <p><strong>Shop b&aacute;n nick li&ecirc;n minh huyền thoại&nbsp;</strong>với nhiều lựa chọn
-                                phong ph&uacute;, qu&yacute; kh&aacute;ch c&oacute; thể t&igrave;m kiếm theo&nbsp;:</p>
+                            <p><strong>Shop bán nick liên minh huyền thoại </strong>với nhiều lựa chọn
+                                phong phú, quý khách có thể tìm kiếm theo:</p>
 
-                            <p>- Nick li&ecirc;n minh c&oacute; skin hiếm</p>
+                            <p>- Nick liên minh có; skin hiếm</p>
 
-                            <p>- Nick li&ecirc;n minh game random&nbsp;</p>
+                            <p>- Nick liên minh game random&nbsp;</p>
 
-                            <p>- Nick li&ecirc;n minh gi&aacute; rẻ</p>
+                            <p>- Nick liên minh giá rẻ</p>
 
-                            <p>- Acc li&ecirc;n minh&nbsp; rank cao thủ , th&aacute;ch đấu.</p>
+                            <p>- Acc liên minh&nbsp; rank cao thủ , thách đấu.</p>
 
-                            <p>- T&agrave;i khoản li&ecirc;n minh c&oacute; nhiều tướng</p>
+                            <p>- Tài khoản liên minh có; nhiều tướng</p>
 
-                            <p>- T&agrave;i khoản lm c&oacute; nhiều trang phục</p>
+                            <p>- Tài khoản lm có; nhiều trang phục</p>
 
-                            <p>-&nbsp;Acc li&ecirc;n minh trang phục - skin Si&ecirc;u Việt</p>
+                            <p>-&nbsp;Acc liên minh trang phục - skin Siêu Việt</p>
 
-                            <p>- Nick li&ecirc;n minh bản thử nghiệm</p>
+                            <p>- Nick liên minh bản thử nghiệm</p>
 
-                            <p>- Acc li&ecirc;n minh full tướng full skin&nbsp;</p>
+                            <p>- Acc liên minh full tướng full skin&nbsp;</p>
 
-                            <p>- Acc li&ecirc;n minh 9k</p>
+                            <p>- Acc liên minh 9k</p>
 
-                            <p>- Nick li&ecirc;n minh full ngọc</p>
+                            <p>- Nick liên minh full ngọc</p>
 
-                            <p>- Nick li&ecirc;n minh gi&aacute; rẻ 20k</p>
+                            <p>- Nick liên minh giá rẻ 20k</p>
 
-                            <p>- Acc li&ecirc;n minh ngọc 90</p>
+                            <p>- Acc liên minh ngọc 90</p>
                         </div>
                     </div>
                 </div>

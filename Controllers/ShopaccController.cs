@@ -25,7 +25,7 @@ public class ShopaccController : Controller
         if (!isRenewMoney)
         {
             TempData["error"] = "Có lỗi xảy ra!";
-            return RedirectToAction(nameof(Detail_LienMinh), new {id = productId});
+            return RedirectToAction(nameof(Detail_LienMinh), new { id = productId });
         }
 
         var varProduct = await _context.Lienminhs.Where(i => i.Id == productId && i.Sold == Lienminh.NOT_SOLD).FirstAsync();
@@ -34,7 +34,7 @@ public class ShopaccController : Controller
         if (varProduct == null && userBuy == null)
         {
             TempData["error"] = "Có lỗi xảy ra!";
-            return RedirectToAction(nameof(Detail_LienMinh), new {id = productId});
+            return RedirectToAction(nameof(Detail_LienMinh), new { id = productId });
         }
 
         Lienminh lienMinhProduct = new Lienminh();
@@ -46,7 +46,7 @@ public class ShopaccController : Controller
         if (userBuy.Money < lienMinhProduct.PriceAtm)
         {
             TempData["error"] = "Bạn không có đủ tiền";
-            return RedirectToAction(nameof(Detail_LienMinh), new {id = productId});
+            return RedirectToAction(nameof(Detail_LienMinh), new { id = productId });
         }
 
         var maxOderId = await _context.Oders.MaxAsync(a => a.OderId);
@@ -61,7 +61,7 @@ public class ShopaccController : Controller
         oderUser.UpdateAt = DateTime.Now;
 
         // Tru tien user
-        userBuy.Money  = userBuy.Money - lienMinhProduct.PriceAtm;
+        userBuy.Money = userBuy.Money - lienMinhProduct.PriceAtm;
         // Update stats da ban
         lienMinhProduct.Sold = Lienminh.SOLD;
 
@@ -84,7 +84,7 @@ public class ShopaccController : Controller
         {
             var money = HttpContext.Session.GetInt32(UserController.SessionKeyMoney);
             var user = await _context.Users.Where(i => i.Id == id).FirstAsync();
-            if (money  != user.Money)
+            if (money != user.Money)
             {
                 HttpContext.Session.SetInt32(UserController.SessionKeyMoney, Convert.ToInt32(user.Money));
             }
@@ -98,14 +98,15 @@ public class ShopaccController : Controller
         await RenewUserMoney();
 
         var queryProductById = from product in _context.Lienminhs
-                        where product.Id == id && product.Sold == Lienminh.NOT_SOLD
-                        select product;
-                        
+                               where product.Id == id && product.Sold == Lienminh.NOT_SOLD
+                               select product;
+
 
         // bool isFind = await _context.Lienminhs.AnyAsync(a => a.Id == id);
         bool isFind = await queryProductById.AnyAsync();
 
-        if (isFind == false){
+        if (isFind == false)
+        {
             ViewBag.Error = "Không tìm thấy tài khoản!";
             return View();
         }
@@ -129,9 +130,10 @@ public class ShopaccController : Controller
         return View();
     }
 
-    public async Task<IActionResult> LienMinh(int page, string? SearchKey, int? id, decimal? price, int? status)
+    public async Task<IActionResult> LienMinh(int page, string? SearchKey, int? id, decimal? price, int? status, int? sort_price)
     {
-
+        const int SORT_DESCENDING = 0;
+        const int SORT_ASCENDING = 1;
         decimal priceSearchMin = decimal.Zero;
         decimal priceSearchMax = decimal.Zero;
         switch (price)
@@ -177,11 +179,11 @@ public class ShopaccController : Controller
                     select lienMinh;
 
         // Pagination
-        if(page == 0 || page.Equals(null))
+        if (page == 0 || page.Equals(null))
         {
             page = 1;
         }
-        
+
         // Max size of page is 12
         int totalPage = 0;
         int totalRecord = 0;
@@ -190,10 +192,24 @@ public class ShopaccController : Controller
         totalRecord = await query.CountAsync();
         totalPage = (totalRecord / pageSize) + ((totalRecord % pageSize) > 0 ? 1 : 0);
 
-        var shopacc = await query.OrderBy(h => h.Id).Skip((page - 1) * pageSize)
-                                                    .Take(pageSize).ToListAsync();
+        // var shopacc = await query.OrderBy(h => h.Id).Skip((page - 1) * pageSize)
+        //                                             .Take(pageSize).ToListAsync();
+        
+        if (sort_price == SORT_ASCENDING || sort_price == null)
+        {
+            var shopacc = await query.OrderBy(a => a.PriceAtm)
+                                        .Skip((page - 1) * pageSize).Take(pageSize)
+                                        .ToListAsync();
+            ViewBag.Shopacc = shopacc;
+        }
+        else if (sort_price == SORT_DESCENDING)
+        {
+            var shopacc = await query.OrderByDescending(a => a.PriceAtm)
+                                        .Skip((page - 1) * pageSize).Take(pageSize)
+                                        .ToListAsync();
+            ViewBag.Shopacc = shopacc;
+        }
 
-        ViewBag.Shopacc = shopacc;
         ViewBag.totalPage = totalPage;
         ViewBag.currentPage = page;
 
