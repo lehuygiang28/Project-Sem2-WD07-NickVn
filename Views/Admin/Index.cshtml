@@ -137,10 +137,10 @@
         <div class="col-sm-12 col-xl-9">
             <div class="bg-secondary text-center rounded p-4">
                 <div class="d-flex align-items-center justify-content-between mb-4">
-                    <h6 class="mb-0">Salse & Revenue</h6>
+                    <h6 class="mb-0">Sales & Revenue</h6>
                     @* <a href="">Show All</a> *@
                 </div>
-                <canvas id="salse-revenue"></canvas>
+                <canvas id="sales-revenue"></canvas>
             </div>
         </div>
     </div>
@@ -156,7 +156,7 @@
     var dataRevenue = @Html.Raw(dataRevenues);
 
     // Salse & Revenue Chart
-    var ctx2 = $("#salse-revenue").get(0).getContext("2d");
+    var ctx2 = $("#sales-revenue").get(0).getContext("2d");
     var myChart2 = new Chart(ctx2, {
         type: "line",
         data: {
