@@ -260,6 +260,10 @@ namespace Project_Sem2_WD07_NickVn.Models
                     .HasColumnType("int(11)")
                     .HasColumnName("product_id");
 
+                entity.Property(e => e.Status)
+                    .HasColumnType("text")
+                    .HasColumnName("status");
+
                 entity.Property(e => e.UpdateAt)
                     .HasColumnType("datetime")
                     .HasColumnName("update_at");

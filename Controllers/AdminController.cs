@@ -619,7 +619,6 @@ public class AdminController : Controller
             startMonth = thisMonth - 8;
             startYear = thisYear;
         }
-        System.Console.WriteLine($"StartM {startMonth} - Y {startYear} - thisY {thisYear}");
         string labels = "[";
         string dataRevenues = "[";
         string dataSales = "[";
@@ -640,10 +639,9 @@ public class AdminController : Controller
         dataRevenues += "]";
         dataSales += "]";
 
-        System.Console.WriteLine($"Labels {labels}\nDatas {dataRevenues}\nDatasRe {dataSales}");
+        var recentSales = list.Take(5).ToList();
 
-
-        // ViewData["listOderProd"] = list;
+        ViewData["listOderProd"] = list;
 
         ViewData["todaySale"] = todaySale;
         ViewData["totalSale"] = totalSale;
@@ -652,6 +650,8 @@ public class AdminController : Controller
         ViewData["labels"]  = labels;
         ViewData["dataSales"] = dataSales;
         ViewData["dataRevenues"] = dataRevenues;
+
+        ViewData["recentSales"] = recentSales;
         return View();
     }
 
