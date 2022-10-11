@@ -624,7 +624,9 @@ public class UserController : Controller
     {
         if (HttpContext.Session.GetInt32(SessionKeyId) != null)
         {
-            HttpContext.Session.Clear();
+            HttpContext.Session.Remove(SessionKeyId);
+            HttpContext.Session.Remove(SessionKeyName);
+            HttpContext.Session.Remove(SessionKeyMoney);
         }
         return RedirectToAction("Index", "Home");
     }
