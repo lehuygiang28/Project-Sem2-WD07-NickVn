@@ -622,7 +622,7 @@ public class AdminController : Controller
         string labels = "[";
         string dataRevenues = "[";
         string dataSales = "[";
-        for (int i = 1; i <= 8; i++)
+        for (int i = 0; i <= 8; i++)
         {
             if (startMonth > 12)
             {
@@ -639,6 +639,8 @@ public class AdminController : Controller
         dataRevenues += "]";
         dataSales += "]";
 
+System.Console.WriteLine(labels);
+System.Console.WriteLine(dataRevenues);
         var recentSales = list.Take(5).ToList();
 
         ViewData["listOderProd"] = list;
@@ -655,9 +657,15 @@ public class AdminController : Controller
         return View();
     }
 
-    public IActionResult LogOut()
+    public async Task<IActionResult> LogOut()
     {
-        HttpContext.Session.Clear();
+        if(!await IsLogin())
+        {
+            return RedirectToAction(nameof(Index));
+        }
+        HttpContext.Session.Remove(SessionKeyAdminId);
+        HttpContext.Session.Remove(SessionKeyAdminRole);
+        HttpContext.Session.Remove(SessionKeyAdminUserName);
         return RedirectToAction(nameof(Index));
     }
 
