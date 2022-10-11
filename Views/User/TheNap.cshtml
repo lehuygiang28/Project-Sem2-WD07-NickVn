@@ -3,6 +3,17 @@
     Layout = "";
     var list = ViewBag.card;
     List<TheNapDatum> cardList = (List<TheNapDatum>)list;
+
+    string vndFormat(dynamic money)
+    {
+        money = Convert.ToInt64(money);
+        if (money == null)
+        {
+            return "0";
+        }
+        var info = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+        return String.Format(info, "{0:c0}", money);
+    }
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -46,7 +57,7 @@
                         {
                             <tr>
                                 <td>@item.TelecomName</td>
-                                <td>@item.Amount</td>
+                                <td>@vndFormat(item.Amount)</td>
                                 <td>
                                     <a class="pin" id="@item.Pin" onclick="CopyToClipboard('@item.Pin')">@item.Pin <i
                                     class="fa fa-copy"></i></a>
@@ -74,6 +85,13 @@
                 bottom: 5px;
                 left: 2%;
                 width: 96%;
+            }
+            .pin{
+                text-decoration: none;
+            }
+            .pin:hover{
+                text-shadow: 5px solid;
+                cursor: pointer;
             }
         </style>
     </div>
