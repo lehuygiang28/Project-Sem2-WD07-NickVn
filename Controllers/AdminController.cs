@@ -98,7 +98,7 @@ public class AdminController : Controller
         ViewData["totalSale"] = totalSale;
         ViewData["todayRevenue"] = todayRevenue;
         ViewData["totalRevenue"] = totalRevenue;
-        ViewData["labels"]  = labels;
+        ViewData["labels"] = labels;
         ViewData["dataSales"] = dataSales;
         ViewData["dataRevenues"] = dataRevenues;
         return View(nameof(Index));
@@ -144,6 +144,8 @@ public class AdminController : Controller
         };
         int urlImageLength = urlImage.Length;
 
+        int[] status_id = { 1003, 1004 };
+
         int lienMinhID;
         var lastLienMinhID = await _context.Lienminhs.OrderBy(a => a.Id).LastAsync();
         if (lastLienMinhID == null)
@@ -181,11 +183,11 @@ public class AdminController : Controller
             newProduct.Champ = (int)RandomDecimal(1, 150);
             newProduct.Skin = (int)RandomDecimal(1, 555);
             newProduct.Rank = rankRandomArray[random.Next(0, rankRandomArray.Length - 1)];
-            newProduct.Status = "Trắng Thông Tin";
+            newProduct.StatusAccount = "Trắng Thông Tin";
             newProduct.Note = 0;
             newProduct.ImgThumb = @"/storage/images/FSPfB05HiR_1632531414.jpg";
             newProduct.ImgSrc = @"/storage/images/0qBPw7AiOQ_1632531413.jpg";
-            newProduct.Sold = Lienminh.NOT_SOLD;
+            newProduct.StatusId = status_id[random.Next(0, 1)];
 
             // Generate clone image path
             for (int j = 0; j < urlImageLength; j++)
@@ -275,15 +277,16 @@ public class AdminController : Controller
         }
 
         var query = from lienMinh in _context.Lienminhs
-                    where lienMinh.Sold == (status == null ? Lienminh.NOT_SOLD : status)
-                    && lienMinh.Name.Contains(SearchKey == null ? string.Empty : SearchKey)
+                    join sts in _context.Statuses on lienMinh.StatusId equals sts.StatusId
+                    where lienMinh.Name.Contains(SearchKey == null ? string.Empty : SearchKey)
                     && (lienMinh.PriceAtm >= priceSearchMin && lienMinh.PriceAtm < priceSearchMax)
-                    select lienMinh;
+                    orderby lienMinh.Id
+                    select Tuple.Create<Lienminh, Status>(lienMinh, sts);
 
-        if (page == null || page == 0)
-        {
-            page = 1;
-        }
+        // var query = from lienMinh in _context.Lienminhs
+        //             where lienMinh.Name.Contains(SearchKey == null ? string.Empty : SearchKey)
+        //             && (lienMinh.PriceAtm >= priceSearchMin && lienMinh.PriceAtm < priceSearchMax)
+        //             select lienMinh;
 
         int totalPage = 0;
         int totalRecord = 0;
@@ -292,9 +295,22 @@ public class AdminController : Controller
         totalRecord = await query.CountAsync();
         totalPage = (totalRecord / pageSize) + ((totalRecord % pageSize) > 0 ? 1 : 0);
 
-        List<Lienminh> listLienMinhAcc = await query.OrderBy(prod => prod.Id)
-                                                    .Skip((Convert.ToInt32(page) - 1) * pageSize)
+        if (page == null || page == 0)
+        {
+            page = 1;
+        }
+        else if (page > totalPage)
+        {
+            page = totalPage;
+        }
+
+        List<Tuple<Lienminh, Status>> listLienMinhAcc = await query.Skip((Convert.ToInt32(page) - 1) * pageSize)
                                                     .Take(pageSize).ToListAsync();
+
+        if (status != null)
+        {
+            listLienMinhAcc = listLienMinhAcc.Where(a => a.Item1.StatusId == status).ToList();
+        }
 
         ViewBag.listLienMinhAcc = listLienMinhAcc;
         ViewBag.totalPage = totalPage;
@@ -577,7 +593,7 @@ public class AdminController : Controller
             _logger.LogInformation("Not Login, returning to login action ...");
             return RedirectToAction(nameof(Login));
         }
-        
+
         // var dataOrders = _context.Oders.OrderBy(a => a.CreateAt).ToListAsync();
         // Note REVENUE > SALES
         var query = from od in _context.Oders
@@ -639,8 +655,8 @@ public class AdminController : Controller
         dataRevenues += "]";
         dataSales += "]";
 
-System.Console.WriteLine(labels);
-System.Console.WriteLine(dataRevenues);
+        System.Console.WriteLine(labels);
+        System.Console.WriteLine(dataRevenues);
         var recentSales = list.Take(5).ToList();
 
         ViewData["listOderProd"] = list;
@@ -649,7 +665,7 @@ System.Console.WriteLine(dataRevenues);
         ViewData["totalSale"] = totalSale;
         ViewData["todayRevenue"] = todayRevenue;
         ViewData["totalRevenue"] = totalRevenue;
-        ViewData["labels"]  = labels;
+        ViewData["labels"] = labels;
         ViewData["dataSales"] = dataSales;
         ViewData["dataRevenues"] = dataRevenues;
 
@@ -659,7 +675,7 @@ System.Console.WriteLine(dataRevenues);
 
     public async Task<IActionResult> LogOut()
     {
-        if(!await IsLogin())
+        if (!await IsLogin())
         {
             return RedirectToAction(nameof(Index));
         }

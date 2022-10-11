@@ -10,10 +10,19 @@ public class ShopaccController : Controller
     private readonly ILogger<ShopaccController> _logger;
     private readonly NickVn_ProjectContext _context;
 
+    public const int SOLD = 1004;
+    public const int NOT_SOLD = 1003;
+
     public ShopaccController(ILogger<ShopaccController> logger, NickVn_ProjectContext context)
     {
         _logger = logger;
         _context = context;
+    }
+
+    private async Task<List<Status>> GetStatusList()
+    {
+        var list = await _context.Statuses.OrderBy(a => a.Id).ToListAsync();
+        return list;
     }
 
     public async Task<IActionResult> BuyConfirmSolve(int productId)
@@ -28,22 +37,33 @@ public class ShopaccController : Controller
             return RedirectToAction(nameof(Detail_LienMinh), new { id = productId });
         }
 
-        var varProduct = await _context.Lienminhs.Where(i => i.Id == productId && i.Sold == Lienminh.NOT_SOLD).FirstAsync();
+        var query = from lol in _context.Lienminhs
+                        join sts in _context.Statuses on lol.StatusId equals sts.StatusId
+                        where lol.Id == productId
+                        select lol;
+
+        var varProduct = await query.FirstAsync();
+
+        // var varProduct = await _context.Lienminhs.Where(i => i.Id == productId && i.Sold == Lienminh.NOT_SOLD).FirstAsync();
         var userBuy = await _context.Users.Where(i => i.Id == HttpContext.Session.GetInt32(UserController.SessionKeyId)).FirstAsync();
 
-        if (varProduct == null && userBuy == null)
+        if (varProduct == null || userBuy == null)
         {
             TempData["error"] = "Có lỗi xảy ra!";
             return RedirectToAction(nameof(Detail_LienMinh), new { id = productId });
         }
 
-        Lienminh lienMinhProduct = new Lienminh();
-        if (varProduct != null)
-        {
-            lienMinhProduct = (Lienminh)varProduct;
-        }
+        // Tuple<Lienminh, Status> lienMinhProduct;
+        // if (varProduct != null)
+        // {
+        //     lienMinhProduct = (Tuple<Lienminh, Status>)varProduct;
+        // }
+        // if(varProduct == null)
+        // {
+        //     return;
+        // }
 
-        if (userBuy.Money < lienMinhProduct.PriceAtm)
+        if (userBuy.Money < varProduct.PriceAtm)
         {
             TempData["error"] = "Bạn không có đủ tiền";
             return RedirectToAction(nameof(Detail_LienMinh), new { id = productId });
@@ -55,19 +75,19 @@ public class ShopaccController : Controller
         Oder oderUser = new Oder();
         oderUser.OderId = maxOderId + 1;
         oderUser.UserId = userBuy.Id;
-        oderUser.ProductId = lienMinhProduct.Id;
+        oderUser.ProductId = varProduct.Id;
         oderUser.Status = "Paid";
         oderUser.CreateAt = DateTime.Now;
         oderUser.UpdateAt = DateTime.Now;
 
         // Tru tien user
-        userBuy.Money = userBuy.Money - lienMinhProduct.PriceAtm;
+        userBuy.Money = userBuy.Money - varProduct.PriceAtm;
         // Update stats da ban
-        lienMinhProduct.Sold = Lienminh.SOLD;
+        varProduct.StatusId = SOLD;
 
         _context.Oders.Update(oderUser);
         _context.Users.Update(userBuy);
-        _context.Lienminhs.Update(lienMinhProduct);
+        _context.Lienminhs.Update(varProduct);
 
         await _context.SaveChangesAsync();
 
@@ -98,7 +118,8 @@ public class ShopaccController : Controller
         await RenewUserMoney();
 
         var queryProductById = from product in _context.Lienminhs
-                               where product.Id == id && product.Sold == Lienminh.NOT_SOLD
+                                join sts in _context.Statuses on product.StatusId equals sts.StatusId
+                               where product.Id == id && product.StatusId == NOT_SOLD
                                select product;
 
 
@@ -121,7 +142,7 @@ public class ShopaccController : Controller
         ViewBag.imgAcc = imgAcc;
 
         // Take a random
-        int total = await _context.Lienminhs.Where(a => a.Sold == Lienminh.NOT_SOLD).CountAsync();
+        int total = await _context.Lienminhs.Where(a => a.StatusId == NOT_SOLD).CountAsync();
         Random r = new Random();
         int offset = r.Next(0, total);
         var randomAcc = await _context.Lienminhs.OrderBy(a => a.Id).Skip(offset).Take(4).ToListAsync();
@@ -173,7 +194,7 @@ public class ShopaccController : Controller
         }
 
         var query = from lienMinh in _context.Lienminhs
-                    where lienMinh.Sold == (status == null ? Lienminh.NOT_SOLD : status)
+                    where lienMinh.StatusId == (status == null ? NOT_SOLD : status)
                     && lienMinh.Name.Contains(SearchKey == null ? string.Empty : SearchKey)
                     && (lienMinh.PriceAtm >= priceSearchMin && lienMinh.PriceAtm < priceSearchMax)
                     select lienMinh;

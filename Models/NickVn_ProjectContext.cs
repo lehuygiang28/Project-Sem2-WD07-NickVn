@@ -24,6 +24,7 @@ namespace Project_Sem2_WD07_NickVn.Models
         public virtual DbSet<Oder> Oders { get; set; } = null!;
         public virtual DbSet<ProductCategory> ProductCategories { get; set; } = null!;
         public virtual DbSet<Role> Roles { get; set; } = null!;
+        public virtual DbSet<Status> Statuses { get; set; } = null!;
         public virtual DbSet<TheNapDatum> TheNapData { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
 
@@ -231,13 +232,14 @@ namespace Project_Sem2_WD07_NickVn.Models
                     .HasColumnType("int(11)")
                     .HasColumnName("skin");
 
-                entity.Property(e => e.Sold)
-                    .HasColumnType("int(11)")
-                    .HasColumnName("sold");
-
-                entity.Property(e => e.Status)
+                entity.Property(e => e.StatusAccount)
                     .HasColumnType("text")
-                    .HasColumnName("status");
+                    .HasColumnName("status_account");
+
+                entity.Property(e => e.StatusId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("status_id")
+                    .HasDefaultValueSql("'1003'");
             });
 
             modelBuilder.Entity<Oder>(entity =>
@@ -335,6 +337,30 @@ namespace Project_Sem2_WD07_NickVn.Models
                 entity.Property(e => e.RoleNameEn)
                     .HasColumnType("text")
                     .HasColumnName("role_name_en");
+            });
+
+            modelBuilder.Entity<Status>(entity =>
+            {
+                entity.ToTable("status");
+
+                entity.HasIndex(e => e.StatusId, "status_id")
+                    .IsUnique();
+
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
+
+                entity.Property(e => e.StatusId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("status_id");
+
+                entity.Property(e => e.StatusNameEn)
+                    .HasColumnType("text")
+                    .HasColumnName("status_name_en");
+
+                entity.Property(e => e.StatusNameVi)
+                    .HasColumnType("text")
+                    .HasColumnName("status_name_vi");
             });
 
             modelBuilder.Entity<TheNapDatum>(entity =>
