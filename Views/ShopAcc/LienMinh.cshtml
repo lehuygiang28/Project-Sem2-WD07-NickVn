@@ -10,6 +10,7 @@
         var info = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
         return String.Format(info, "{0:c0}", money);
     }
+    @* ViewData["searhString"] *@
 }
 
 <!-- BEGIN: PAGE CONTAINER -->
@@ -95,13 +96,14 @@
         </div>
         <div class="row  hidden-xs hidden-sm" style="margin-bottom: 15px">
             <div class="m-l-10 m-r-10">
-                <form asp-action="LienMinh" asp-controller="ShopAcc" class="form-inline m-b-10" role="form">
+                <form asp-action="LienMinh" asp-controller="ShopAcc" class="form-inline m-b-10" role="form"
+                    method="get">
 
                     <div class="col-md-3 col-sm-4 p-5 field-search">
                         <div class="input-group c-square">
                             <span class="input-group-addon">Tìm kiếm</span>
-                            <input type="text" class="form-control c-square" value="" placeholder="Tìm kiếm"
-                                name="SearchKey">
+                            <input type="text" class="form-control c-square" value='@ViewData["SearchKey"]'
+                                placeholder="Tìm kiếm" name="SearchKey">
 
                         </div>
                     </div>
@@ -117,7 +119,6 @@
                         <div class="input-group c-square">
                             <span class="input-group-addon">Giá tiền</span>
                             <select class="form-control c-square" name="price">
-
                                 <option value="">Chọn giá tiền</option>
                                 <option value="1">Dưới 50K</option>
                                 <option value="2">Từ 50K - 200K</option>
@@ -134,7 +135,7 @@
                         <div class="input-group c-square">
                             <span class="input-group-addon">Sắp xếp</span>
                             <select class="form-control c-square" name="sort_price">
-                                <option value="1" selected>Giá tăng dần</option>
+                                <option value="1">Giá tăng dần</option>
                                 <option value="0">Giá giảm dần</option>
                             </select>
 
@@ -218,7 +219,7 @@
                                 <div class="input-group c-square">
                                     <span class="input-group-addon">Sắp xếp</span>
                                     <select class="form-control c-square" name="sort_price">
-                                        <option value="1" selected>Giá tăng dần</option>
+                                        <option value="1">Giá tăng dần</option>
                                         <option value="0">Giá giảm dần</option>
                                     </select>
                                 </div>
@@ -354,61 +355,75 @@
                 if (Acc is List<Lienminh>)
                 {
                     List<Lienminh> listAcc = (List<Lienminh>)Acc;
-                    foreach (Lienminh LOL in listAcc)
+                    if (listAcc.Count() <= 0)
                     {
+                        <div class="col-sm-12" style="text-align: center;margin: 15px 0;">
+                            <h3 style="color: red;">Không có dữ liệu</h3>
+                        </div>
+                    }
+                    else
+                    {
+                        foreach (Lienminh LOL in listAcc)
+                        {
+                            <div class="col-sm-6 col-md-3">
+                                <div class="classWithPad">
+                                    <div class="image">
+                                        <a href='@Url.ActionLink("Detail_LienMinh", "ShopAcc", new {id = @LOL.Id})'>
 
-                        <div class="col-sm-6 col-md-3">
-                            <div class="classWithPad">
-                                <div class="image">
-                                    <a href='@Url.ActionLink("Detail_LienMinh", "ShopAcc", new {id = @LOL.Id})'>
-
-                                        <!-- <a href="/acc/467183"> -->
+                                            <!-- <a href="/acc/467183"> -->
                                 <img src="@LOL.ImgThumb">
-                                        <span class="ms">MS: @LOL.Id</span>
-                                    </a>
+                                            <span class="ms">MS: @LOL.Id</span>
+                                        </a>
 
-                                </div>
-                                <div class="description">
+                                    </div>
+                                    <div class="description">
 
-                                </div>
-                                <div class="attribute_info">
-                                    <div class="row">
+                                    </div>
+                                    <div class="attribute_info">
+                                        <div class="row">
 
-                                        <div class="col-xs-6 a_att">
-                                            Tướng: <b>@LOL.Champ</b>
-                                        </div>
+                                            <div class="col-xs-6 a_att">
+                                                Tướng: <b>@LOL.Champ</b>
+                                            </div>
 
-                                        <div class="col-xs-6 a_att">
-                                            Skin: <b>@LOL.Skin</b>
-                                        </div>
+                                            <div class="col-xs-6 a_att">
+                                                Skin: <b>@LOL.Skin</b>
+                                            </div>
 
-                                        <div class="col-xs-6 a_att">
-                                            Bảng Ngọc: <b></b>
-                                        </div>
+                                            <div class="col-xs-6 a_att">
+                                                Bảng Ngọc: <b></b>
+                                            </div>
 
-                                        <div class="col-xs-6 a_att">
-                                            Rank: <b>@LOL.Rank</b>
+                                            <div class="col-xs-6 a_att">
+                                                Rank: <b>@LOL.Rank</b>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="a-more">
-                                    <div class="row">
-                                        <div class="col-xs-6" style="width: 51%;">
-                                            <div class="price_item">@vndFormat(LOL.PriceAtm)</div>
-                                        </div>
-                                        <div class="col-xs-6" style="width: 49%;">
-                                            <div class="view">
-                                                <a href='@Url.ActionLink("Detail_LienMinh", "ShopAcc", new {id = @LOL.Id})'>Chi
-                                                    tiết</a>
-                                                <!-- <a href="/acc/467183">Chi tiết</a> -->
+                                    <div class="a-more">
+                                        <div class="row">
+                                            <div class="col-xs-6" style="width: 51%;">
+                                                <div class="price_item">@vndFormat(LOL.PriceAtm)</div>
+                                            </div>
+                                            <div class="col-xs-6" style="width: 49%;">
+                                                <div class="view">
+                                                    <a href='@Url.ActionLink("Detail_LienMinh", "ShopAcc", new {id = @LOL.Id})'>Chi
+                                                        tiết</a>
+                                                    <!-- <a href="/acc/467183">Chi tiết</a> -->
                                     </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        }
 
                     }
+                }
+                else
+                {
+                    <div class="col-sm-12" style="text-align: center;margin: 15px 0;">
+                        <h3 style="color: red;">Không có dữ liệu</h3>
+                    </div>
                 }
             }
         </div>
@@ -435,7 +450,7 @@
                         else
                         {
                             <li class="page-item">
-                                <a class="page-link" href='@Url.Action("LienMinh", new {page = currentPage - 1 })'
+                                <a class="page-link" href='@Url.Action("LienMinh", new {page = currentPage - 1, searchKey = @ViewData["searchKey"], price = @ViewData["price"], sort_price = @ViewData["sort_price"] })'
                             aria-label="&laquo; Previous">&lsaquo;</a>
                             </li>
                         }
@@ -456,7 +471,7 @@
                                 else
                                 {
                                     <li class="page-item">
-                                        <a class="page-link" href='@Url.Action("LienMinh", new {page = @i })'>@i</a>
+                                        <a class="page-link" href='@Url.Action("LienMinh", new {page = @i, searchKey = @ViewData["searchKey"], price = @ViewData["price"], sort_price = @ViewData["sort_price"] })'>@i</a>
                                     </li>
                                 }
                             }
@@ -479,23 +494,23 @@
                                     else
                                     {
                                         <li class="page-item">
-                                            <a class="page-link" href='@Url.Action("LienMinh", new {page = @i })'>@i</a>
+                                            <a class="page-link" href='@Url.Action("LienMinh", new {page = @i, searchKey = @ViewData["searchKey"], price = @ViewData["price"], sort_price = @ViewData["sort_price"] })'>@i</a>
                                         </li>
                                     }
                                 }
                                 <li class="page-item disabled" aria-disabled="true"><span class="page-link">...</span></li>
                                 <li class="page-item"><a class="page-link"
-                            href='@Url.Action("LienMinh", new {page = @totalPage - 1 })'>@nearLastPage</a></li>
+                            href='@Url.Action("LienMinh", new {page = @totalPage - 1, searchKey = @ViewData["searchKey"], price = @ViewData["price"], sort_price = @ViewData["sort_price"] })'>@nearLastPage</a></li>
                                 <li class="page-item"><a class="page-link"
-                            href='@Url.Action("LienMinh", new {page = @totalPage })'>@totalPage</a></li>
+                            href='@Url.Action("LienMinh", new {page = @totalPage, searchKey = @ViewData["searchKey"], price = @ViewData["price"], sort_price = @ViewData["sort_price"] })'>@totalPage</a></li>
                             }
                             else if (currentPage >= (spacePage + 3) && currentPage < totalPage - (spacePage * he_so))
                             {
                                 // Middle hide some front and some back
                                 <li class="page-item"><a class="page-link"
-                            href='@Url.Action("LienMinh", new {page = @totalPage - totalPage + 1 })'>1</a></li>
+                            href='@Url.Action("LienMinh", new {page = @totalPage - totalPage + 1, searchKey = @ViewData["searchKey"], price = @ViewData["price"], sort_price = @ViewData["sort_price"] })'>1</a></li>
                                 <li class="page-item"><a class="page-link"
-                            href='@Url.Action("LienMinh", new {page = @totalPage - totalPage + 2 })'>2</a></li>
+                            href='@Url.Action("LienMinh", new {page = @totalPage - totalPage + 2, searchKey = @ViewData["searchKey"], price = @ViewData["price"], sort_price = @ViewData["sort_price"] })'>2</a></li>
                                 <li class="page-item disabled" aria-disabled="true"><span class="page-link">...</span></li>
 
                                 for (int i = currentPage - spacePage; i <= currentPage + spacePage; i++)
@@ -510,23 +525,23 @@
                                     else
                                     {
                                         <li class="page-item">
-                                            <a class="page-link" href='@Url.Action("LienMinh", new {page = @i })'>@i</a>
+                                            <a class="page-link" href='@Url.Action("LienMinh", new {page = @i, searchKey = @ViewData["searchKey"], price = @ViewData["price"], sort_price = @ViewData["sort_price"] })'>@i</a>
                                         </li>
                                     }
                                 }
                                 <li class="page-item disabled" aria-disabled="true"><span class="page-link">...</span></li>
                                 <li class="page-item"><a class="page-link"
-                            href="@Url.Action("LienMinh", new {page = @totalPage - 1 })">@nearLastPage</a></li>
+                            href="@Url.Action("LienMinh", new {page = @totalPage - 1, searchKey = @ViewData["searchKey"], price = @ViewData["price"], sort_price = @ViewData["sort_price"] })">@nearLastPage</a></li>
                                 <li class="page-item"><a class="page-link"
-                            href='@Url.Action("LienMinh", new {page = @totalPage })'>@totalPage</a></li>
+                            href='@Url.Action("LienMinh", new {page = @totalPage, searchKey = @ViewData["searchKey"], price = @ViewData["price"], sort_price = @ViewData["sort_price"] })'>@totalPage</a></li>
                             }
                             else
                             {
                                 // End only hide early pages
                                 <li class="page-item"><a class="page-link"
-                            href='@Url.Action("LienMinh", new {page = @totalPage - totalPage + 1 })'>1</a></li>
+                            href='@Url.Action("LienMinh", new {page = @totalPage - totalPage + 1, searchKey = @ViewData["searchKey"], price = @ViewData["price"], sort_price = @ViewData["sort_price"] })'>1</a></li>
                                 <li class="page-item"><a class="page-link"
-                            href='@Url.Action("LienMinh", new {page = @totalPage - totalPage + 2 })'>2</a></li>
+                            href='@Url.Action("LienMinh", new {page = @totalPage - totalPage + 2, searchKey = @ViewData["searchKey"], price = @ViewData["price"], sort_price = @ViewData["sort_price"] })'>2</a></li>
                                 <li class="page-item disabled" aria-disabled="true"><span class="page-link">...</span></li>
 
                                 for (int i = totalPage - (spacePage * he_so); i <= totalPage; i++)
@@ -541,7 +556,7 @@
                                     else
                                     {
                                         <li class="page-item">
-                                            <a class="page-link" href='@Url.Action("LienMinh", new {page = @i })'>@i</a>
+                                            <a class="page-link" href='@Url.Action("LienMinh", new {page = @i, searchKey = @ViewData["searchKey"], price = @ViewData["price"], sort_price = @ViewData["sort_price"] })'>@i</a>
                                         </li>
                                     }
                                 }
@@ -558,7 +573,7 @@
                         else
                         {
                             <li class="page-item">
-                                <a class="page-link" href="@Url.Action("LienMinh", new {page = currentPage + 1 })"
+                                <a class="page-link" href="@Url.Action("LienMinh", new {page = currentPage + 1, searchKey = @ViewData["searchKey"], price = @ViewData["price"], sort_price = @ViewData["sort_price"] })"
                             aria-label="Next &rsaquo;">&rsaquo;</a>
                             </li>
                         }
@@ -727,6 +742,32 @@
     </div>
 </div>
 
+
+<script>
+    getOptionSelected('price');
+    getOptionSelected('sort_price');
+
+    function getOptionSelected(pName) {
+        let params = (new URL(document.location)).searchParams;
+        let choose = params.get(pName);
+        var select = document.getElementsByName(pName);
+        var option;
+
+        for (var j = 0; j < select.length; j++) {
+            for (var i = 0; i < select[j].options.length; i++) {
+                option = select[j].options[i];
+
+                console.log("option: " + option)
+
+                if (option.value == choose) {
+                    option.setAttribute('selected', true);
+                    break;
+                }
+            }
+        }
+    }
+
+</script>
 
 <script>
     $(document).ready(function () {

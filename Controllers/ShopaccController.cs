@@ -38,9 +38,9 @@ public class ShopaccController : Controller
         }
 
         var query = from lol in _context.Lienminhs
-                        join sts in _context.Statuses on lol.StatusId equals sts.StatusId
-                        where lol.Id == productId
-                        select lol;
+                    join sts in _context.Statuses on lol.StatusId equals sts.StatusId
+                    where lol.Id == productId
+                    select lol;
 
         var varProduct = await query.FirstAsync();
 
@@ -118,7 +118,7 @@ public class ShopaccController : Controller
         await RenewUserMoney();
 
         var queryProductById = from product in _context.Lienminhs
-                                join sts in _context.Statuses on product.StatusId equals sts.StatusId
+                               join sts in _context.Statuses on product.StatusId equals sts.StatusId
                                where product.Id == id && product.StatusId == NOT_SOLD
                                select product;
 
@@ -151,10 +151,16 @@ public class ShopaccController : Controller
         return View();
     }
 
-    public async Task<IActionResult> LienMinh(int page, string? SearchKey, int? id, decimal? price, int? status, int? sort_price)
+    public async Task<IActionResult> LienMinh(int page, string? SearchKey, int? id, int? price, int? status, int? sort_price)
     {
         const int SORT_DESCENDING = 0;
         const int SORT_ASCENDING = 1;
+
+        // ViewData["CurrentFilter"] = string.IsNullOrEmpty(SearchKey) ? "" : SearchKey;
+        ViewData["SearchKey"] = string.IsNullOrEmpty(SearchKey) ? "" : SearchKey;
+        ViewData["price"] = string.IsNullOrEmpty(price.ToString()) ? string.Empty : price;
+        ViewData["sort_price"] = sort_price == null ? SORT_ASCENDING : sort_price;
+
         decimal priceSearchMin = decimal.Zero;
         decimal priceSearchMax = decimal.Zero;
         switch (price)
@@ -195,7 +201,15 @@ public class ShopaccController : Controller
 
         var query = from lienMinh in _context.Lienminhs
                     where lienMinh.StatusId == (status == null ? NOT_SOLD : status)
-                    && lienMinh.Name.Contains(SearchKey == null ? string.Empty : SearchKey)
+                    && ((
+                            lienMinh.Name.Contains(SearchKey == null ? string.Empty : SearchKey)
+                            || lienMinh.Name.StartsWith(SearchKey == null ? string.Empty : SearchKey)
+                            || lienMinh.Name.EndsWith(SearchKey == null ? string.Empty : SearchKey)
+                        ) || (
+                            lienMinh.Rank.Contains(SearchKey == null ? string.Empty : SearchKey)
+                            || lienMinh.Rank.StartsWith(SearchKey == null ? string.Empty : SearchKey)
+                            || lienMinh.Rank.EndsWith(SearchKey == null ? string.Empty : SearchKey)
+                        ))
                     && (lienMinh.PriceAtm >= priceSearchMin && lienMinh.PriceAtm < priceSearchMax)
                     select lienMinh;
 
@@ -215,7 +229,7 @@ public class ShopaccController : Controller
 
         // var shopacc = await query.OrderBy(h => h.Id).Skip((page - 1) * pageSize)
         //                                             .Take(pageSize).ToListAsync();
-        
+
         if (sort_price == SORT_ASCENDING || sort_price == null)
         {
             var shopacc = await query.OrderBy(a => a.PriceAtm)
