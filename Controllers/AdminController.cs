@@ -364,7 +364,7 @@ public class AdminController : Controller
             Champ = 1;
         if (Status == null)
             Status = 1001;
-        if(PriceAtm == null)
+        if (PriceAtm == null)
             PriceAtm = 0;
         if (isNullEmptyWhitespace(note)) // None required field
             note = "none";
@@ -423,7 +423,7 @@ public class AdminController : Controller
             {
                 fileName = Path.GetFileNameWithoutExtension(posted.FileName);
                 extension = Path.GetExtension(posted.FileName);
-                fileName = fileName +  "_" + DateTime.Now.ToString("yymmssfff") + extension;
+                fileName = fileName + "_" + DateTime.Now.ToString("yymmssfff") + extension;
                 // path = Path.Combine("/img", fileName);
                 path = Path.Combine(wwwRootPath + slashImg, fileName);
                 using (var fileStream = new FileStream(path, FileMode.Create))
@@ -431,7 +431,7 @@ public class AdminController : Controller
                     await posted.CopyToAsync(fileStream);
                 }
 
-                if(firstIsThumbnail)
+                if (firstIsThumbnail)
                 {
                     firstIsThumbnail = false;
                     product.ImgThumb = Path.Combine(slashImg, fileName);
@@ -449,9 +449,9 @@ public class AdminController : Controller
 
                 // _logger.LogInformation("IMG URL local: " + image.ImgLink);
             }
-            
+
             // _logger.LogInformation("IMG URL: " + product.ImagePath);
-            
+
             await _context.Images.AddRangeAsync(listImage);
             await _context.Lienminhs.AddAsync(product);
             await _context.SaveChangesAsync();
@@ -479,6 +479,93 @@ public class AdminController : Controller
         return View();
     }
 
+    public async Task<IActionResult> EditProductSolve(
+        int id,
+        string? name, string? ProductUserName,
+        string? ProductPassword, string? Publisher, decimal? PriceAtm,
+        int? Skin, int? Champ, string? Rank,
+        string? StatusAccount, int? Status, string? note,
+        IFormFile? ImgThumb, IFormFileCollection? ListImg
+        )
+    {
+        if (!await IsLogin())
+        {
+            return RedirectToAction(nameof(Index));
+        }
+
+        if (id == 0)
+        {
+            TempData["err"] = "Error occur, please try again";
+            return Redirect(Request.Headers["Referer"].ToString());
+        }
+
+        var product = await _context.Lienminhs.Where(a => a.Id == id).FirstAsync();
+        if (product == null)
+        {
+            TempData["err"] = "Can not find product with id: " + id;
+            return Redirect(Request.Headers["Referer"].ToString());
+        }
+
+        product.Name = name == null ? product.Name : name;
+        product.ProductUserName = ProductUserName == null ? product.ProductUserName : ProductUserName;
+        product.ProductUserPassword = ProductPassword == null ? product.ProductUserPassword : ProductPassword;
+        product.Publisher = Publisher == null ? product.Publisher : Publisher;
+        product.PriceAtm = PriceAtm == null ? product.PriceAtm : (decimal)PriceAtm;
+        product.Skin = Skin == null ? product.Skin : (int)Skin;
+        product.Champ = Champ == null ? product.Champ : (int)Champ;
+        product.Rank = Rank == null ? product.Rank : Rank;
+        product.StatusAccount = StatusAccount == null ? product.StatusAccount : StatusAccount;
+        product.StatusId = Status == null ? product.StatusId : (int)Status;
+        product.Note = note == null ? product.Note : note;
+
+        // if (ImgThumb != null || ListImg != null)
+        // {
+        //     string wwwRootPath = _hostEnvironment.WebRootPath;
+        //     string fileName;
+        //     string extension;
+        //     string path;
+        //     string slashImg = @"\storage\images";
+        //     bool firstIsThumbnail = true; // if true it will set a first image to thumbnail
+        //     Image image;
+
+        //     foreach (var posted in ImageCollection)
+        //     {
+        //         fileName = Path.GetFileNameWithoutExtension(posted.FileName);
+        //         extension = Path.GetExtension(posted.FileName);
+        //         fileName = fileName + "_" + DateTime.Now.ToString("yymmssfff") + extension;
+        //         // path = Path.Combine("/img", fileName);
+        //         path = Path.Combine(wwwRootPath + slashImg, fileName);
+        //         using (var fileStream = new FileStream(path, FileMode.Create))
+        //         {
+        //             await posted.CopyToAsync(fileStream);
+        //         }
+
+        //         if (firstIsThumbnail)
+        //         {
+        //             firstIsThumbnail = false;
+        //             product.ImgThumb = Path.Combine(slashImg, fileName);
+        //         }
+
+        //         lastImgID++;
+        //         // Set new image
+        //         image = new Image();
+        //         image.ImgId = lastImgID;
+        //         image.LienminhId = product.Id;
+        //         image.ImgLink = Path.Combine(slashImg, fileName);
+
+        //         // Push image to list image
+        //         listImage.Add(image);
+
+        //         // _logger.LogInformation("IMG URL local: " + image.ImgLink);
+        //     }
+        // }
+
+        _context.Update(product);
+        await _context.SaveChangesAsync();
+
+        return Redirect(Request.Headers["Referer"].ToString());
+    }
+
     public async Task<IActionResult> EditProduct(int id)
     {
         if (!await IsLogin())
@@ -496,9 +583,12 @@ public class AdminController : Controller
         List<string> listRank = new List<string> { "Chưa Rank", "Sắt", "Đồng", "Bạc", "Vàng", "Bạch Kim", "Kim Cương", "Cao Thủ", "Đại Cao Thủ", "Thách Đấu" };
         var listStatus = await _context.Statuses.OrderBy(a => a.Id).ToListAsync();
 
+        var listImage = await _context.Images.Where(a => a.LienminhId == product.Id).OrderBy(b => b.ImgId).ToListAsync();
+
         ViewBag.listRank = listRank;
         ViewBag.product = product;
         ViewBag.listStatus = listStatus;
+        ViewBag.listImage = listImage;
 
         return View();
     }
