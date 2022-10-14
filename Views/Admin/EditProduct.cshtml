@@ -1,0 +1,156 @@
+@{
+    ViewData["Title"] = "Edit Product";
+
+    var varProduct = ViewBag.product;
+    var varlistStatus = ViewBag.listStatus;
+    var varListRank = ViewBag.listRank;
+
+    Lienminh product = (Lienminh)varProduct;
+    List<Status> listStatus = (List<Status>)varlistStatus;
+    List<string> listRank = (List<string>)varListRank;
+}
+
+<div class="container-fluid pt-4 px-4">
+
+    <form asp-action="EditCategorySolve" asp-controller="Admin" enctype="multipart/form-data">
+        <div class="row g-4">
+
+            <div class="col-sm-12 col-xl-6">
+                <div class="bg-secondary rounded h-100 p-4">
+                    <h6 class="mb-4">Edit Category: #@product.Id</h6>
+                    <input type="hidden" name = "id" value="@product.Id">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="floatingName" name='name' placeholder="@product.Name">
+                        <label for="floatingName">Name</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="floatingTitle" name = 'ProductUserName'
+                            placeholder="@product.ProductUserName">
+                        <label for="floatingTitle">ProductUserName</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="floatingAction" name = 'ProductUserPassword'
+                            placeholder="@product.ProductUserPassword">
+                        <label for="floatingAction">ProductUserPassword</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="floatingTotal" name= 'Publisher'
+                            placeholder="@product.Publisher">
+                        <label for="floatingTotal">Publisher</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="floatingTotal" name= 'PriceAtm'
+                            placeholder="@product.PriceAtm">
+                        <label for="floatingTotal">PriceAtm</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="floatingTotal" name= 'Champ'
+                            placeholder="@product.Champ">
+                        <label for="floatingTotal">Champ</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="floatingTotal" name= 'Skin'
+                            placeholder="@product.Skin">
+                        <label for="floatingTotal">Skin</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="floatingTotal" name= 'StatusAccount'
+                            placeholder="@product.StatusAccount">
+                        <label for="floatingTotal">StatusAccount</label>
+                    </div>
+                    <div class="form-floating">
+                        <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea" name="note"
+                            style="height: 150px;"></textarea>
+                        <label for="floatingTextarea">Note</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-12 col-xl-6">
+                @* <div class="bg-secondary rounded p-4 h-auto mb-3">
+                    <div class="mb-3">
+
+                        <h6 class="mb-4">Image sale off</h6>
+                        <div class="d-flex align-items-center justify-content-center my-3">
+                            <label for="img-sale-off" class="me-5">Current Image:</label>
+                            <img src="@product.ImgSaleOff" id="img-sale-off" alt="img-sale-off"
+                                style="height: 100%; max-height: 350px; max-width: 450px; border: 1px solid white;">
+                        </div>
+
+                        <div>
+                            <input class="form-control form-control-sm bg-dark" id="formFileSm" type="file" name="ImgSaleOff"
+                                accept="image/*">
+                        </div>
+                    </div>
+                </div> *@
+
+                <div class="bg-secondary rounded p-4 h-auto mb-3">
+
+                    <div class="mb-3">
+
+                        <h6 class="mb-4">Img Src:</h6>
+                        <div class="d-flex align-items-center mb-3">
+                            <label for="img-src" class="me-5">Current Image:</label>
+
+                            <img src="@product.ImgThumb" id="img-src" alt="img-src"
+                                style="height: 100%; max-height: 350px; max-width: 450px; border: 1px solid white;">
+                        </div>
+
+                        <div>
+                            <input class="form-control form-control-sm bg-dark" id="formFileSm2" type="file" name="ImgSrc"
+                                accept="image/*">
+                        </div>
+
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="btn btn-outline-success m-2">Save Change</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+    @* <div class="row mt-3">
+        <div class="col-sm-12 col-xl-6">
+            <div class="bg-secondary rounded h-100 p-4">
+                <h6 class="mb-4">#@cate.Id - @cate.Name</h6>
+                <dl class="row mb-0">
+                    <dt class="col-sm-4">Id</dt>
+                    <dd class="col-sm-8">@cate.Id</dd>
+
+                    <dt class="col-sm-4">Name</dt>
+                    <dd class="col-sm-8">@cate.Name</dd>
+
+                    <dt class="col-sm-4">Title</dt>
+                    <dd class="col-sm-8">@cate.Title</dd>
+
+                    <dt class="col-sm-4">Action</dt>
+                    <dd class="col-sm-8">@cate.Action</dd>
+
+                    <dt class="col-sm-4">Img Sale Off</dt>
+                    <dd class="col-sm-8">@cate.ImgSaleOff</dd>
+
+                    <dt class="col-sm-4">Img Scr</dt>
+                    <dd class="col-sm-8">@cate.ImgSrc</dd>
+
+                    <dt class="col-sm-4">Total</dt>
+                    <dd class="col-sm-8">@cate.Total</dd>
+
+                    <dt class="col-sm-4">Note</dt>
+                    <dd class="col-sm-8">@cate.Note</dd>
+                </dl>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-6">
+            <div class="h-100 bg-secondary rounded p-4">
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <h6 class="mb-0">Calender</h6>
+                    <a href="">Show All</a>
+                </div>
+                <div id="calender"></div>
+            </div>
+        </div>
+    </div> *@
+</div>

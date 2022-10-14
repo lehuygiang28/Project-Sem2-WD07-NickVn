@@ -192,10 +192,6 @@ namespace Project_Sem2_WD07_NickVn.Models
                     .HasColumnType("int(11)")
                     .HasColumnName("champ");
 
-                entity.Property(e => e.ImgSrc)
-                    .HasColumnType("text")
-                    .HasColumnName("img_src");
-
                 entity.Property(e => e.ImgThumb)
                     .HasColumnType("text")
                     .HasColumnName("img_thumb");
@@ -205,7 +201,7 @@ namespace Project_Sem2_WD07_NickVn.Models
                     .HasColumnName("name");
 
                 entity.Property(e => e.Note)
-                    .HasColumnType("int(11)")
+                    .HasColumnType("text")
                     .HasColumnName("note");
 
                 entity.Property(e => e.PriceAtm)
