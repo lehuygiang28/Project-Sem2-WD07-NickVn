@@ -6,9 +6,15 @@ body{
 
 select.form-control{height: 42px;}
 
+.form-text
+{
+	margin-top: .25rem;
+	font-size: .800em;
+	color: #6c757d;
+}
 
 .text-wait {
-	color: #5c6873; !important;
+	color: #5c6873 !important;
 }
 
 .c-content-client-logos-slider-1 .item img{margin: 0 auto}
