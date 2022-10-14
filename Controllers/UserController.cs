@@ -588,15 +588,16 @@ public class UserController : Controller
         string defaultAvatarUrl = @"storage/images/unknown-avatar.jpg";
         string defaultCoverUrl = @"storage/images/unknown-cover.jpg";
 
-        // int ROLE_ADMIN = 100;
-        int ROLE_USER = 1;
+        int ROLE_MEMBER = (await _context.Roles.Where(b => b.RoleNameEn == "Member").FirstAsync()).RoleId;
+        int STATUS_ACTIVE  = (await _context.Statuses.Where(a => a.StatusNameEn == "Active").FirstAsync()).StatusId;
 
         userInput.LastName = localTime.ToString("yyyyMMdd'T'HHmmss");
         userInput.CreateAt = localTime;
         userInput.UpdateAt = localTime;
         userInput.ImgSrc = defaultAvatarUrl;
         userInput.CoverImgSrc = defaultCoverUrl;
-        userInput.RoleId = ROLE_USER;
+        userInput.RoleId = ROLE_MEMBER;
+        userInput.StatusId = STATUS_ACTIVE;
 
         await _context.AddAsync(userInput);
         await _context.SaveChangesAsync();
@@ -679,6 +680,14 @@ public class UserController : Controller
         {
             TempData["error"] = "Có lỗi xảy ra";
             return View(nameof(Login));
+        }
+        
+        // Get status list: Ban
+        int ban_status_id = (await _context.Statuses.Where(a => a.StatusNameEn == "Ban").FirstAsync()).StatusId;
+        if(loginUser.StatusId == ban_status_id)
+        {
+            TempData["error"] = "Tài khoản của bạn đã bị khoá, liên hệ admin để biết thêm chi tiết";
+            return RedirectToAction(nameof(Login)); ;
         }
 
         HttpContext.Session.SetInt32(SessionKeyId, loginUser.Id);

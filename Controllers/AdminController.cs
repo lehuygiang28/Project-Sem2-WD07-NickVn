@@ -325,6 +325,47 @@ public class AdminController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    public async Task<IActionResult> Users(int? page)
+    {
+        if(!await IsLogin())
+        {
+            return RedirectToAction(nameof(Index));
+        }
+        var query = from us in _context.Users
+                        orderby us.Id
+                        select us;
+
+        // var listUser = await _context.Users.OrderBy(a => a.Id).ToListAsync();
+
+        int totalPage = 0;
+        int totalRecord = 0;
+        int pageSize = 9;
+
+        totalRecord = await query.CountAsync();
+        totalPage = (totalRecord / pageSize) + ((totalRecord % pageSize) > 0 ? 1 : 0);
+
+        if (page == null || page == 0)
+        {
+            page = 1;
+        }
+        else if (page > totalPage)
+        {
+            page = totalPage;
+        }
+
+        var listUser = await query.Skip((Convert.ToInt32(page) - 1) * pageSize)
+                                                    .Take(pageSize).ToListAsync();
+
+        var listRole = await _context.Roles.OrderBy(b => b.Id).ToListAsync();
+
+        ViewBag.listUser = listUser;
+        ViewBag.listRole = listRole;
+        ViewBag.totalPage = totalPage;
+        ViewBag.currentPage = page;
+
+        return View();
+    }
+
     public async Task<IActionResult> AddProductSolve(
         string? name, string? ProductUserName,
         string? ProductPassword, string? Publisher, decimal? PriceAtm,
@@ -957,6 +998,14 @@ public class AdminController : Controller
         if (loginUser == null)
         {
             TempData["error"] = "Has error, try again";
+            return RedirectToAction(nameof(Login)); ;
+        }
+
+        // Get status list: Ban
+        int ban_status_id = (await _context.Statuses.Where(a => a.StatusNameEn == "Ban").FirstAsync()).StatusId;
+        if(loginUser.StatusId == ban_status_id)
+        {
+            TempData["error"] = "Your account is banned";
             return RedirectToAction(nameof(Login)); ;
         }
 
