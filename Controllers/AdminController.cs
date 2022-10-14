@@ -25,98 +25,166 @@ public class AdminController : Controller
         this._hostEnvironment = hostEnvironment;
     }
 
-    public async Task<IActionResult> Sample()
-    {
-        // var dataOrders = _context.Oders.OrderBy(a => a.CreateAt).ToListAsync();
-        // Note REVENUE > SALES
-        var query = from od in _context.Oders
-                    join pd in _context.Lienminhs on od.ProductId equals pd.Id
-                    select Tuple.Create<Oder, Lienminh>(od, pd);
-
-        int count = await query.CountAsync();
-        var list = await query.ToListAsync();
-
-        // Sort by Descending date
-        list.Sort((a, b) => b.Item1.CreateAt.CompareTo(a.Item1.CreateAt));
-
-        DateTime today = DateTime.Now.Date;
-        decimal todayRevenue = list.Where(a => a.Item1.CreateAt.Date == today).Sum(s => s.Item2.PriceAtm);
-        decimal totalRevenue = list.Sum(s => s.Item2.PriceAtm);
-        decimal todaySale = Math.Round(todayRevenue / 100 * 35);
-        decimal totalSale = Math.Round(totalRevenue / 100 * 35);
-
-        // System.Console.WriteLine($"Tday sal: {todaySale}");
-        // System.Console.WriteLine($"Ttal sal: {totalSale}");
-        // System.Console.WriteLine($"Tday re: {todayRevenue}");
-        // System.Console.WriteLine($"Ttal re: {totalRevenue}");
-
-        int thisMonth = DateTime.Now.Month;
-        int thisYear = DateTime.Now.Year;
-
-        int startMonth = 0;
-        int startYear = 0;
-        int THANG12 = 12;
-
-        if (thisMonth <= 8)
-        {
-            int temp = 8 - thisMonth;
-            startMonth = THANG12 - temp;
-            startYear = thisYear - 1;
-        }
-        else
-        {
-            startMonth = thisMonth - 8;
-            startYear = thisYear;
-        }
-        System.Console.WriteLine($"StartM {startMonth} - Y {startYear} - thisY {thisYear}");
-        string labels = "[";
-        string dataRevenues = "[";
-        string dataSales = "[";
-        for (int i = 1; i <= 8; i++)
-        {
-            if (startMonth > 12)
-            {
-                startMonth = 1;
-                startYear++;
-            }
-            decimal thisMonthTotal = list.Where(a => a.Item1.CreateAt.Month == startMonth).Sum(b => b.Item2.PriceAtm);
-            dataRevenues += string.Format($"\"{thisMonthTotal}\",");
-            dataSales += string.Format($"\"{Math.Round(thisMonthTotal / 100 * 35)}\",");
-            labels += string.Format($"\"{startMonth}/{startYear}\",");
-            startMonth++;
-        }
-        labels += "]";
-        dataRevenues += "]";
-        dataSales += "]";
-
-        System.Console.WriteLine($"Labels {labels}\nDatas {dataRevenues}\nDatasRe {dataSales}");
 
 
-        // ViewData["listOderProd"] = list;
+    // public async Task fix ()
+    // {
+    //     var  querry = from pd in _context.Lienminhs
+    //                     join im in _context.Images on pd.Id equals im.LienminhId
+    //                     where pd.StatusId == 1004
+    //                     select Tuple.Create<Lienminh, Image>(pd, im);
 
-        ViewData["todaySale"] = todaySale;
-        ViewData["totalSale"] = totalSale;
-        ViewData["todayRevenue"] = todayRevenue;
-        ViewData["totalRevenue"] = totalRevenue;
-        ViewData["labels"] = labels;
-        ViewData["dataSales"] = dataSales;
-        ViewData["dataRevenues"] = dataRevenues;
-        return View(nameof(Index));
-    }
+    //     var data = await querry.ToListAsync();
 
-    private string RandomString(int length)
-    {
-        Random random = new Random();
-        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghiklmnopqrstuvwxyz";
-        return new string(Enumerable.Repeat(chars, length)
-            .Select(s => s[random.Next(s.Length)]).ToArray());
-    }
+    //     var imga = await _context.Images.OrderBy(a => a.ImgId).ToListAsync();
+    //     _context.RemoveRange(imga);
+    //     var prda = await _context.Lienminhs.OrderBy(b => b.Id).ToListAsync();
+    //     _context.RemoveRange(prda);
 
-    private decimal RandomDecimal(int min, int max)
-    {
-        Random rd = new Random();
-        return rd.NextInt64(min, max);
-    }
+    //     await _context.SaveChangesAsync();
+
+    //     List<Lienminh> lol = new List<Lienminh>();
+    //     List<Image> img = new List<Image>();
+
+    //     int idFirst = 0;
+    //     foreach(var dt in data)
+    //     {
+    //         idFirst++;
+    //         dt.Item1.Id = idFirst;
+    //         dt.Item2.ImgId = idFirst;
+    //         lol.Add(dt.Item1);
+    //         img.Add(dt.Item2);
+    //     }
+
+    //     await _context.Lienminhs.AddRangeAsync(lol);
+    //     await _context.Images.AddRangeAsync(img);
+
+    //     await _context.SaveChangesAsync();
+    // }
+
+    // public async Task<IActionResult> Sample()
+    // {
+    //     // var dataOrders = _context.Oders.OrderBy(a => a.CreateAt).ToListAsync();
+    //     // Note REVENUE > SALES
+    //     var query = from od in _context.Oders
+    //                 join pd in _context.Lienminhs on od.ProductId equals pd.Id
+    //                 select Tuple.Create<Oder, Lienminh>(od, pd);
+
+    //     int count = await query.CountAsync();
+    //     var list = await query.ToListAsync();
+
+    //     // Sort by Descending date
+    //     list.Sort((a, b) => b.Item1.CreateAt.CompareTo(a.Item1.CreateAt));
+
+    //     DateTime today = DateTime.Now.Date;
+    //     decimal todayRevenue = list.Where(a => a.Item1.CreateAt.Date == today).Sum(s => s.Item2.PriceAtm);
+    //     decimal totalRevenue = list.Sum(s => s.Item2.PriceAtm);
+    //     decimal todaySale = Math.Round(todayRevenue / 100 * 35);
+    //     decimal totalSale = Math.Round(totalRevenue / 100 * 35);
+
+    //     // System.Console.WriteLine($"Tday sal: {todaySale}");
+    //     // System.Console.WriteLine($"Ttal sal: {totalSale}");
+    //     // System.Console.WriteLine($"Tday re: {todayRevenue}");
+    //     // System.Console.WriteLine($"Ttal re: {totalRevenue}");
+
+    //     int thisMonth = DateTime.Now.Month;
+    //     int thisYear = DateTime.Now.Year;
+
+    //     int startMonth = 0;
+    //     int startYear = 0;
+    //     int THANG12 = 12;
+
+    //     if (thisMonth <= 8)
+    //     {
+    //         int temp = 8 - thisMonth;
+    //         startMonth = THANG12 - temp;
+    //         startYear = thisYear - 1;
+    //     }
+    //     else
+    //     {
+    //         startMonth = thisMonth - 8;
+    //         startYear = thisYear;
+    //     }
+    //     System.Console.WriteLine($"StartM {startMonth} - Y {startYear} - thisY {thisYear}");
+    //     string labels = "[";
+    //     string dataRevenues = "[";
+    //     string dataSales = "[";
+    //     for (int i = 1; i <= 8; i++)
+    //     {
+    //         if (startMonth > 12)
+    //         {
+    //             startMonth = 1;
+    //             startYear++;
+    //         }
+    //         decimal thisMonthTotal = list.Where(a => a.Item1.CreateAt.Month == startMonth).Sum(b => b.Item2.PriceAtm);
+    //         dataRevenues += string.Format($"\"{thisMonthTotal}\",");
+    //         dataSales += string.Format($"\"{Math.Round(thisMonthTotal / 100 * 35)}\",");
+    //         labels += string.Format($"\"{startMonth}/{startYear}\",");
+    //         startMonth++;
+    //     }
+    //     labels += "]";
+    //     dataRevenues += "]";
+    //     dataSales += "]";
+
+    //     System.Console.WriteLine($"Labels {labels}\nDatas {dataRevenues}\nDatasRe {dataSales}");
+
+
+    //     // ViewData["listOderProd"] = list;
+
+    //     ViewData["todaySale"] = todaySale;
+    //     ViewData["totalSale"] = totalSale;
+    //     ViewData["todayRevenue"] = todayRevenue;
+    //     ViewData["totalRevenue"] = totalRevenue;
+    //     ViewData["labels"] = labels;
+    //     ViewData["dataSales"] = dataSales;
+    //     ViewData["dataRevenues"] = dataRevenues;
+    //     return View(nameof(Index));
+    // }
+
+    // public async Task<IActionResult> GenerateOrderData(int? s)
+    // {
+    //     if (!await IsLogin())
+    //     {
+    //         return RedirectToAction(nameof(Index));
+    //     }
+
+    //     Random random = new Random();
+
+    //     int? dataCount = s;
+    //     // Define number of data
+    //     if (dataCount == null || dataCount.Equals(null))
+    //     {
+    //         dataCount = 3;
+    //     }
+
+    //     var listProdId = await _context.Lienminhs.OrderBy(a => a.Id).ToListAsync();
+
+    //     List<Oder> listOd = new List<Oder>();
+    //     Oder od;
+    //     int id = 0;
+    //     for (int i = 0; i <= dataCount; i++)
+    //     {
+    //         int rdProduct = listProdId[random.Next(0, listProdId.Count())].Id;
+    //         id++;
+    //         od = new Oder();
+    //         od.Id = id;
+    //         od.OderId = id;
+    //         od.UserId = random.Next(1, 4);
+    //         od.ProductId = rdProduct;
+    //         od.Status = "Paid";
+    //         od.CreateAt = DateTime.Now;
+    //         od.UpdateAt = od.CreateAt;
+
+    //         listOd.Add(od);
+
+    //         listProdId[rdProduct].StatusId = 1004;
+    //         _context.Update(listProdId[rdProduct]);
+    //     }
+    //     await _context.AddRangeAsync(listOd);
+    //     await _context.SaveChangesAsync();
+
+    //     return RedirectToAction(nameof(Index));
+    // }
 
     public async Task<IActionResult> GenerateProductData(int? s)
     {
@@ -124,6 +192,21 @@ public class AdminController : Controller
         {
             return RedirectToAction(nameof(Index));
         }
+
+        string RandomString(int length)
+        {
+            Random random = new Random();
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghiklmnopqrstuvwxyz";
+            return new string(Enumerable.Repeat(chars, length)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
+        decimal RandomDecimal(int min, int max)
+        {
+            Random rd = new Random();
+            return rd.NextInt64(min, max);
+        }
+
         var watch = System.Diagnostics.Stopwatch.StartNew();
         int? dataCount = s;
         // Define number of data
@@ -144,10 +227,23 @@ public class AdminController : Controller
         };
         int urlImageLength = urlImage.Length;
 
-        int[] status_id = { 1003, 1004 };
+        string[] urlImgThumb = {
+            @"/storage/images/default-thumb1.webp",
+            @"/storage/images/default-thumb2.webp",
+            @"/storage/images/default-thumb3.webp",
+            @"/storage/images/default-thumb4.webp",
+            @"/storage/images/default-thumb5.webp",
+            @"/storage/images/default-thumb6.webp",
+            @"/storage/images/0qBPw7AiOQ_1632531413.jpg"
+        };
+        int urlImgThumbLength = urlImgThumb.Length;
+
+        const int NOT_SOLD = 1003;
+        // const int SOLD = 1004;
+        // int[] status_id = { NOT_SOLD, SOLD };
 
         int lienMinhID;
-        var lastLienMinhID = await _context.Lienminhs.OrderBy(a => a.Id).LastAsync();
+        var lastLienMinhID = await _context.Lienminhs.OrderByDescending(a => a.Id).FirstAsync();
         if (lastLienMinhID == null)
         {
             lienMinhID = 1;
@@ -158,7 +254,7 @@ public class AdminController : Controller
         }
 
         int lastImgID;
-        var varimg = await _context.Images.OrderBy(b => b.ImgId).LastAsync();
+        var varimg = await _context.Images.OrderByDescending(b => b.ImgId).FirstAsync();
         if (varimg == null)
         {
             lastImgID = 1;
@@ -169,6 +265,7 @@ public class AdminController : Controller
         }
 
         // Generate `lienminh` clone data
+        lienMinhID = 3455;
         for (int i = 0; i <= dataCount; i++)
         {
             lienMinhID++;
@@ -176,18 +273,17 @@ public class AdminController : Controller
 
             newProduct.Id = lienMinhID;
             newProduct.Name = "Liên Minh";
-            newProduct.ProductUserName = "shop" + RandomString(6);
+            newProduct.StatusAccount = "shop" + RandomString(6);
             newProduct.ProductUserPassword = "passw" + RandomString(8);
             newProduct.Publisher = "Garena";
             newProduct.PriceAtm = RandomDecimal(10000, int.MaxValue / 100);
             newProduct.Champ = (int)RandomDecimal(1, 150);
             newProduct.Skin = (int)RandomDecimal(1, 555);
-            newProduct.Rank = rankRandomArray[random.Next(0, rankRandomArray.Length - 1)];
+            newProduct.Rank = rankRandomArray[random.Next(0, rankRandomArray.Length)];
             newProduct.StatusAccount = "Trắng Thông Tin";
-            newProduct.Note = 0;
-            newProduct.ImgThumb = @"/storage/images/FSPfB05HiR_1632531414.jpg";
-            newProduct.ImgSrc = @"/storage/images/0qBPw7AiOQ_1632531413.jpg";
-            newProduct.StatusId = status_id[random.Next(0, 1)];
+            newProduct.Note = "none";
+            newProduct.ImgThumb = urlImgThumb[(int)RandomDecimal(0, urlImgThumbLength)];
+            newProduct.StatusId = NOT_SOLD;
 
             // Generate clone image path
             for (int j = 0; j < urlImageLength; j++)
@@ -198,17 +294,15 @@ public class AdminController : Controller
                 productImage.ImgId = lastImgID;
                 productImage.LienminhId = lienMinhID;
                 productImage.ImgLink = urlImage[j];
-                // System.Console.WriteLine($"ID: {productImage.ImgId}");
-                // System.Console.WriteLine($"LOL ID: {productImage.LienminhId}");
-                // System.Console.WriteLine($"Index {j}: " + productImage.ImgLink);
 
-                // Save image path clone to database
+                // Add image path clone
                 await _context.Images.AddAsync(productImage);
-                await _context.SaveChangesAsync();
             }
 
-            // Save data to database
+            // Add data lien minh
             await _context.Lienminhs.AddAsync(newProduct);
+
+            // Save data to database
             await _context.SaveChangesAsync();
 
             // Log data
@@ -229,6 +323,239 @@ public class AdminController : Controller
         System.Console.WriteLine($"Generate Data Done, time: {elapseTime}");
         System.Console.WriteLine("---------------------");
         return RedirectToAction(nameof(Index));
+    }
+
+    public async Task<IActionResult> AddProductSolve(
+        string? name, string? ProductUserName,
+        string? ProductPassword, string? Publisher, decimal? PriceAtm,
+        int? Skin, int? Champ, string? Rank,
+        string? StatusAccount, int? Status, string? note,
+        IFormFileCollection? ImageCollection
+        )
+    {
+        if (!await IsLogin())
+        {
+            return RedirectToAction(nameof(Index));
+        }
+
+        bool isNullEmptyWhitespace(string? input)
+        {
+            if (string.IsNullOrEmpty(input) || string.IsNullOrWhiteSpace(input) || input == null)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        // Return err msg if required field is null, otherwise add ...
+        if (isNullEmptyWhitespace(name) || isNullEmptyWhitespace(ProductUserName)
+            || isNullEmptyWhitespace(ProductPassword) || isNullEmptyWhitespace(Publisher)
+            || isNullEmptyWhitespace(Rank) || isNullEmptyWhitespace(StatusAccount)
+        )
+        {
+            TempData["error-add"] = "Field can not be null or white space";
+            return RedirectToAction(nameof(AddProduct));
+        }
+
+        // Set default if not input btw
+        if (Skin == null)
+            Skin = 1;
+        if (Champ == null)
+            Champ = 1;
+        if (Status == null)
+            Status = 1001;
+        if(PriceAtm == null)
+            PriceAtm = 0;
+        if (isNullEmptyWhitespace(note)) // None required field
+            note = "none";
+
+        if (ImageCollection == null || ImageCollection.Count() <= 0)
+        {
+            TempData["err-add"] = "Image is blank!";
+            return RedirectToAction(nameof(AddProduct));
+        }
+
+        foreach (var a in ImageCollection)
+        {
+            System.Console.WriteLine($"ANH ne:  {a.FileName}");
+        }
+
+        // Check ProductUserName is exists
+        bool isExistsProdUserName = await _context.Lienminhs.AnyAsync(a => a.ProductUserName == ProductUserName);
+        if (isExistsProdUserName)
+        {
+            TempData["err-add"] = "This account is already exists";
+            return RedirectToAction(nameof(AddProduct));
+        }
+
+        List<Image> listImage = new List<Image>();
+        Lienminh product = new Lienminh();
+
+        // This section is check possible null above, then temporary disable warning
+#pragma warning disable CS8601
+        product.Name = name;
+        product.ProductUserName = ProductUserName;
+        product.ProductUserPassword = ProductPassword;
+        product.Publisher = Publisher;
+        product.Rank = Rank;
+        product.StatusAccount = StatusAccount;
+#pragma warning restore CS8601
+        product.Skin = (int)Skin;
+        product.Champ = (int)Champ;
+        product.StatusId = (int)Status;
+        product.PriceAtm = (decimal)PriceAtm;
+        product.Note = note;
+
+        int lastProductId = (await _context.Lienminhs.OrderBy(a => a.Id).LastAsync()).Id;
+        int lastImgID = (await _context.Images.OrderBy(a => a.ImgId).LastAsync()).ImgId;
+
+        product.Id = lastProductId + 1;
+        try
+        {
+            string wwwRootPath = _hostEnvironment.WebRootPath;
+            string fileName;
+            string extension;
+            string path;
+            string slashImg = @"\storage\images";
+            bool firstIsThumbnail = true; // if true it will set a first image to thumbnail
+            Image image;
+            foreach (var posted in ImageCollection)
+            {
+                fileName = Path.GetFileNameWithoutExtension(posted.FileName);
+                extension = Path.GetExtension(posted.FileName);
+                fileName = fileName +  "_" + DateTime.Now.ToString("yymmssfff") + extension;
+                // path = Path.Combine("/img", fileName);
+                path = Path.Combine(wwwRootPath + slashImg, fileName);
+                using (var fileStream = new FileStream(path, FileMode.Create))
+                {
+                    await posted.CopyToAsync(fileStream);
+                }
+
+                if(firstIsThumbnail)
+                {
+                    firstIsThumbnail = false;
+                    product.ImgThumb = Path.Combine(slashImg, fileName);
+                }
+
+                lastImgID++;
+                // Set new image
+                image = new Image();
+                image.ImgId = lastImgID;
+                image.LienminhId = product.Id;
+                image.ImgLink = Path.Combine(slashImg, fileName);
+
+                // Push image to list image
+                listImage.Add(image);
+
+                // _logger.LogInformation("IMG URL local: " + image.ImgLink);
+            }
+            
+            // _logger.LogInformation("IMG URL: " + product.ImagePath);
+            
+            await _context.Images.AddRangeAsync(listImage);
+            await _context.Lienminhs.AddAsync(product);
+            await _context.SaveChangesAsync();
+
+            TempData["success-add"] = "Add product success, new product id: " + product.Id;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex.Message);
+            TempData["err-add"] = "Error occur, please try again later!";
+            return RedirectToAction(nameof(AddProduct));
+        }
+
+        return RedirectToAction(nameof(AddProduct));
+    }
+
+    public async Task<IActionResult> AddProduct()
+    {
+        if (!await IsLogin())
+        {
+            return RedirectToAction(nameof(Index));
+        }
+        var statusList = await _context.Statuses.OrderBy(a => a.Id).ToListAsync();
+        ViewBag.statusList = statusList;
+        return View();
+    }
+
+    public async Task<IActionResult> EditProduct(int id)
+    {
+        if (!await IsLogin())
+        {
+            return RedirectToAction(nameof(Index));
+        }
+
+        var product = await _context.Lienminhs.Where(a => a.Id == id).FirstAsync();
+        if (product == null)
+        {
+            TempData["error"] = $"Can not find product id: {id}";
+            return Redirect(Request.Headers["Referer"].ToString());
+        }
+
+        List<string> listRank = new List<string> { "Chưa Rank", "Sắt", "Đồng", "Bạc", "Vàng", "Bạch Kim", "Kim Cương", "Cao Thủ", "Đại Cao Thủ", "Thách Đấu" };
+        var listStatus = await _context.Statuses.OrderBy(a => a.Id).ToListAsync();
+
+        ViewBag.listRank = listRank;
+        ViewBag.product = product;
+        ViewBag.listStatus = listStatus;
+
+        return View();
+    }
+
+    public async Task<IActionResult> DeleteProduct(int id)
+    {
+        if (!await IsLogin())
+        {
+            return RedirectToAction(nameof(Index));
+        }
+
+        var searchId = await _context.Lienminhs.AnyAsync(c => c.Id == id);
+        if (!searchId)
+        {
+            _logger.LogInformation("Can not delete unknown ID: " + id);
+            TempData["error"] = "Can not delete unknown ID: " + id;
+            return Redirect(Request.Headers["Referer"].ToString());
+        }
+
+        var find = await _context.Lienminhs.Where(c => c.Id == id).FirstAsync();
+        const int DELETED = 1005;
+
+        if (find.StatusId == DELETED)
+        {
+            TempData["error"] = "This product already deleted";
+            return Redirect(Request.Headers["Referer"].ToString());
+        }
+
+        find.StatusId = DELETED;
+
+        _context.Lienminhs.Update(find);
+        await _context.SaveChangesAsync();
+
+        return RedirectToAction(nameof(Products));
+    }
+
+    public async Task<IActionResult> DetailProduct(int? id)
+    {
+        if (!await IsLogin())
+        {
+            return RedirectToAction(nameof(Index));
+        }
+        if (id == null)
+        {
+            TempData["error"] = "Not Found this ID";
+            return RedirectToAction(nameof(Categories));
+        }
+
+        var DeltailProductByID = await _context.Lienminhs.Where(c => c.Id == id).FirstAsync();
+        var imgList = await _context.Images.Where(a => a.LienminhId == DeltailProductByID.Id).ToListAsync();
+        var status_en = await _context.Statuses.Where(c => c.StatusId == DeltailProductByID.StatusId).FirstAsync();
+
+        ViewBag.DeltailProductByID = DeltailProductByID;
+        ViewBag.imgList = imgList;
+        ViewBag.statusName = status_en.StatusNameEn;
+
+        return View();
     }
 
     public async Task<IActionResult> Products(int? page, string? SearchKey, int? id, decimal? price, int? status)
@@ -321,6 +648,10 @@ public class AdminController : Controller
     //Delete Category
     public async Task<IActionResult> DeleteCategory(int id)
     {
+        if (!await IsLogin())
+        {
+            return RedirectToAction(nameof(Index));
+        }
         var searchId = await _context.Categories.AnyAsync(c => c.Id == id);
         if (!searchId)
         {
@@ -455,7 +786,7 @@ public class AdminController : Controller
         return View();
     }
 
-    // Products page start
+    // Categories page start
     public async Task<IActionResult> Categories(int page)
     {
         if (!await IsLogin())
@@ -489,7 +820,7 @@ public class AdminController : Controller
         return View();
     }
 
-    // Products page end
+    // Categories page end
 
     public async Task<IActionResult> LoginSolve(string UserName, string Password)
     {
