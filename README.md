@@ -13,11 +13,11 @@
 * Show purchased
 * Recharge money
 * Deposit history
-* Catch error(400, 401, 404)
 
 ### Admin
 * Admin logging in
 * Category management
+* CRUD Products
 
 ### Guest
 * Show product
