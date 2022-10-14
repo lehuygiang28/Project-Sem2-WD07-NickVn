@@ -582,7 +582,7 @@ public class UserController : Controller
         }
 
         userInput.Password = MD5.CreateMD5(userInput.Password);
-        userInput.FirstName = "NickVn";
+        userInput.FirstName = "User_";
         DateTime localTime = DateTime.Now;
 
         string defaultAvatarUrl = @"storage/images/unknown-avatar.jpg";
