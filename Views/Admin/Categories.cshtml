@@ -5,78 +5,84 @@
 
     <div class="col-sm-6 col-xl-12">
         <div class="bg-secondary rounded h-100 p-4">
-            <h6 class="mb-4">Categories Table</h6>
-            <table class="table table-striped" id="table">
-                <thead>
-                    <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Category Name</th>
-                        <th scope="col">Category Title</th>
-                        <th scope="col">Total</th>
-                        <th scope="col">&nbsp;</th>
-                        <th scope="col">&nbsp;</th>
-                        <th scope="col">&nbsp;</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @{
-                        var cate = ViewBag.listCateQuery;
-                        var totalPage = ViewBag.totalPage;
-                        var currentPage = ViewBag.currentPage; ;
+            <div class="d-flex align-items-center justify-content-between mb-4">
 
-                        List<Category> list = (List<Category>)cate;
+                <h6 class="mb-4">Categories Table</h6>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped" id="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Category Name</th>
+                            <th scope="col">Category Title</th>
+                            <th scope="col">Total</th>
+                            <th scope="col">&nbsp;</th>
+                            <th scope="col">&nbsp;</th>
+                            <th scope="col">&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            var cate = ViewBag.listCateQuery;
+                            var totalPage = ViewBag.totalPage;
+                            var currentPage = ViewBag.currentPage; ;
 
-                        foreach (var item in list)
-                        {
-                            <tr>
-                                <th scope="row">@item.Id</th>
-                                <td>@item.Name</td>
-                                <td>@item.Title</td>
-                                <td>@item.Total</td>
-                                <td>@Html.ActionLink("Details", "DetailCategory", new { id = item.Id }, new { @class =
-                            "text-info"})</td>
-                                <td>@Html.ActionLink("Edit", "EditCategory", new { id = item.Id }, new { @class = "text-light"})
-                                </td>
-                                @* <td>@Html.ActionLink("Delete", "DeleteCategory", new { id = item.Id }, new { @class =
-                                    "text-danger"})</td> *@
+                            List<Category> list = (List<Category>)cate;
 
-                                <!-- Button trigger modal -->
+                            foreach (var item in list)
+                            {
+                                <tr>
+                                    <th scope="row">@item.Id</th>
+                                    <td>@item.Name</td>
+                                    <td>@item.Title</td>
+                                    <td>@item.Total</td>
+                                    <td>@Html.ActionLink("Details", "DetailCategory", new { id = item.Id }, new { @class =
+                                "text-info"})</td>
+                                    <td>@Html.ActionLink("Edit", "EditCategory", new { id = item.Id }, new { @class =
+                                "text-light"})
+                                    </td>
+                                    @* <td>@Html.ActionLink("Delete", "DeleteCategory", new { id = item.Id }, new { @class =
+                                        "text-danger"})</td> *@
 
-                            <td>
-                                    <a type="button" class="text-danger" data-bs-toggle="modal"
-                                    data-bs-target="#DeleteCategoryPopup_@item.Id">
-                                        Delete
-                                    </a>
-                                </td>
-                            </tr>
+                                    <!-- Button trigger modal -->
 
-                            <!-- Modal -->
-                            <div class="modal fade" id="DeleteCategoryPopup_@item.Id" tabindex="-1"
-                            aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title text-secondary" id="exampleModalLabel">Confirmation to
-                                                delete?</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            Are you sure to delete this Category?
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">Close</button>
-                                            @Html.ActionLink("Confirm Delete", "DeleteCategory", new { id = item.Id }, new {
-                                                @class = "btn btn-danger text-white"})
+                                <td>
+                                        <a type="button" class="text-danger" data-bs-toggle="modal"
+                                        data-bs-target="#DeleteCategoryPopup_@item.Id">
+                                            Delete
+                                        </a>
+                                    </td>
+                                </tr>
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="DeleteCategoryPopup_@item.Id" tabindex="-1"
+                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title text-secondary" id="exampleModalLabel">Confirmation to
+                                                    delete?</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you sure to delete this Category?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close</button>
+                                                @Html.ActionLink("Confirm Delete", "DeleteCategory", new { id = item.Id }, new {
+                                        @class = "btn btn-danger text-white"})
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            }
                         }
-                    }
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

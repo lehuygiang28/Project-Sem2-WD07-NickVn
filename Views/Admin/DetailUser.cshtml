@@ -1,0 +1,116 @@
+@{
+    ViewData["Title"] = "User Details";
+
+    var varUser = ViewBag.user;
+    var varListStatus = ViewBag.listStatus ;
+    var varListRole = ViewBag.listRole;
+
+    User user = (User)varUser;
+    List<Status> listStatus = (List<Status>)varListStatus;
+    List<Role> listRole = (List<Role>)varListRole;
+}
+
+<div class="container-fluid pt-4 px-4">
+
+    <div class="row g-4">
+        <div class="col-sm-12 col-xl-6">
+            <div class="bg-secondary rounded h-100 p-4">
+
+                <img src="~/@user.CoverImgSrc" class="img-fluid mb-3 border border-white" alt="Responsive image">
+                <img src="~/@user.ImgSrc" class="img-fluid border border-white" alt="Responsive image">
+
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-xl-6">
+            <div class="bg-secondary rounded h-100 p-4">
+                <h6 class="mb-4">#@user.Id - @user.UserName</h6>
+                <dl class="row mb-0">
+                    <dt class="col-sm-4">Id</dt>
+                    <dd class="col-sm-8">@user.Id</dd>
+                    <hr>
+                    <dt class="col-sm-4">Name</dt>
+                    <dd class="col-sm-8">@user.FirstName @user.LastName</dd>
+                    <hr>
+                    <dt class="col-sm-4">UserName</dt>
+                    <dd class="col-sm-8">@user.UserName</dd>
+                    <hr>
+                    @* <dt class="col-sm-4">Password</dt>
+                    <dd class="col-sm-8">@user.Password</dd>
+                    <hr> *@
+                    <dt class="col-sm-4">Phone</dt>
+                    <dd class="col-sm-8">@user.Phone</dd>
+                    <hr>
+                    <dt class="col-sm-4">Email</dt>
+                    <dd class="col-sm-8">@user.Email</dd>
+                    <hr>
+                    <dt class="col-sm-4">Money</dt>
+                    <dd class="col-sm-8">@user.Money</dd>
+                    <hr>
+                    <dt class="col-sm-4">Role</dt>
+                    <dd class="col-sm-8">
+                        @foreach (var s in listRole)
+                        {
+                            if (user.RoleId == s.RoleId)
+                            {
+                                @s.RoleNameEn
+                            }
+                        }
+                    </dd>
+                    <hr>
+                    <dt class="col-sm-4">Status</dt>
+                    <dd class="col-sm-8">
+                        @foreach (var s in listStatus)
+                        {
+                            if (user.StatusId == s.StatusId)
+                            {
+                                @s.StatusNameEn
+                            }
+                        }
+                    </dd>
+                    <hr>
+                    @* <dt class="col-sm-4">Note</dt>
+                        <dd class="col-sm-8">@user.StatusAccount</dd> *@
+                    <div class="d-flex justify-content-center">
+
+                        @Html.ActionLink("Edit", "EditUser", new { id = user.Id }, new {@class =
+                        "btn btn-outline-light m-2"})
+
+                        <!-- Button trigger modal -->
+                        <a type="button" class="btn btn-outline-danger m-2" data-bs-toggle="modal"
+                            data-bs-target="#DeleteCategoryPopup">
+                            Delete
+                        </a>
+                        <!-- Modal -->
+                        <div class="modal fade" id="DeleteCategoryPopup" tabindex="-1"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title text-secondary" id="exampleModalLabel">Confirmation to
+                                            delete?</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Are you sure to delete this User?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-danger">@Html.ActionLink("Confirm Delete",
+                                            "DeleteUser", new { id = user.Id }, new { @class =
+                                            "text-white"})</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Modal End -->
+
+                    </div>
+                </dl>
+            </div>
+        </div>
+
+    </div>
+</div>

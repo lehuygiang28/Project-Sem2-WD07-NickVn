@@ -21,13 +21,13 @@
                     @TempData["error"]
                 </div>
                 <div class="form-floating mb-3">
-                    @Html.TextBoxFor(u => u.UserName, new {@class = "form-control", @id = "floatingInput", @placeholder = "exampleUser"})
+                    @Html.TextBoxFor(u => u.UserName, new {@class = "form-control", @id = "floatingInput", @placeholder = "User"})
                     @* <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com"> *@
                     <label for="floatingInput">User Name</label>
                 </div>
                 <div class="form-floating mb-4">
                     @* <input type="password" class="form-control" id="floatingPassword" placeholder="Password"> *@
-                    @Html.TextBoxFor(u => u.Password, new {@class = "form-control", @id = "floatingInput", @type = "Password", @placeholder = "Password"})
+                    @Html.TextBoxFor(u => u.Password, new {@class = "form-control", @id = "floatingPassword", @type = "Password", @placeholder = "Password"})
                     <label for="floatingPassword">Password</label>
                 </div>
 

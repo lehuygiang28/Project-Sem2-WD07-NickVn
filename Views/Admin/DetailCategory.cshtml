@@ -107,44 +107,51 @@
 
         <div class="col-sm-12 col-xl-8">
             <div class="bg-secondary rounded h-100 p-4">
-                <h6 class="mb-4">Categories Table</h6>
-                <table class="table table-striped" id="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Category ID</th>
-                            <th scope="col">Category Name</th>
-                            <th scope="col">Action</th>
-                            <th scope="col">Img</th>
-                            <th scope="col">Total</th>
-                            <th scope="col">&nbsp;</th>
-                            <th scope="col">&nbsp;</th>
-                            <th scope="col">&nbsp;</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @{
-                            var productByCateId = ViewBag.productByCateId;
-                            List<ProductCategory> productCate = (List<ProductCategory>)productByCateId;
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <h6 class="mb-4">Categories Table</h6>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped" id="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Category ID</th>
+                                <th scope="col">Category Name</th>
+                                <th scope="col">Action</th>
+                                <th scope="col">Img</th>
+                                <th scope="col">Total</th>
+                                <th scope="col">&nbsp;</th>
+                                <th scope="col">&nbsp;</th>
+                                <th scope="col">&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                var productByCateId = ViewBag.productByCateId;
+                                List<ProductCategory> productCate = (List<ProductCategory>)productByCateId;
 
-                            foreach (var item in productCate)
-                            {
-                                <tr>
-                                    <th scope="row">@item.CategoryId</th>
-                                    <td>@item.CategoryName</td>
-                                    <td>@item.Action</td>
-                                    <td>@item.ImgSrc</td>
-                                    <td>@item.Total</td>
-                                    <td>@Html.ActionLink("Details", "DetailCategory", new { id = item.CategoryId }, new { @class
-                                = "text-info"})</td>
-                                    <td>@Html.ActionLink("Edit", "EditCategory", new { id = item.CategoryId }, new { @class =
-                                "text-light"})</td>
-                                    <td>@Html.ActionLink("Delete", "DeleteCategory", new { id = item.CategoryId }, new { @class
-                                = "text-danger"})</td>
-                                </tr>
+                                foreach (var item in productCate)
+                                {
+                                    <tr>
+                                        <th scope="row">@item.CategoryId</th>
+                                        <td>@item.CategoryName</td>
+                                        <td>@item.Action</td>
+                                        <td>@item.ImgSrc</td>
+                                        <td>@item.Total</td>
+                                        <td>@Html.ActionLink("Details", "DetailCategory", new { id = item.CategoryId }, new {
+                                    @class
+                                    = "text-info"})</td>
+                                        <td>@Html.ActionLink("Edit", "EditCategory", new { id = item.CategoryId }, new { @class
+                                    =
+                                    "text-light"})</td>
+                                        <td>@Html.ActionLink("Delete", "DeleteCategory", new { id = item.CategoryId }, new {
+                                    @class
+                                    = "text-danger"})</td>
+                                    </tr>
+                                }
                             }
-                        }
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
