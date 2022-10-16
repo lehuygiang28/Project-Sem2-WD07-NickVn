@@ -186,11 +186,7 @@
                                 <th scope="row">Ngày tham gia:</th>
                                 <td>
                                     @{
-                                        string toShortDate = "";
-                                        if (userProfile.CreateAt != null)
-                                        {
-                                            toShortDate = userProfile.CreateAt.Value.ToString("dd/MM/yyyy");
-                                        }
+                                        string toShortDate = userProfile.CreateAt.ToString("dd/MM/yyyy");
                                         @Html.Raw(toShortDate);
                                     }
                                 </td>

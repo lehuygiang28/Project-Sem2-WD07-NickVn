@@ -42,9 +42,11 @@
     <!-- Template Stylesheet -->
     <link href="~/AdminAssets/css/style.css" rel="stylesheet">
 
-    <!-- Datatables Stylesheet -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
-    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <!-- LightBox Stylesheet -->
+    <link rel="stylesheet" href="~/AdminAssets/plugin/lightbox2-2.11.3/dist/css/lightbox.min.css">
+
+    <link rel="stylesheet" href="~/AdminAssets/css/image-hover.css">
+
 </head>
 
 <body>
@@ -62,7 +64,7 @@
         <!-- Sidebar Start -->
         <div class="sidebar pe-4 pb-3">
             <nav class="navbar bg-secondary navbar-dark">
-                <a href="#" class="navbar-brand mx-4 mb-3">
+                <a asp-action="Index" asp-controller="Admin" class="navbar-brand mx-4 mb-3">
                     <h3 class="text-primary"><i class="fa fa-user-edit me-2"></i>Admin Panel</h3>
                 </a>
                 <div class="d-flex align-items-center ms-4 mb-4">
@@ -82,10 +84,16 @@
                     <a asp-action="Index" asp-controller="Admin" id="Index" class="nav-item nav-link">
                         <i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
                         
-                    <a asp-action="Products" asp-controller="Admin" id="Products" class="nav-item nav-link">
+                    <a asp-action="Users" asp-controller="Admin" id="User" class="nav-item nav-link">
+                        <i class="fa fa-user me-2"></i>Users</a>
+                        
+                    <a asp-action="Orders" asp-controller="Admin" id="Order" class="nav-item nav-link">
+                        <i class="fas fa-file-invoice me-2"></i>Oders</a>
+                        
+                    <a asp-action="Products" asp-controller="Admin" id="Product" class="nav-item nav-link">
                         <i class="fa fa-box me-2"></i>Products</a>
 
-                    <a asp-action="Categories" asp-controller="Admin" id="Categories" class="nav-item nav-link">
+                    <a asp-action="Categories" asp-controller="Admin" id="Category" class="nav-item nav-link">
                         <i class="fa fa-paperclip me-2"></i>Categories</a>
 
                 </div>
@@ -98,7 +106,7 @@
         <div class="content">
             <!-- Navbar Start -->
             <nav class="navbar navbar-expand bg-secondary navbar-dark sticky-top px-4 py-0">
-                <a href="#" class="navbar-brand d-flex d-lg-none me-4">
+                <a asp-action="Index" asp-controller="Admin" class="navbar-brand d-flex d-lg-none me-4">
                     <h2 class="text-primary mb-0"><i class="fa fa-user-edit"></i></h2>
                 </a>
                 <a href="#" class="sidebar-toggler flex-shrink-0">
@@ -230,23 +238,31 @@
     <script type="text/javascript" src="~/AdminAssets/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
     <!-- Template Javascript -->
     <script type="text/javascript" src="~/AdminAssets/js/main.js" asp-append-version="true"></script>
+    <!-- LightBox Script -->
+    <script type="text/javascript" src="~/AdminAssets/plugin/lightbox2-2.11.3/dist/js/lightbox.js"></script>
 
-    <script>
-        @{
-            @* var varActionName =  ViewContext.RouteData.Values["action"]; *@
-            string currentActionName = Convert.ToString(((Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor)ViewContext.ActionDescriptor).ActionName);
-            string js2ActionNavBar = "";
-            if (currentActionName != null)
+    @{
+        string currentActionName = Convert.ToString(((Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor)ViewContext.ActionDescriptor).ActionName);
+        string[] navbarName = {"Index", "User", "Product", "Category", "Categories", "Order"};
+        if (currentActionName == navbarName[4])
+        {
+            currentActionName = navbarName[3];
+        }
+        string js2ActionNavBar = "";
+        for(int i = 0; i < navbarName.Length; i++)
+        {
+            if(currentActionName.Contains(navbarName[i]) || currentActionName.StartsWith(navbarName[i])
+            || currentActionName.EndsWith(navbarName[i]))
             {
-                @* js2ActionNavBar = string.Format(@"var acti = document.getElementById({0});
-                    acti.innerHTML.addClass('active');", currentActionName); *@
-                js2ActionNavBar = @"var a = document.getElementById('";
-                js2ActionNavBar += currentActionName;
-                js2ActionNavBar += @"'); a.classList.add('active')";
+                js2ActionNavBar = @"<script>var a = document.getElementById('";
+                js2ActionNavBar += navbarName[i];
+                js2ActionNavBar += @"'); a.classList.add('active')</script>";
+                break;
             }
         }
-        @Html.Raw(js2ActionNavBar)
-    </script>
+        @Html.Raw(js2ActionNavBar);
+    }
+
 </body>
 
 </html>

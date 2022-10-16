@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Project_Sem2_WD07_NickVn.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
+using System.ComponentModel;
 
 namespace Project_Sem2_WD07_NickVn.Controllers;
 
@@ -14,9 +15,7 @@ public class AdminController : Controller
     private const string SessionKeyAdminRole = "_AdminRole";
     private const string SessionKeyAdminUserName = "_AdminUserName";
     private const string HostName = "GoogleReCaptcha";
-    private const string NotLogin = null;
     private readonly IWebHostEnvironment _hostEnvironment;
-    private const int DISABLE_OR_DELETE = 0;
 
     public AdminController(ILogger<AdminController> logger, NickVn_ProjectContext context, IWebHostEnvironment hostEnvironment)
     {
@@ -24,8 +23,6 @@ public class AdminController : Controller
         this._context = context;
         this._hostEnvironment = hostEnvironment;
     }
-
-
 
     // public async Task fix ()
     // {
@@ -186,6 +183,48 @@ public class AdminController : Controller
     //     return RedirectToAction(nameof(Index));
     // }
 
+    public async Task<IActionResult> Orders(int? page)
+    {
+        if (!await IsLogin())
+        {
+            return RedirectToAction(nameof(Index));
+        }
+
+        var query = from od in _context.Oders
+                    join us in _context.Users on od.UserId equals us.Id
+                    join pd in _context.Lienminhs on od.ProductId equals pd.Id
+                    orderby od.CreateAt descending
+                    select Tuple.Create<Oder, User, Lienminh>(od, us, pd);
+
+        int totalPage = 0;
+        int totalRecord = 0;
+        int pageSize = 9;
+
+        totalRecord = await query.CountAsync();
+        totalPage = (totalRecord / pageSize) + ((totalRecord % pageSize) > 0 ? 1 : 0);
+
+        if (page == null || page == 0)
+        {
+            page = 1;
+        }
+        else if (page > totalPage)
+        {
+            page = totalPage;
+        }
+
+        var ordersUsersProducts = await query.Skip((Convert.ToInt32(page) - 1) * pageSize)
+                                                    .Take(pageSize).ToListAsync();
+
+        ViewBag.totalPage = totalPage;
+        ViewBag.currentPage = page;
+
+        // var ordersUsersProducts = await query.ToListAsync();
+        // var orders = await _context.Oders.OrderByDescending(a => a.CreateAt).ToListAsync();
+
+        ViewBag.ordersUsersProducts = ordersUsersProducts;
+        return View();
+    }
+
     public async Task<IActionResult> GenerateProductData(int? s)
     {
         if (!await IsLogin())
@@ -325,15 +364,227 @@ public class AdminController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    public async Task<IActionResult> EditUserSolve(
+        int? id, string? FirstName, string? LastName,
+        string? Password, string? Phone, string? Email,
+        int? role_id, int? status_id, string? Note,
+        IFormFile? newCover, IFormFile? newAvatar
+        )
+    {
+        if (id == null)
+        {
+            TempData["err"] = "Can not find user";
+            return RedirectToAction(nameof(EditUser));
+        }
+
+        var user = await _context.Users.Where(a => a.Id == id).FirstAsync();
+        user.FirstName = FirstName == null ? user.FirstName : (string)FirstName;
+        user.LastName = LastName == null ? user.LastName : (string)LastName;
+        user.Password = Password == null ? user.Password : MD5.CreateMD5((string)Password);
+        user.Phone = Phone == null ? user.Phone : (string)Phone;
+        user.Email = Email == null ? user.Email : (string)Email;
+        user.Note = Note == null ? user.Note : (string)Note;
+
+        user.RoleId = role_id == null ? user.RoleId : (int)role_id;
+        user.StatusId = status_id == null ? user.StatusId : (int)status_id;
+
+        if (newAvatar != null)
+        {
+            try
+            {
+                int lastImgID = (await _context.Images.OrderBy(a => a.ImgId).LastAsync()).ImgId;
+                string wwwRootPath = _hostEnvironment.WebRootPath;
+                string fileName;
+                string extension;
+                string path;
+                string slashImg = @"\storage\images";
+                Image image;
+                IFormFile posted = newAvatar;
+
+                fileName = Path.GetFileNameWithoutExtension(posted.FileName);
+                extension = Path.GetExtension(posted.FileName);
+                fileName = fileName + "_" + DateTime.Now.ToString("yymmssfff") + extension;
+                // path = Path.Combine("/img", fileName);
+                path = Path.Combine(wwwRootPath + slashImg, fileName);
+                using (var fileStream = new FileStream(path, FileMode.Create))
+                {
+                    await posted.CopyToAsync(fileStream);
+                }
+
+                // Set new image
+                image = new Image();
+                image.ImgId = lastImgID + 1;
+                image.LienminhId = 0;
+                image.ImgLink = Path.Combine(slashImg, fileName);
+
+                user.ImgSrc = Path.Combine(slashImg, fileName);
+
+                // Set path image
+                _context.Images.Add(image);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex.Message);
+                TempData["err"] = "  Error occur when update image";
+                return RedirectToAction(nameof(EditUser));
+            }
+        }
+
+        if (newCover != null)
+        {
+            try
+            {
+                int lastImgID = (await _context.Images.OrderBy(a => a.ImgId).LastAsync()).ImgId;
+                string wwwRootPath = _hostEnvironment.WebRootPath;
+                string fileName;
+                string extension;
+                string path;
+                string slashImg = @"\storage\images";
+                Image image;
+                IFormFile posted = newCover;
+
+                fileName = Path.GetFileNameWithoutExtension(posted.FileName);
+                extension = Path.GetExtension(posted.FileName);
+                fileName = fileName + "_" + DateTime.Now.ToString("yymmssfff") + extension;
+                // path = Path.Combine("/img", fileName);
+                path = Path.Combine(wwwRootPath + slashImg, fileName);
+                using (var fileStream = new FileStream(path, FileMode.Create))
+                {
+                    await posted.CopyToAsync(fileStream);
+                }
+
+                // Set new image
+                image = new Image();
+                image.ImgId = lastImgID + 1;
+                image.LienminhId = 0;
+                image.ImgLink = Path.Combine(slashImg, fileName);
+
+                // Set path image
+                user.CoverImgSrc = Path.Combine(slashImg, fileName);
+                _context.Images.Add(image);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex.Message);
+                TempData["err"] = "  Error occur when update image";
+                return RedirectToAction(nameof(EditUser));
+            }
+        }
+
+        _context.Users.Update(user);
+        await _context.SaveChangesAsync();
+        TempData["success"] = "Edit user success!";
+
+        // foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(user))
+        // {
+        //     string name = descriptor.Name;
+        //     object value = descriptor.GetValue(user);
+        //     System.Console.WriteLine("{0} = {1}", name, value);
+        // }
+
+        return RedirectToAction(nameof(EditUser));
+    }
+
+    public async Task<IActionResult> EditUser(int? id)
+    {
+        if (!await IsLogin())
+        {
+            return RedirectToAction(nameof(Index));
+        }
+        if (id == null)
+        {
+            TempData["err"] = "Can not found user";
+            return RedirectToAction(nameof(Users));
+        }
+
+        var user = await _context.Users.Where(a => a.Id == id).FirstAsync();
+        if (user == null)
+        {
+            TempData["err"] = "Can not found user";
+            return RedirectToAction(nameof(Users));
+        }
+
+        var listRole = await _context.Roles.OrderBy(b => b.Id).ToListAsync();
+        var listStatus = await _context.Statuses.OrderBy(b => b.Id).ToListAsync();
+
+        ViewBag.listStatus = listStatus;
+        ViewBag.listRole = listRole;
+        ViewBag.user = user;
+
+        return View();
+    }
+
+    public async Task<IActionResult> DetailUser(int? id)
+    {
+        if (!await IsLogin())
+        {
+            return RedirectToAction(nameof(Index));
+        }
+        if (id == null)
+        {
+            TempData["err"] = "Can not found user";
+            return RedirectToAction(nameof(Users));
+        }
+
+        var user = await _context.Users.Where(a => a.Id == id).FirstAsync();
+        if (user == null)
+        {
+            TempData["err"] = "Can not found user";
+            return RedirectToAction(nameof(Users));
+        }
+
+        var listRole = await _context.Roles.OrderBy(b => b.Id).ToListAsync();
+        var listStatus = await _context.Statuses.OrderBy(b => b.Id).ToListAsync();
+
+        ViewBag.listStatus = listStatus;
+        ViewBag.listRole = listRole;
+        ViewBag.user = user;
+        return View();
+    }
+
+    public async Task<string>? ChangeUserStatus(int? userId, int? statusId)
+    {
+        // Redirect(Request.Headers["Referer"].ToString());
+        string? statusName = string.Empty;
+        if (!await IsLogin())
+        {
+            return statusName;
+        }
+        if (statusId == null)
+        {
+            TempData["err"] = "Can not find status";
+            return statusName;
+        }
+        if (userId == null)
+        {
+            TempData["err"] = "Can not find user";
+            return statusName;
+        }
+
+        var user = await _context.Users.Where(a => a.Id == userId).FirstAsync();
+        if (user == null)
+        {
+            TempData["err"] = "Can not find user";
+            return statusName;
+        }
+
+        user.StatusId = (int)statusId;
+        statusName = (await _context.Statuses.Where(a => a.StatusId == user.StatusId).FirstAsync()).StatusNameEn;
+        _context.Users.Update(user);
+        await _context.SaveChangesAsync();
+
+        return statusName;
+    }
+
     public async Task<IActionResult> Users(int? page)
     {
-        if(!await IsLogin())
+        if (!await IsLogin())
         {
             return RedirectToAction(nameof(Index));
         }
         var query = from us in _context.Users
-                        orderby us.Id
-                        select us;
+                    orderby us.Id
+                    select us;
 
         // var listUser = await _context.Users.OrderBy(a => a.Id).ToListAsync();
 
@@ -357,9 +608,11 @@ public class AdminController : Controller
                                                     .Take(pageSize).ToListAsync();
 
         var listRole = await _context.Roles.OrderBy(b => b.Id).ToListAsync();
+        var listStatus = await _context.Statuses.OrderBy(b => b.Id).ToListAsync();
 
-        ViewBag.listUser = listUser;
+        ViewBag.listStatus = listStatus;
         ViewBag.listRole = listRole;
+        ViewBag.listUser = listUser;
         ViewBag.totalPage = totalPage;
         ViewBag.currentPage = page;
 
@@ -650,7 +903,7 @@ public class AdminController : Controller
         }
 
         var find = await _context.Lienminhs.Where(c => c.Id == id).FirstAsync();
-        const int DELETED = 1005;
+        int DELETED = (await _context.Statuses.Where(a => a.StatusNameEn == "Deleted").FirstAsync()).StatusId;
 
         if (find.StatusId == DELETED)
         {
@@ -791,7 +1044,8 @@ public class AdminController : Controller
         }
 
         var find = await _context.Categories.Where(c => c.Id == id).FirstAsync();
-        find.Status = DISABLE_OR_DELETE;
+        int DELETE = (await _context.Statuses.Where(a => a.StatusNameEn == "Deleted").FirstAsync()).StatusId;
+        find.Status = DELETE;
 
         _context.Categories.Update(find);
         await _context.SaveChangesAsync();
@@ -1003,7 +1257,7 @@ public class AdminController : Controller
 
         // Get status list: Ban
         int ban_status_id = (await _context.Statuses.Where(a => a.StatusNameEn == "Ban").FirstAsync()).StatusId;
-        if(loginUser.StatusId == ban_status_id)
+        if (loginUser.StatusId == ban_status_id)
         {
             TempData["error"] = "Your account is banned";
             return RedirectToAction(nameof(Login)); ;

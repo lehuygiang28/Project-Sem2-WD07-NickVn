@@ -16,9 +16,9 @@
     var varlistRole = ViewBag.listRole;
     var varListStatus = ViewBag.listStatus;
 
-    List<User> listUser = (List<User>)varlistUser;
-    List<Role> listRole = (List<Role>)varlistRole;
-    List<Status> listStatus = (List<Status>)varListStatus;
+    List<User> listUser = varlistUser == null ? new List<User>() : (List<User>)varlistUser;
+    List<Role> listRole = varlistRole == null ? new List<Role>() : (List<Role>)varlistRole;
+    List<Status> listStatus = varListStatus == null ? new List<Status>() : (List<Status>)varListStatus;
 
 }
 <div class="container-fluid pt-4 px-4">
@@ -47,100 +47,107 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in listUser)
+                    @if(listUser.Count >= 0)
                     {
-                        <tr>
-                            <td scope="row">@item.Id</td>
-                            <td scope="row">@item.UserName</td>
-                            <td scope="row">@string.Format(item.LastName + " " + item.FirstName)</td>
-                            <td scope="row">@item.Phone</td>
-                            <td scope="row">@vndFormat(item.Money)</td>
-                            <td scope="row">@{
-                                    foreach (var r in listRole)
-                                    {
-                                        if (r.RoleId == item.RoleId)
+                        @foreach (var item in listUser)
+                        {
+                            <tr>
+                                <td scope="row">@item.Id</td>
+                                <td scope="row">@item.UserName</td>
+                                <td scope="row">@string.Format(item.LastName + " " + item.FirstName)</td>
+                                <td scope="row">@item.Phone</td>
+                                <td scope="row">@vndFormat(item.Money)</td>
+                                <td scope="row">@{
+                                        foreach (var r in listRole)
                                         {
-                                            @r.RoleNameEn
-                                            break;
+                                            if (r.RoleId == item.RoleId)
+                                            {
+                                                @r.RoleNameEn
+                                                break;
+                                            }
                                         }
                                     }
+                                </td>
+                                @{
+                                    string idNameStatus = string.Format("status_name_" + item.Id);
                                 }
-                            </td>
-                            <td scope="row" id="status_name_@item.Id">
-                                @foreach (var s in listStatus)
-                                {
-                                    if (item.StatusId == s.StatusId)
-                                    {
-                                        @s.StatusNameEn
-                                    }
-
-                                }
-                            </td>
-                            <td scope="row">
-                                <select class="form-select" id="statusId" onchange="SubmitStatus(@item.Id)">
-
-                                    <option value="">Change</option>
-
+                                <td scope="row" id="@idNameStatus">
                                     @foreach (var s in listStatus)
                                     {
-                                        if (s.StatusNameEn == "Ban" || s.StatusNameEn == "Active")
+                                        if (item.StatusId == s.StatusId)
                                         {
-                                            <option value="@s.StatusId">@s.StatusNameEn</option>
+                                            @s.StatusNameEn
                                         }
+
                                     }
-                                </select>
-
-                                <script>
-                                    async function SubmitStatus(user_id) {
-                                        var statusId = $("#statusId").val();
-                                        var urlSt = "/Admin/ChangeUserStatus?userId=" + user_id + "&statusId=" + statusId;
-                                        var submit = $.post(urlSt);
+                                </td>
+                                <td scope="row">
+                                    @{
+                                        string idName = string.Format("statusId_" + item.Id);
                                     }
-                                </script>
-                            </td>
-                            <td>@Html.ActionLink("Details", "DetailUser", new { id = item.Id }, new { @class =
-                            "text-info"})</td>
-                            <td>@Html.ActionLink("Edit", "EditUser", new { id = item.Id }, new { @class =
-                            "text-light"})
-                            </td>
+                                    <select class="form-select" id="@idName"
+                                    onchange="SubmitStatus(@item.Id, @idName, @idNameStatus)">
 
-                            <td>
-                                <a type="button" class="text-danger" data-bs-toggle="modal"
-                                data-bs-target="#DeleteCategoryPopup_@item.Id">
-                                    Delete
-                                </a>
-                            </td>
-                        </tr>
+                                        <option value="">Change</option>
 
-                        <!-- Modal -->
-                        <div class="modal fade" id="DeleteCategoryPopup_@item.Id" tabindex="-1"
-                        aria-labelledby="DeleteModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title text-secondary" id="DeleteModalLabel">Confirmation to
-                                            delete?</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        Are you sure to delete this Product?
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Close</button>
-                                        @Html.ActionLink("Confirm Delete", "DeleteUser", new { id = item.Id },
-                                    new {
-                                    @class = "btn btn-danger text-white"})
+                                        @foreach (var s in listStatus)
+                                        {
+                                            if (s.StatusNameEn == "Ban" || s.StatusNameEn == "Active")
+                                            {
+                                                <option value="@s.StatusId">@s.StatusNameEn</option>
+                                            }
+                                        }
+                                    </select>
+
+                                </td>
+                                <td>@Html.ActionLink("Details", "DetailUser", new { id = item.Id }, new { @class =
+                                "text-info"})</td>
+                                <td>@Html.ActionLink("Edit", "EditUser", new { id = item.Id }, new { @class =
+                                "text-light"})
+                                </td>
+
+                                <td>
+                                    <a type="button" class="text-danger" data-bs-toggle="modal"
+                                    data-bs-target="#DeleteCategoryPopup_@item.Id">
+                                        Delete
+                                    </a>
+                                </td>
+                            </tr>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="DeleteCategoryPopup_@item.Id" tabindex="-1"
+                            aria-labelledby="DeleteModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title text-secondary" id="DeleteModalLabel">Confirmation to
+                                                delete?</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Are you sure to delete this User?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+                                            @Html.ActionLink("Confirm Delete", "DeleteUser", new { id = item.Id },
+                                        new {
+                                        @class = "btn btn-danger text-white"})
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        }
+                    } else {
+                        <tr>
+                            <th colspan="11">No data ....</th>
+                        </tr>
                     }
-
                 </tbody>
             </table>
         </div>
+
         @* Pagination section: START *@
         <div class="d-flex justify-content-end">
             <nav aria-label="Page navigation">
@@ -298,5 +305,21 @@
         </div>
         @* Pagination section: END *@
 
+        <script>
+            async function SubmitStatus(user_id, id_name, id_name_status) {
+                var statusId = $(id_name).val();
+                var urlSt = "/Admin/ChangeUserStatus?userId=" + user_id + "&statusId=" + statusId;
+                await $.get(urlSt, function(data, status) {
+                    if(data)
+                    {
+                        $(id_name_status).text(data);
+                    }
+                }).done(function(){
+
+                }).fail(function(){
+                    alert("Can not change status");
+                });
+            }
+        </script>
     </div>
 </div>

@@ -228,7 +228,8 @@
 
             <script>
                 @* Lay menh gia the *@
-                    GetAmount();
+                @* First get amount of first selected *@
+                    GetAmount(); 
                 $("#type").on('change', function () {
 
                     GetAmount();
@@ -241,7 +242,7 @@
                     var getamount = $.get("/User/LayMenhGiaThe?telecom_key=" + telecom_key,
                         function (data, status) {
                             $("#amount").find('option').remove();
-                            $("#amount").html(data).val($("#amount option:first").val());;
+                            $("#amount").html(data).val($("#amount option:first").val());
 
                         }).done(function () {
 

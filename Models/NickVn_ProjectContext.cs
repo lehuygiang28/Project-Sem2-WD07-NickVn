@@ -449,6 +449,10 @@ namespace Project_Sem2_WD07_NickVn.Models
                     .HasColumnName("role_id")
                     .HasDefaultValueSql("'1'");
 
+                entity.Property(e => e.StatusId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("status_id");
+
                 entity.Property(e => e.UpdateAt)
                     .HasColumnType("datetime")
                     .HasColumnName("update_at");
