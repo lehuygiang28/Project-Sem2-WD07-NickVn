@@ -282,7 +282,7 @@ public class AdminController : Controller
         // int[] status_id = { NOT_SOLD, SOLD };
 
         int lienMinhID;
-        var lastLienMinhID = await _context.Lienminhs.OrderByDescending(a => a.Id).FirstAsync();
+        var lastLienMinhID = await _context.Lienminhs.OrderByDescending(a => a.Id).FirstOrDefaultAsync();
         if (lastLienMinhID == null)
         {
             lienMinhID = 1;
@@ -293,7 +293,7 @@ public class AdminController : Controller
         }
 
         int lastImgID;
-        var varimg = await _context.Images.OrderByDescending(b => b.ImgId).FirstAsync();
+        var varimg = await _context.Images.OrderByDescending(b => b.ImgId).FirstOrDefaultAsync();
         if (varimg == null)
         {
             lastImgID = 1;
@@ -377,7 +377,12 @@ public class AdminController : Controller
             return RedirectToAction(nameof(EditUser));
         }
 
-        var user = await _context.Users.Where(a => a.Id == id).FirstAsync();
+        var user = await _context.Users.Where(a => a.Id == id).FirstOrDefaultAsync();
+        if(user == null)
+        {
+            TempData["err"] = "Can not find user";
+            return RedirectToAction(nameof(EditUser));
+        }
         user.FirstName = FirstName == null ? user.FirstName : (string)FirstName;
         user.LastName = LastName == null ? user.LastName : (string)LastName;
         user.Password = Password == null ? user.Password : MD5.CreateMD5((string)Password);
@@ -497,7 +502,7 @@ public class AdminController : Controller
             return RedirectToAction(nameof(Users));
         }
 
-        var user = await _context.Users.Where(a => a.Id == id).FirstAsync();
+        var user = await _context.Users.Where(a => a.Id == id).FirstOrDefaultAsync();
         if (user == null)
         {
             TempData["err"] = "Can not found user";
@@ -526,7 +531,7 @@ public class AdminController : Controller
             return RedirectToAction(nameof(Users));
         }
 
-        var user = await _context.Users.Where(a => a.Id == id).FirstAsync();
+        var user = await _context.Users.Where(a => a.Id == id).FirstOrDefaultAsync();
         if (user == null)
         {
             TempData["err"] = "Can not found user";
@@ -561,7 +566,7 @@ public class AdminController : Controller
             return statusName;
         }
 
-        var user = await _context.Users.Where(a => a.Id == userId).FirstAsync();
+        var user = await _context.Users.Where(a => a.Id == userId).FirstOrDefaultAsync();
         if (user == null)
         {
             TempData["err"] = "Can not find user";
@@ -793,7 +798,7 @@ public class AdminController : Controller
             return Redirect(Request.Headers["Referer"].ToString());
         }
 
-        var product = await _context.Lienminhs.Where(a => a.Id == id).FirstAsync();
+        var product = await _context.Lienminhs.Where(a => a.Id == id).FirstOrDefaultAsync();
         if (product == null)
         {
             TempData["err"] = "Can not find product with id: " + id;
@@ -867,11 +872,11 @@ public class AdminController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        var product = await _context.Lienminhs.Where(a => a.Id == id).FirstAsync();
+        var product = await _context.Lienminhs.Where(a => a.Id == id).FirstOrDefaultAsync();
         if (product == null)
         {
             TempData["error"] = $"Can not find product id: {id}";
-            return Redirect(Request.Headers["Referer"].ToString());
+            return RedirectToAction(nameof(Products));
         }
 
         List<string> listRank = new List<string> { "Chưa Rank", "Sắt", "Đồng", "Bạc", "Vàng", "Bạch Kim", "Kim Cương", "Cao Thủ", "Đại Cao Thủ", "Thách Đấu" };
@@ -902,9 +907,19 @@ public class AdminController : Controller
             return Redirect(Request.Headers["Referer"].ToString());
         }
 
-        var find = await _context.Lienminhs.Where(c => c.Id == id).FirstAsync();
-        int DELETED = (await _context.Statuses.Where(a => a.StatusNameEn == "Deleted").FirstAsync()).StatusId;
-
+        var find = await _context.Lienminhs.Where(c => c.Id == id).FirstOrDefaultAsync();
+        if(find == null)
+        {
+            TempData["error"] = "Can not delete unknown ID: " + id;
+            return RedirectToAction(nameof(Products));
+        }
+        var status_DEL = await _context.Statuses.Where(a => a.StatusNameEn == "Deleted").FirstOrDefaultAsync();
+        if(status_DEL == null)
+        {
+            TempData["error"] = "Can not get list of status";
+            return RedirectToAction(nameof(Products));
+        }
+        int DELETED = status_DEL.StatusId;
         if (find.StatusId == DELETED)
         {
             TempData["error"] = "This product already deleted";
@@ -928,12 +943,22 @@ public class AdminController : Controller
         if (id == null)
         {
             TempData["error"] = "Not Found this ID";
-            return RedirectToAction(nameof(Categories));
+            return RedirectToAction(nameof(Products));
         }
 
-        var DeltailProductByID = await _context.Lienminhs.Where(c => c.Id == id).FirstAsync();
+        var DeltailProductByID = await _context.Lienminhs.Where(c => c.Id == id).FirstOrDefaultAsync();
+        if(DeltailProductByID == null)
+        {
+            TempData["error"] = "Not Found this ID";
+            return RedirectToAction(nameof(Products));
+        }
         var imgList = await _context.Images.Where(a => a.LienminhId == DeltailProductByID.Id).ToListAsync();
         var status_en = await _context.Statuses.Where(c => c.StatusId == DeltailProductByID.StatusId).FirstAsync();
+        if(status_en == null)
+        {
+            TempData["error"] = "Not Found this ID";
+            return RedirectToAction(nameof(Products));
+        }
 
         ViewBag.DeltailProductByID = DeltailProductByID;
         ViewBag.imgList = imgList;
@@ -1030,11 +1055,16 @@ public class AdminController : Controller
     }
 
     //Delete Category
-    public async Task<IActionResult> DeleteCategory(int id)
+    public async Task<IActionResult> DeleteCategory(int? id)
     {
         if (!await IsLogin())
         {
             return RedirectToAction(nameof(Index));
+        }
+        if(id == null)
+        {
+            TempData["err"] = "Can not found category";
+            return RedirectToAction(nameof(Categories));
         }
         var searchId = await _context.Categories.AnyAsync(c => c.Id == id);
         if (!searchId)
@@ -1043,9 +1073,19 @@ public class AdminController : Controller
             return Redirect(Request.Headers["Referer"].ToString());
         }
 
-        var find = await _context.Categories.Where(c => c.Id == id).FirstAsync();
-        int DELETE = (await _context.Statuses.Where(a => a.StatusNameEn == "Deleted").FirstAsync()).StatusId;
-        find.Status = DELETE;
+        var find = await _context.Categories.Where(c => c.Id == id).FirstOrDefaultAsync();
+        if(find == null)
+        {
+            TempData["err"] = "Can not found category";
+            return RedirectToAction(nameof(Categories));
+        }
+        var status_DEL = await _context.Statuses.Where(a => a.StatusNameEn == "Deleted").FirstOrDefaultAsync();
+        if(status_DEL == null)
+        {
+            TempData["err"] = "Can not found category";
+            return RedirectToAction(nameof(Categories));
+        }
+        find.Status = status_DEL.StatusId;
 
         _context.Categories.Update(find);
         await _context.SaveChangesAsync();
@@ -1053,12 +1093,26 @@ public class AdminController : Controller
         return RedirectToAction(nameof(Categories));
     }
 
-    public async Task<IActionResult> EditCategorySolve(int id, string? Name, string? Title, string? ActionString, int? Total, string? Note, IFormFile? ImgSaleOff, IFormFile? ImgSrc)
+    public async Task<IActionResult> EditCategorySolve(int? id, string? Name, string? Title, string? ActionString, int? Total, string? Note, IFormFile? ImgSaleOff, IFormFile? ImgSrc)
     {
-        Category otherCategory = new Category();
+        if(!await IsLogin())
+        {
+            return RedirectToAction(nameof(Index));
+        }
+        if(id == null)
+        {
+            TempData["err"] = "Can not found category";
+            return RedirectToAction(nameof(Categories));
+        }
+        Category? otherCategory = new Category();
         try
         {
-            otherCategory = await _context.Categories.Where(c => c.Id == id).FirstAsync();
+            otherCategory = await _context.Categories.Where(c => c.Id == id).FirstOrDefaultAsync();
+            if(otherCategory  == null)
+            {
+                TempData["err"] = "Can not found category";
+                return RedirectToAction(nameof(Categories));
+            }
             otherCategory.Name = Name == null ? otherCategory.Name : Name;
             otherCategory.Title = Title == null ? otherCategory.Title : Title;
             otherCategory.Action = ActionString == null ? otherCategory.Action : ActionString;
@@ -1139,12 +1193,16 @@ public class AdminController : Controller
         }
         if (id == null)
         {
-            TempData["error"] = "Not Found this ID";
+            TempData["error"] = "Not found this category";
             return RedirectToAction(nameof(DetailCategory));
         }
 
-        var selectedCategory = await _context.Categories.Where(c => c.Id == id).FirstAsync();
-
+        var selectedCategory = await _context.Categories.Where(c => c.Id == id).FirstOrDefaultAsync();
+        if(selectedCategory == null)
+        {
+            TempData["error"] = "Not found this category";
+            return RedirectToAction(nameof(DetailCategory));
+        }
 
         ViewBag.selectedCategory = selectedCategory;
         return View();
@@ -1158,11 +1216,16 @@ public class AdminController : Controller
         }
         if (id == null)
         {
-            TempData["error"] = "Not Found this ID";
+            TempData["error"] = "Not Found this category";
             return RedirectToAction(nameof(Categories));
         }
 
-        var cateById = await _context.Categories.Where(c => c.Id == id).FirstAsync();
+        var cateById = await _context.Categories.Where(c => c.Id == id).FirstOrDefaultAsync();
+        if(cateById == null)
+        {
+            TempData["error"] = "Not Found this category";
+            return RedirectToAction(nameof(Categories));
+        }
         var productByCateId = await _context.ProductCategories.Where(c => c.CategoryId == id).ToListAsync();
 
         ViewBag.cateById = cateById;
@@ -1239,15 +1302,20 @@ public class AdminController : Controller
         Password = MD5.CreateMD5(Password);
 
         // Get role id
-        var roleid = await _context.Roles.Where(a => a.RoleNameEn == "Admin").FirstAsync();
+        var roleid = await _context.Roles.Where(a => a.RoleNameEn == "Admin").FirstOrDefaultAsync();
+        if(roleid == null)
+        {
+            TempData["error"] = "Can not get list of role";
+            return RedirectToAction(nameof(Login));
+        }
 
         if (!await _context.Users.AnyAsync(u => u.UserName == UserName && u.Password == Password && u.RoleId == roleid.RoleId))
         {
             TempData["error"] = "Username or Password is incorrect";
-            return RedirectToAction(nameof(Login)); ;
+            return RedirectToAction(nameof(Login));
         }
 
-        var loginUser = await _context.Users.Where(u => u.UserName == UserName && u.Password == Password && u.RoleId == roleid.RoleId).FirstAsync();
+        var loginUser = await _context.Users.Where(u => u.UserName == UserName && u.Password == Password && u.RoleId == roleid.RoleId).FirstOrDefaultAsync();
 
         if (loginUser == null)
         {
