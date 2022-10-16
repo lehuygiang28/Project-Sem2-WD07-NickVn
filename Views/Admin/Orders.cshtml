@@ -1,0 +1,275 @@
+@{
+    ViewData["Title"] = "Orders page";
+    string vndFormat(dynamic money)
+    {
+        money = Convert.ToInt64(money);
+        if (money == null)
+        {
+            return "0";
+        }
+        var info = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+        return String.Format(info, "{0:c0}", money);
+    }
+
+    var data = ViewBag.ordersUsersProducts;
+    List<Tuple<Oder, User, Lienminh>> ordersUsersProducts;
+    if(data != null)
+    {
+        ordersUsersProducts = (List<Tuple<Oder, User, Lienminh>>)data;
+    }
+    else
+    {
+        ordersUsersProducts = new List<Tuple<Oder, User, Lienminh>>();
+    }
+}
+<div class="container-fluid pt-4 px-4">
+
+    <div class="col-sm-6 col-xl-12">
+        <div class="bg-secondary rounded h-100 p-4">
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <h6 class="mb-4">Orders Table</h6>
+                @* <a class="btn btn-info float-end" asp-action="AddProduct" asp-controller="Admin">Add Product</a> *@
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped mb-4" id="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Date</th>
+                            <th scope="col">Orders Id</th>
+                            <th scope="col">User Name</th>
+                            <th scope="col">Product Name</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">&nbsp;</th>
+                            @* <th scope="col">&nbsp;</th>
+                            <th scope="col">&nbsp;</th> *@
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            if(ordersUsersProducts.Count > 0)
+                            {
+                                foreach (var oderDetailItem in ordersUsersProducts)
+                                {
+                                    <tr>
+                                        <td>@oderDetailItem.Item1.CreateAt.ToString("dd/MM/yyyy")</td>
+                                        <th scope="row">@oderDetailItem.Item1.Id</th>
+                                        <td>@oderDetailItem.Item2.UserName</td>
+                                        <td>@oderDetailItem.Item3.Name #@oderDetailItem.Item3.Id</td>
+                                        <td>@vndFormat(oderDetailItem.Item3.PriceAtm)</td>
+                                        <td>@oderDetailItem.Item1.Status</td>
+                                        <td>@Html.ActionLink("Details", "DetailOrder", new { id = oderDetailItem.Item1.Id }, new {
+                                    @class =
+                                    "text-info"})</td>
+                                        @* <td>@Html.ActionLink("Edit", "EditProduct", new { id = oderDetailItem.Item1.Id }, new { @class =
+                                    "text-light"})
+                                        </td> *@
+                                        @* <td>@Html.ActionLink("Delete", "DeleteProduct", new { id = item.Id }, new { @class =
+                                            "text-danger"})</td> *@
+
+                                        <!-- Button trigger modal -->
+
+                                    @* <td>
+                                            <a type="button" class="text-danger" data-bs-toggle="modal"
+                                            data-bs-target="#DeleteCategoryPopup_@oderDetailItem.Item1.Id">
+                                                Delete
+                                            </a>
+                                        </td> *@
+                                    </tr>
+
+                                    @* <!-- Modal -->
+                                    <div class="modal fade" id="DeleteCategoryPopup_@oderDetailItem.Item1.Id" tabindex="-1"
+                                    aria-labelledby="DeleteModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title text-secondary" id="DeleteModalLabel">Confirmation to
+                                                        delete?</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Are you sure to delete this Product?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Close</button>
+                                                    @Html.ActionLink("Confirm Delete", "DeleteProduct", new { id = oderDetailItem.Item1.Id
+                                            },
+                                            new {
+                                            @class = "btn btn-danger text-white"})
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> *@
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="6">No data orders ...</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+            @* Pagination section: START *@
+
+            <nav aria-label="Page navigation">
+                <ul class="pagination pagination-sm justify-content-center">
+                    @{
+                        int currentPage = ViewBag.currentPage ?? 1;
+                        int totalPage = ViewBag.totalPage ?? 1;
+                        int spacePage = 2;
+                        int nearLastPage = totalPage - 1;
+                        int he_so = 2;
+
+                        if (totalPage >= 1)
+                        {
+                            // Previous button, disable if is first page
+                            if (currentPage == 1)
+                            {
+                                <li class="page-item disabled" aria-disabled="true" aria-label="&lsaquo; Previous">
+                                    <span class="page-link" aria-hidden="true">&lsaquo;</span>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" href='@Url.Action("Orders", new {page = currentPage - 1 })'
+                                aria-label="&laquo; Previous">&lsaquo;</a>
+                                </li>
+                            }
+
+                            // Pages
+                            // if total of page (less than) <
+                            if (totalPage <= (spacePage * he_so) + 5)
+                            {
+                                for (int i = 1; i <= totalPage; i++)
+                                {
+                                    // Disable if is current page
+                                    if (currentPage == i)
+                                    {
+                                        <li class="page-item active" aria-current="page">
+                                            <span class="page-link">@i</span>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="page-item">
+                                            <a class="page-link" href='@Url.Action("Orders", new {page = @i })'>@i</a>
+                                        </li>
+                                    }
+                                }
+                            }
+                            else if (totalPage > (spacePage * he_so) + 5)
+                            {
+                                // In this case, current_page is too close to the beginning
+                                if (currentPage < (spacePage + 3))
+                                {
+                                    // Beginning only hide later pages
+                                    for (int i = 1; i <= totalPage - (spacePage + 5); i++)
+                                    {
+                                        // Disable if is current page
+                                        if (currentPage == i)
+                                        {
+                                            <li class="page-item active" aria-current="page">
+                                                <span class="page-link">@i</span>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li class="page-item">
+                                                <a class="page-link" href='@Url.Action("Orders", new {page = @i })'>@i</a>
+                                            </li>
+                                        }
+                                    }
+                                    <li class="page-item disabled" aria-disabled="true"><span class="page-link">...</span></li>
+                                    <li class="page-item"><a class="page-link"
+                                href='@Url.Action("Orders", new {page = @totalPage - 1 })'>@nearLastPage</a></li>
+                                    <li class="page-item"><a class="page-link"
+                                href='@Url.Action("Orders", new {page = @totalPage })'>@totalPage</a></li>
+                                }
+                                else if (currentPage >= (spacePage + 3) && currentPage < totalPage - (spacePage + 1))
+                                {
+                                    // Middle hide some front and some back
+                                    <li class="page-item"><a class="page-link"
+                                href='@Url.Action("Orders", new {page = @totalPage - totalPage + 1 })'>1</a></li>
+                                    <li class="page-item"><a class="page-link"
+                                href='@Url.Action("Orders", new {page = @totalPage - totalPage + 2 })'>2</a></li>
+                                    <li class="page-item disabled" aria-disabled="true"><span class="page-link">...</span></li>
+
+                                    for (int i = currentPage - spacePage; i <= currentPage + spacePage; i++)
+                                    {
+                                        // Disable if is current page
+                                        if (currentPage == i)
+                                        {
+                                            <li class="page-item active" aria-current="page">
+                                                <span class="page-link">@i</span>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li class="page-item">
+                                                <a class="page-link" href='@Url.Action("Orders", new {page = @i })'>@i</a>
+                                            </li>
+                                        }
+                                    }
+                                    <li class="page-item disabled" aria-disabled="true"><span class="page-link">...</span></li>
+                                    <li class="page-item"><a class="page-link"
+                                href='@Url.Action("Orders", new {page = @totalPage - 1 })'>@nearLastPage</a></li>
+                                    <li class="page-item"><a class="page-link"
+                                href='@Url.Action("Orders", new {page = @totalPage })'>@totalPage</a></li>
+                                }
+                                else
+                                {
+                                    // End only hide early pages
+                                    <li class="page-item"><a class="page-link"
+                                href='@Url.Action("Orders", new {page = @totalPage - totalPage + 1 })'>1</a></li>
+                                    <li class="page-item"><a class="page-link"
+                                href='@Url.Action("Orders", new {page = @totalPage - totalPage + 2 })'>2</a></li>
+                                    <li class="page-item disabled" aria-disabled="true"><span class="page-link">...</span></li>
+
+                                    for (int i = totalPage - (spacePage * he_so); i <= totalPage; i++)
+                                    {
+                                        // Disable if is current page
+                                        if (currentPage == i)
+                                        {
+                                            <li class="page-item active" aria-current="page">
+                                                <span class="page-link">@i</span>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li class="page-item">
+                                                <a class="page-link" href='@Url.Action("Orders", new {page = @i })'>@i</a>
+                                            </li>
+                                        }
+                                    }
+                                }
+                            }
+
+                            // Next button, disable if is last page
+                            if (currentPage == totalPage)
+                            {
+                                <li class="page-item disabled" aria-disabled="true" aria-label="Next &rsaquo;">
+                                    <span class="page-link" aria-hidden="false">&rsaquo;</span>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" href="@Url.Action("Orders", new {page = currentPage + 1 })"
+                                aria-label="Next &rsaquo;">&rsaquo;</a>
+                                </li>
+                            }
+                        }
+                    }
+                </ul>
+            </nav>
+        </div>
+        @* Pagination section: END *@
+
+    </div>
+</div>
