@@ -21,9 +21,17 @@ public class UserController : Controller
         _context = context;
     }
 
+    private Task RemoveInvalidSession()
+    {
+        HttpContext.Session.Remove(SessionKeyId);
+        HttpContext.Session.Remove(SessionKeyMoney);
+        HttpContext.Session.Remove(SessionKeyName);
+        return Task.CompletedTask;
+    }
+
     public async Task<IActionResult> DepositHistory(int? page)
     {
-        if(!await IsLogin())
+        if(!await IsLoggedIn())
         {
             return RedirectToAction(nameof(Login));
         }
@@ -177,14 +185,22 @@ public class UserController : Controller
         }
     }
 
-    private async Task<bool> IsLogin()
+    private async Task<bool> IsLoggedIn()
     {
         var sessionValueId = HttpContext.Session.GetInt32(SessionKeyId);
         if (sessionValueId == null)
         {
             return false;
         }
-        await RenewUserInformation();
+        var user = await _context.Users.Where(u => u.Id == sessionValueId).FirstOrDefaultAsync();
+        if(user == null)
+        {
+            HttpContext.Session.Remove(SessionKeyId);
+            HttpContext.Session.Remove(SessionKeyMoney);
+            HttpContext.Session.Remove(SessionKeyName);
+            TempData["err"] = "Error occur when login";
+            return false;
+        }
         return true;
     }
 
@@ -231,7 +247,7 @@ public class UserController : Controller
     public async Task<IActionResult> NapTheSolve(int? id, string? UserName, string telecom, decimal? amount, string? pin, string? serial, int? type_charge)
     {
         // If not login, return to login
-        if(!await IsLogin())
+        if(!await IsLoggedIn())
         {
             return RedirectToAction(nameof(Login));
         }
@@ -289,7 +305,7 @@ public class UserController : Controller
         }
 
         // if not found user, return msg error
-        var user = await _context.Users.Where(u => u.Id == id && u.UserName == UserName).FirstAsync();
+        var user = await _context.Users.Where(u => u.Id == id && u.UserName == UserName).FirstOrDefaultAsync();
         if (user == null)
         {
             TempData["error"] = "Có lỗi xảy ra! Hãy đăng nhập và thử lại!";
@@ -351,7 +367,7 @@ public class UserController : Controller
 
     public async Task<IActionResult> NapThe()
     {
-        if (!await IsLogin())
+        if (!await IsLoggedIn())
         {
             return RedirectToAction(nameof(Login));
         }
@@ -380,7 +396,7 @@ public class UserController : Controller
 
     public async Task<IActionResult> Account()
     {
-        if (!await IsLogin())
+        if (!await IsLoggedIn())
         {
             return RedirectToAction("Index", "Home");
         }
@@ -401,10 +417,15 @@ public class UserController : Controller
             return Task.CompletedTask;
         }
 
+        //  Push products purchased to list
         List<Lienminh> listProducts = new List<Lienminh>();
         foreach (Oder itemInList in listAccountId)
         {
-            Lienminh item = await _context.Lienminhs.Where(o => o.Id == itemInList.ProductId).FirstAsync();
+            var item = await _context.Lienminhs.Where(o => o.Id == itemInList.ProductId).FirstOrDefaultAsync();
+            if(item  == null)
+            {
+                continue;
+            }
             await addList(item, listProducts);
         }
 
@@ -416,7 +437,7 @@ public class UserController : Controller
 
     public async Task<IActionResult> ChangePasswordSolve(string oldPassword, string newPassword, string passwordConfirmation)
     {
-        if (!await IsLogin())
+        if (!await IsLoggedIn())
         {
             return RedirectToAction("Index", "Home");
         }
@@ -427,7 +448,12 @@ public class UserController : Controller
             return View(nameof(ChangePassword));
         }
 
-        var currentUser = await _context.Users.Where(a => a.Id == HttpContext.Session.GetInt32(SessionKeyId)).FirstAsync();
+        var currentUser = await _context.Users.Where(a => a.Id == HttpContext.Session.GetInt32(SessionKeyId)).FirstOrDefaultAsync();
+        if(currentUser == null)
+        {
+            await RemoveInvalidSession();
+            return RedirectToAction(nameof(ChangePassword));
+        }
 
         oldPassword = MD5.CreateMD5(oldPassword);
         if (string.Compare(oldPassword, currentUser.Password) != 0)
@@ -447,7 +473,7 @@ public class UserController : Controller
         if (!IsValidPassword(newPassword))
         {
             TempData["error-change-pw"] = "Mật khẩu mới chưa hợp lệ";
-            return View(nameof(ChangePassword));
+            return RedirectToAction(nameof(ChangePassword));
         }
 
         //string.Compare(newPassword, passwordConfirmation, true): neu true thi se bo qua in hoa va in thuong
@@ -474,7 +500,7 @@ public class UserController : Controller
 
     public async Task<IActionResult> ChangePassword()
     {
-        if (!await IsLogin())
+        if (!await IsLoggedIn())
         {
             return RedirectToAction("Index", "Home");
         }
@@ -483,13 +509,18 @@ public class UserController : Controller
 
     public async Task<IActionResult> Profile()
     {
-        if (!await IsLogin())
+        if (!await IsLoggedIn())
         {
             return RedirectToAction(nameof(Login));
         }
 
         var idSession = HttpContext.Session.GetInt32(SessionKeyId);
-        var user = await _context.Users.Where(a => a.Id == idSession).FirstAsync();
+        var user = await _context.Users.Where(a => a.Id == idSession).FirstOrDefaultAsync();
+        if(user == null)
+        {
+            await RemoveInvalidSession();
+            return RedirectToAction(nameof(Login));
+        }
         var roles = await _context.Roles.OrderBy(a => a.Id).ToListAsync();
 
         ViewData["roles"] = roles;
@@ -499,7 +530,7 @@ public class UserController : Controller
 
     public async Task<IActionResult> SignupSolve(User userInput, string password_confirmation)
     {
-        if (await IsLogin())
+        if (await IsLoggedIn())
         {
             return RedirectToAction("Index", "Home");
         }
@@ -610,7 +641,7 @@ public class UserController : Controller
 
     public async Task<IActionResult> Signup()
     {
-        if (await IsLogin())
+        if (await IsLoggedIn())
         {
             return RedirectToAction("Index", "Home");
         }
@@ -634,7 +665,7 @@ public class UserController : Controller
 
     public async Task<IActionResult> LoginSolve(string UserName, string Password)
     {
-        if (await IsLogin())
+        if (await IsLoggedIn())
         {
             return RedirectToAction("Index", "Home");
         }
@@ -674,7 +705,7 @@ public class UserController : Controller
             return View(nameof(Login));
         }
 
-        var loginUser = await _context.Users.Where(u => u.UserName == UserName && u.Password == Password).FirstAsync();
+        var loginUser = await _context.Users.Where(u => u.UserName == UserName && u.Password == Password).FirstOrDefaultAsync();
 
         if (loginUser == null)
         {
@@ -711,7 +742,7 @@ public class UserController : Controller
 
     public async Task<IActionResult> Login()
     {
-        if (await IsLogin())
+        if (await IsLoggedIn())
         {
             return RedirectToAction("Index", "Home");
         }
@@ -722,7 +753,7 @@ public class UserController : Controller
 
     public async Task<IActionResult> Index()
     {
-        if (await IsLogin())
+        if (await IsLoggedIn())
         {
             return RedirectToAction("Index", "Home");
         }

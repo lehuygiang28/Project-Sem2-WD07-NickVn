@@ -378,7 +378,7 @@ public class AdminController : Controller
         }
 
         var user = await _context.Users.Where(a => a.Id == id).FirstOrDefaultAsync();
-        if(user == null)
+        if (user == null)
         {
             TempData["err"] = "Can not find user";
             return RedirectToAction(nameof(EditUser));
@@ -908,13 +908,13 @@ public class AdminController : Controller
         }
 
         var find = await _context.Lienminhs.Where(c => c.Id == id).FirstOrDefaultAsync();
-        if(find == null)
+        if (find == null)
         {
             TempData["error"] = "Can not delete unknown ID: " + id;
             return RedirectToAction(nameof(Products));
         }
         var status_DEL = await _context.Statuses.Where(a => a.StatusNameEn == "Deleted").FirstOrDefaultAsync();
-        if(status_DEL == null)
+        if (status_DEL == null)
         {
             TempData["error"] = "Can not get list of status";
             return RedirectToAction(nameof(Products));
@@ -947,14 +947,14 @@ public class AdminController : Controller
         }
 
         var DeltailProductByID = await _context.Lienminhs.Where(c => c.Id == id).FirstOrDefaultAsync();
-        if(DeltailProductByID == null)
+        if (DeltailProductByID == null)
         {
             TempData["error"] = "Not Found this ID";
             return RedirectToAction(nameof(Products));
         }
         var imgList = await _context.Images.Where(a => a.LienminhId == DeltailProductByID.Id).ToListAsync();
         var status_en = await _context.Statuses.Where(c => c.StatusId == DeltailProductByID.StatusId).FirstAsync();
-        if(status_en == null)
+        if (status_en == null)
         {
             TempData["error"] = "Not Found this ID";
             return RedirectToAction(nameof(Products));
@@ -1061,7 +1061,7 @@ public class AdminController : Controller
         {
             return RedirectToAction(nameof(Index));
         }
-        if(id == null)
+        if (id == null)
         {
             TempData["err"] = "Can not found category";
             return RedirectToAction(nameof(Categories));
@@ -1074,13 +1074,13 @@ public class AdminController : Controller
         }
 
         var find = await _context.Categories.Where(c => c.Id == id).FirstOrDefaultAsync();
-        if(find == null)
+        if (find == null)
         {
             TempData["err"] = "Can not found category";
             return RedirectToAction(nameof(Categories));
         }
         var status_DEL = await _context.Statuses.Where(a => a.StatusNameEn == "Deleted").FirstOrDefaultAsync();
-        if(status_DEL == null)
+        if (status_DEL == null)
         {
             TempData["err"] = "Can not found category";
             return RedirectToAction(nameof(Categories));
@@ -1095,11 +1095,11 @@ public class AdminController : Controller
 
     public async Task<IActionResult> EditCategorySolve(int? id, string? Name, string? Title, string? ActionString, int? Total, string? Note, IFormFile? ImgSaleOff, IFormFile? ImgSrc)
     {
-        if(!await IsLogin())
+        if (!await IsLogin())
         {
             return RedirectToAction(nameof(Index));
         }
-        if(id == null)
+        if (id == null)
         {
             TempData["err"] = "Can not found category";
             return RedirectToAction(nameof(Categories));
@@ -1108,7 +1108,7 @@ public class AdminController : Controller
         try
         {
             otherCategory = await _context.Categories.Where(c => c.Id == id).FirstOrDefaultAsync();
-            if(otherCategory  == null)
+            if (otherCategory == null)
             {
                 TempData["err"] = "Can not found category";
                 return RedirectToAction(nameof(Categories));
@@ -1198,7 +1198,7 @@ public class AdminController : Controller
         }
 
         var selectedCategory = await _context.Categories.Where(c => c.Id == id).FirstOrDefaultAsync();
-        if(selectedCategory == null)
+        if (selectedCategory == null)
         {
             TempData["error"] = "Not found this category";
             return RedirectToAction(nameof(DetailCategory));
@@ -1221,7 +1221,7 @@ public class AdminController : Controller
         }
 
         var cateById = await _context.Categories.Where(c => c.Id == id).FirstOrDefaultAsync();
-        if(cateById == null)
+        if (cateById == null)
         {
             TempData["error"] = "Not Found this category";
             return RedirectToAction(nameof(Categories));
@@ -1303,7 +1303,7 @@ public class AdminController : Controller
 
         // Get role id
         var roleid = await _context.Roles.Where(a => a.RoleNameEn == "Admin").FirstOrDefaultAsync();
-        if(roleid == null)
+        if (roleid == null)
         {
             TempData["error"] = "Can not get list of role";
             return RedirectToAction(nameof(Login));
@@ -1350,19 +1350,26 @@ public class AdminController : Controller
         return RedirectToAction(nameof(Index), "Admin");
     }
 
-    public async Task RenewAdminInformation()
-    {
-        ViewBag.admin = await _context.Users.Where(u => u.Id == HttpContext.Session.GetInt32(SessionKeyAdminId)).FirstAsync();
-        // ViewBag.admin = await _context.Users.Where(u => u.Id == 1).FirstAsync();
-    }
-
     public async Task<bool> IsLogin()
     {
+        //  Check login and renew information of admin
         if (HttpContext.Session.GetString(SessionKeyAdminUserName) == null)
         {
             return false;
         }
-        await RenewAdminInformation();
+
+        var RenewAdminInformation = await _context.Users.Where(u => u.Id == HttpContext.Session.GetInt32(SessionKeyAdminId)).FirstOrDefaultAsync();
+        if (RenewAdminInformation == null)
+        {
+            HttpContext.Session.Remove(SessionKeyAdminId);
+            HttpContext.Session.Remove(SessionKeyAdminRole);
+            HttpContext.Session.Remove(SessionKeyAdminUserName);
+
+            TempData["err"] = "Error occur when login";
+            return false;
+        }
+
+        ViewBag.admin = RenewAdminInformation;
         return true;
     }
 
