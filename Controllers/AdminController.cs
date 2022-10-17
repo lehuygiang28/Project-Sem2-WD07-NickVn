@@ -383,6 +383,7 @@ public class AdminController : Controller
             TempData["err"] = "Can not find user";
             return RedirectToAction(nameof(EditUser));
         }
+        User oldUser = user;
         user.FirstName = FirstName == null ? user.FirstName : (string)FirstName;
         user.LastName = LastName == null ? user.LastName : (string)LastName;
         user.Password = Password == null ? user.Password : MD5.CreateMD5((string)Password);
@@ -474,6 +475,11 @@ public class AdminController : Controller
                 TempData["err"] = "  Error occur when update image";
                 return RedirectToAction(nameof(EditUser));
             }
+        }
+        // If user have change, update time
+        if(!oldUser.Equals(user))
+        {
+            user.UpdateAt = DateTime.Now;
         }
 
         _context.Users.Update(user);
