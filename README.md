@@ -18,6 +18,8 @@
 * Admin logging in
 * Category management
 * CRUD Products
+* User managament
+* Order managament
 
 ### Guest
 * Show product
