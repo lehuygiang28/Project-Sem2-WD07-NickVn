@@ -32,4 +32,4 @@
 * Contributor:
   * **_[Lê Huy Giang](https://github.com/lehuygiang28)_**
 * Live Demo: [https://www.giang.cf/](https://www.giang.cf/)
-* Repo Github: [Lehuygiang28](https://github.com/lehuygiang28/Project-Sem2-WD07-NickVn)
+* Repo Github: [Lehuygiang28/Project-Sem2-WD07-NickVn](https://github.com/lehuygiang28/Project-Sem2-WD07-NickVn)
