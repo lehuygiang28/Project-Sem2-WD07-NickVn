@@ -16,10 +16,11 @@
 
 ### Admin
 * Admin logging in
+* Dashboard
 * Category management
-* CRUD Products
+* Product managament
 * User managament
-* Order managament
+* Order detail
 
 ### Guest
 * Show product
