@@ -31,5 +31,4 @@
 * **Name Project: _Shop Acc Game_**
 * Contributor:
   * **_[Lê Huy Giang](https://github.com/lehuygiang28)_**
-  * **_[Vũ Văn Phúc](https://github.com/Phuc9x)_**
 * Live Demo: [https://www.giang.cf/](https://www.giang.cf/)
