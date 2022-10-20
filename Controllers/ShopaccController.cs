@@ -160,6 +160,7 @@ public class ShopaccController : Controller
         ViewData["SearchKey"] = string.IsNullOrEmpty(SearchKey) ? "" : SearchKey;
         ViewData["price"] = string.IsNullOrEmpty(price.ToString()) ? string.Empty : price;
         ViewData["sort_price"] = sort_price == null ? SORT_ASCENDING : sort_price;
+        ViewData["search_by_id"] = id == null ? "" : id;
 
         decimal priceSearchMin = decimal.Zero;
         decimal priceSearchMax = decimal.Zero;
@@ -212,6 +213,13 @@ public class ShopaccController : Controller
                         ))
                     && (lienMinh.PriceAtm >= priceSearchMin && lienMinh.PriceAtm < priceSearchMax)
                     select lienMinh;
+
+        if (id != null)
+        {
+            query = from lienMinh in _context.Lienminhs
+                    where lienMinh.Id == id
+                    select lienMinh;
+        }
 
         // Pagination
         if (page == 0 || page.Equals(null))
