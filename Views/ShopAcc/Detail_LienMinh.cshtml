@@ -171,16 +171,16 @@
                                         class="btn c-btn btn-lg c-theme-btn c-font-uppercase c-font-bold c-btn-square m-t-20">Mua
                                             ngay</button>
 
-                                        <button type="button"
+                                        <a type="button"
                                         class="btn c-btn btn-lg btn-danger c-font-uppercase c-font-bold c-btn-square m-t-20 load-modal"
-                                        rel="#">Trả góp</button>
+                                        href="#">Trả góp</a>
 
 
                                         <a type="button"
                                         class="btn c-btn btn-lg c-bg-green-4 c-font-white c-font-uppercase c-font-bold c-btn-square m-t-20"
-                                        href="/recharge">ATM - Ví điện tử</a>
+                                        asp-action="NapThe" asp-controller="User">ATM - Ví điện tử</a>
                                         <a class="btn c-btn btn-lg c-bg-green-4 c-font-white c-font-uppercase c-font-bold c-btn-square m-t-20"
-                                        href="/nap-the">Nạp thẻ cào</a>
+                                        asp-action="NapThe" asp-controller="User">Nạp thẻ cào</a>
                                     </div>
                                 </div>
                             </div>
@@ -576,6 +576,7 @@
                             }
                             else if (money < accLienMinh.PriceAtm)
                             {
+                                string? urlNapThe = Url.ActionLink("NapThe", "User");
                                 form = @"
                                 <div class='form-group '>
                                     <label class='col-md-12 form-control-label text-danger'
@@ -588,7 +589,7 @@
 
                                 <div class='modal-footer'>
 
-                                    <a class='btn c-theme-btn c-btn-square c-btn-uppercase c-btn-bold' href='#'>Nạp thẻ cào</a>
+                                    <a class='btn c-theme-btn c-btn-square c-btn-uppercase c-btn-bold' href='@urlNapThe'>Nạp thẻ cào</a>
                                     <a class='btn c-theme-btn c-btn-square c-btn-uppercase c-btn-bold c-bg-green-4' href='#'>Nạp từ atm - ví điện tử</a>
 
                                     <button type='button'
