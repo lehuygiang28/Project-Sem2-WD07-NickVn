@@ -43,7 +43,7 @@
                         <th scope="col">Change Status</th>
                         <th scope="col">&nbsp;</th>
                         <th scope="col">&nbsp;</th>
-                        <th scope="col">&nbsp;</th>
+                        @* <th scope="col">&nbsp;</th> *@
                     </tr>
                 </thead>
                 <tbody>
@@ -106,15 +106,15 @@
                                 "text-light"})
                                 </td>
 
-                                <td>
+                                @* <td>
                                     <a type="button" class="text-danger" data-bs-toggle="modal"
                                     data-bs-target="#DeleteCategoryPopup_@item.Id">
                                         Delete
                                     </a>
-                                </td>
+                                </td> *@
                             </tr>
 
-                            <!-- Modal -->
+                            @* <!-- Modal -->
                             <div class="modal fade" id="DeleteCategoryPopup_@item.Id" tabindex="-1"
                             aria-labelledby="DeleteModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
@@ -137,7 +137,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> *@
                         }
                     } else {
                         <tr>
