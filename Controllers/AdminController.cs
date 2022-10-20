@@ -371,11 +371,18 @@ public class AdminController : Controller
         IFormFile? newCover, IFormFile? newAvatar
         )
     {
+        if(!await IsLogin())
+        {
+            return RedirectToAction(nameof(Index));
+        }
+
         if (id == null)
         {
             TempData["err"] = "Can not find user";
             return RedirectToAction(nameof(EditUser));
         }
+
+        var currentUserId = HttpContext.Session.GetInt32(SessionKeyAdminId);
 
         var user = await _context.Users.Where(a => a.Id == id).FirstOrDefaultAsync();
         if (user == null)
@@ -390,6 +397,21 @@ public class AdminController : Controller
         user.Phone = Phone == null ? user.Phone : (string)Phone;
         user.Email = Email == null ? user.Email : (string)Email;
         user.Note = Note == null ? user.Note : (string)Note;
+
+        if(role_id != null || status_id != null)
+        {
+            if(currentUserId == 1)
+            {
+                TempData["error"] = "Can not change status or role of super admin";
+                return RedirectToAction(nameof(EditUser));
+            }
+
+            if(currentUserId == id)
+            {
+                TempData["error"] = "Can not change status or role of myself";
+                return RedirectToAction(nameof(EditUser));
+            }
+        }
 
         user.RoleId = role_id == null ? user.RoleId : (int)role_id;
         user.StatusId = status_id == null ? user.StatusId : (int)status_id;
@@ -555,7 +577,6 @@ public class AdminController : Controller
 
     public async Task<string>? ChangeUserStatus(int? userId, int? statusId)
     {
-        // Redirect(Request.Headers["Referer"].ToString());
         string? statusName = string.Empty;
         if (!await IsLogin())
         {
@@ -569,6 +590,18 @@ public class AdminController : Controller
         if (userId == null)
         {
             TempData["err"] = "Can not find user";
+            return statusName;
+        }
+
+        int? currentUserId = HttpContext.Session.GetInt32(SessionKeyAdminId);
+        if(currentUserId == null)
+        {
+            TempData["err"] = "Can not change status";
+            return statusName;
+        }
+
+        if(currentUserId == userId)
+        {
             return statusName;
         }
 
@@ -1401,6 +1434,9 @@ public class AdminController : Controller
 
         // var dataOrders = _context.Oders.OrderBy(a => a.CreateAt).ToListAsync();
         // Note REVENUE > SALES
+
+        // Get data for chart
+        // Lấy dữ liệu cho biểu đồ
         var query = from od in _context.Oders
                     join pd in _context.Lienminhs on od.ProductId equals pd.Id
                     select Tuple.Create<Oder, Lienminh>(od, pd);
@@ -1416,11 +1452,6 @@ public class AdminController : Controller
         decimal totalRevenue = list.Sum(s => s.Item2.PriceAtm);
         decimal todaySale = Math.Round(todayRevenue / 100 * 35);
         decimal totalSale = Math.Round(totalRevenue / 100 * 35);
-
-        // System.Console.WriteLine($"Tday sal: {todaySale}");
-        // System.Console.WriteLine($"Ttal sal: {totalSale}");
-        // System.Console.WriteLine($"Tday re: {todayRevenue}");
-        // System.Console.WriteLine($"Ttal re: {totalRevenue}");
 
         int thisMonth = DateTime.Now.Month;
         int thisYear = DateTime.Now.Year;
@@ -1460,8 +1491,6 @@ public class AdminController : Controller
         dataRevenues += "]";
         dataSales += "]";
 
-        System.Console.WriteLine(labels);
-        System.Console.WriteLine(dataRevenues);
         var recentSales = list.Take(5).ToList();
 
         ViewData["listOderProd"] = list;
@@ -1494,52 +1523,6 @@ public class AdminController : Controller
     {
         return View();
     }
-
-    // public async Task<IActionResult> Error404()
-    // {
-    //     // var varActionName = HttpContext.GetRouteValue("Controller");
-    //     // System.Console.WriteLine(varActionName.ToString());
-
-    //     var urlReferer = HttpContext.Request.Headers["Referer"].ToString();
-    //     System.Console.WriteLine("b: " + urlReferer);
-
-    //     if (urlReferer == null)
-    //     {
-    //         return View();
-    //     }
-
-    //     string a = (string)urlReferer;
-
-    //     string[] splitStr = a.Split("/");
-    //     System.Console.WriteLine(splitStr.Length);
-
-    //     foreach (string f in splitStr)
-    //     {
-    //         System.Console.WriteLine("Index: "+ Array.IndexOf(splitStr,f));
-    //         System.Console.WriteLine("String: " + f);
-    //         // if (f.Contains("Admin"))
-    //     }
-
-
-    //     string controllerName = "";
-    //     if (splitStr.Length > 4 && string.Compare(splitStr[4], "Admin") == 0)
-    //     {
-    //         controllerName = splitStr[4];
-    //     }
-    //     else if (splitStr.Length <= 4)
-    //     {
-    //         controllerName = "Home";
-    //     }
-
-    //     System.Console.WriteLine("Controller Name: " + controllerName);
-    //     // if (!await IsLogin())
-    //     // {
-    //     //     _logger.LogInformation("Not Login, returning to login view ...");
-    //     //     return RedirectToAction(nameof(Login));;
-    //     // }
-
-    //     return View();
-    // }
 
     // [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
