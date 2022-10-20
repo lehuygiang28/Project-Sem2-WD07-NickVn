@@ -379,7 +379,7 @@ public class AdminController : Controller
         if (id == null)
         {
             TempData["err"] = "Can not find user";
-            return RedirectToAction(nameof(EditUser));
+            return RedirectToAction(nameof(Users));
         }
 
         var currentUserId = HttpContext.Session.GetInt32(SessionKeyAdminId);
@@ -388,7 +388,7 @@ public class AdminController : Controller
         if (user == null)
         {
             TempData["err"] = "Can not find user";
-            return RedirectToAction(nameof(EditUser));
+            return RedirectToAction(nameof(Users));
         }
         User oldUser = user;
         user.FirstName = FirstName == null ? user.FirstName : (string)FirstName;
@@ -400,16 +400,16 @@ public class AdminController : Controller
 
         if(role_id != null || status_id != null)
         {
-            if(currentUserId == 1)
+            if(id == 1)
             {
                 TempData["error"] = "Can not change status or role of super admin";
-                return RedirectToAction(nameof(EditUser));
+                return RedirectToAction(nameof(EditUser), new {id = id});
             }
 
             if(currentUserId == id)
             {
                 TempData["error"] = "Can not change status or role of myself";
-                return RedirectToAction(nameof(EditUser));
+                return RedirectToAction(nameof(EditUser), new {id = id});
             }
         }
 
@@ -508,14 +508,7 @@ public class AdminController : Controller
         await _context.SaveChangesAsync();
         TempData["success"] = "Edit user success!";
 
-        // foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(user))
-        // {
-        //     string name = descriptor.Name;
-        //     object value = descriptor.GetValue(user);
-        //     System.Console.WriteLine("{0} = {1}", name, value);
-        // }
-
-        return RedirectToAction(nameof(EditUser));
+        return RedirectToAction(nameof(EditUser), new {id = id});
     }
 
     public async Task<IActionResult> EditUser(int? id)
