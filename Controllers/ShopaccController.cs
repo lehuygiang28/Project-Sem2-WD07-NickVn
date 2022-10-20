@@ -40,9 +40,10 @@ public class ShopaccController : Controller
         var query = from lol in _context.Lienminhs
                     join sts in _context.Statuses on lol.StatusId equals sts.StatusId
                     where lol.Id == productId
+                    && lol.StatusId == 1003
                     select lol;
 
-        var varProduct = await query.FirstAsync();
+        var varProduct = await query.FirstOrDefaultAsync();
 
         // var varProduct = await _context.Lienminhs.Where(i => i.Id == productId && i.Sold == Lienminh.NOT_SOLD).FirstAsync();
         var userBuy = await _context.Users.Where(i => i.Id == HttpContext.Session.GetInt32(UserController.SessionKeyId)).FirstAsync();
