@@ -530,8 +530,8 @@ public class AdminController : Controller
             return RedirectToAction(nameof(Users));
         }
 
-        var listRole = await _context.Roles.OrderBy(b => b.Id).ToListAsync();
-        var listStatus = await _context.Statuses.OrderBy(b => b.Id).ToListAsync();
+        var listRole = await _context.Roles.OrderBy(b => b.RoleId).ToListAsync();
+        var listStatus = await _context.Statuses.OrderBy(b => b.StatusId).ToListAsync();
 
         ViewBag.listStatus = listStatus;
         ViewBag.listRole = listRole;
@@ -559,8 +559,8 @@ public class AdminController : Controller
             return RedirectToAction(nameof(Users));
         }
 
-        var listRole = await _context.Roles.OrderBy(b => b.Id).ToListAsync();
-        var listStatus = await _context.Statuses.OrderBy(b => b.Id).ToListAsync();
+        var listRole = await _context.Roles.OrderBy(b => b.RoleId).ToListAsync();
+        var listStatus = await _context.Statuses.OrderBy(b => b.StatusId).ToListAsync();
 
         ViewBag.listStatus = listStatus;
         ViewBag.listRole = listRole;
@@ -644,8 +644,8 @@ public class AdminController : Controller
         var listUser = await query.Skip((Convert.ToInt32(page) - 1) * pageSize)
                                                     .Take(pageSize).ToListAsync();
 
-        var listRole = await _context.Roles.OrderBy(b => b.Id).ToListAsync();
-        var listStatus = await _context.Statuses.OrderBy(b => b.Id).ToListAsync();
+        var listRole = await _context.Roles.OrderBy(b => b.RoleId).ToListAsync();
+        var listStatus = await _context.Statuses.OrderBy(b => b.StatusId).ToListAsync();
 
         ViewBag.listStatus = listStatus;
         ViewBag.listRole = listRole;
@@ -805,7 +805,7 @@ public class AdminController : Controller
         {
             return RedirectToAction(nameof(Index));
         }
-        var statusList = await _context.Statuses.OrderBy(a => a.Id).ToListAsync();
+        var statusList = await _context.Statuses.OrderBy(a => a.StatusId).ToListAsync();
         ViewBag.statusList = statusList;
         return View();
     }
@@ -912,7 +912,7 @@ public class AdminController : Controller
         }
 
         List<string> listRank = new List<string> { "Chưa Rank", "Sắt", "Đồng", "Bạc", "Vàng", "Bạch Kim", "Kim Cương", "Cao Thủ", "Đại Cao Thủ", "Thách Đấu" };
-        var listStatus = await _context.Statuses.OrderBy(a => a.Id).ToListAsync();
+        var listStatus = await _context.Statuses.OrderBy(a => a.StatusId).ToListAsync();
 
         var listImage = await _context.Images.Where(a => a.LienminhId == product.Id).OrderBy(b => b.ImgId).ToListAsync();
 

@@ -521,7 +521,7 @@ public class UserController : Controller
             await RemoveInvalidSession();
             return RedirectToAction(nameof(Login));
         }
-        var roles = await _context.Roles.OrderBy(a => a.Id).ToListAsync();
+        var roles = await _context.Roles.OrderBy(a => a.RoleId).ToListAsync();
 
         ViewData["roles"] = roles;
         ViewData["user"] = user;

@@ -32,7 +32,7 @@ namespace Project_Sem2_WD07_NickVn.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseMySql("name=ConnectionStrings:NickVn_Project", Microsoft.EntityFrameworkCore.ServerVersion.Parse("10.4.24-mariadb"));
+                optionsBuilder.UseMySql("name=ConnectionStrings:NickVn_Project", Microsoft.EntityFrameworkCore.ServerVersion.Parse("10.4.22-mariadb"));
             }
         }
 
@@ -316,38 +316,27 @@ namespace Project_Sem2_WD07_NickVn.Models
             {
                 entity.ToTable("roles");
 
-                entity.Property(e => e.Id)
-                    .HasColumnType("int(11)")
-                    .HasColumnName("id");
-
                 entity.Property(e => e.RoleId)
                     .HasColumnType("int(11)")
-                    .HasColumnName("role_id")
-                    .HasDefaultValueSql("'1'");
-
-                entity.Property(e => e.RoleName)
-                    .HasColumnType("text")
-                    .HasColumnName("role_name")
-                    .HasDefaultValueSql("'Thành Viên'");
+                    .HasColumnName("role_id");
 
                 entity.Property(e => e.RoleNameEn)
                     .HasColumnType("text")
                     .HasColumnName("role_name_en");
+
+                entity.Property(e => e.RoleNameVi)
+                    .HasColumnType("text")
+                    .HasColumnName("role_name_vi")
+                    .HasDefaultValueSql("'\\\\''Thành Viên\\\\'''");
             });
 
             modelBuilder.Entity<Status>(entity =>
             {
                 entity.ToTable("status");
 
-                entity.HasIndex(e => e.StatusId, "status_id")
-                    .IsUnique();
-
-                entity.Property(e => e.Id)
-                    .HasColumnType("int(11)")
-                    .HasColumnName("id");
-
                 entity.Property(e => e.StatusId)
                     .HasColumnType("int(11)")
+                    .ValueGeneratedNever()
                     .HasColumnName("status_id");
 
                 entity.Property(e => e.StatusNameEn)
@@ -395,6 +384,10 @@ namespace Project_Sem2_WD07_NickVn.Models
             modelBuilder.Entity<User>(entity =>
             {
                 entity.ToTable("users");
+
+                entity.HasIndex(e => e.RoleId, "roles_fk_role_id");
+
+                entity.HasIndex(e => e.StatusId, "statuses_fk_status_id");
 
                 entity.Property(e => e.Id)
                     .HasColumnType("int(11)")
@@ -460,6 +453,12 @@ namespace Project_Sem2_WD07_NickVn.Models
                 entity.Property(e => e.UserName)
                     .HasColumnType("text")
                     .HasColumnName("user_name");
+
+                entity.HasOne(d => d.Status)
+                    .WithMany(p => p.Users)
+                    .HasForeignKey(d => d.StatusId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("statuses_fk_status_id");
             });
 
             OnModelCreatingPartial(modelBuilder);

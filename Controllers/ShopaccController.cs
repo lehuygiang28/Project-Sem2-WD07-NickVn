@@ -21,7 +21,7 @@ public class ShopaccController : Controller
 
     private async Task<List<Status>> GetStatusList()
     {
-        var list = await _context.Statuses.OrderBy(a => a.Id).ToListAsync();
+        var list = await _context.Statuses.OrderBy(a => a.StatusId).ToListAsync();
         return list;
     }
 

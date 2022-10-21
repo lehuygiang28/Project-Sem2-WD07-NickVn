@@ -21,5 +21,7 @@ namespace Project_Sem2_WD07_NickVn.Models
         public DateTime CreateAt { get; set; }
         public DateTime UpdateAt { get; set; }
         public DateTime LastLogin { get; set; }
+
+        public virtual Status Status { get; set; } = null!;
     }
 }
