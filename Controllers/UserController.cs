@@ -178,7 +178,7 @@ public class UserController : Controller
 
     private async Task RenewUserInformation()
     {
-        var user = await _context.Users.Where(u => u.Id == HttpContext.Session.GetInt32(SessionKeyId)).FirstAsync();
+        var user = await _context.Users.Where(u => u.UserId == HttpContext.Session.GetInt32(SessionKeyId)).FirstAsync();
         if (user != null)
         {
             HttpContext.Session.SetInt32(SessionKeyMoney, Convert.ToInt32(user.Money));
@@ -192,7 +192,7 @@ public class UserController : Controller
         {
             return false;
         }
-        var user = await _context.Users.Where(u => u.Id == sessionValueId).FirstOrDefaultAsync();
+        var user = await _context.Users.Where(u => u.UserId == sessionValueId).FirstOrDefaultAsync();
         if(user == null)
         {
             HttpContext.Session.Remove(SessionKeyId);
@@ -305,7 +305,7 @@ public class UserController : Controller
         }
 
         // if not found user, return msg error
-        var user = await _context.Users.Where(u => u.Id == id && u.UserName == UserName).FirstOrDefaultAsync();
+        var user = await _context.Users.Where(u => u.UserId == id && u.UserName == UserName).FirstOrDefaultAsync();
         if (user == null)
         {
             TempData["error"] = "Có lỗi xảy ra! Hãy đăng nhập và thử lại!";
@@ -360,7 +360,7 @@ public class UserController : Controller
 
         // Update session value
         HttpContext.Session.SetInt32(SessionKeyMoney, (int)user.Money);
-        _logger.LogInformation($"Update user session money\nID: {user.Id} - Money: {user.Money} - Time: {DateTime.Now}");
+        _logger.LogInformation($"Update user session money\nID: {user.UserId} - Money: {user.Money} - Time: {DateTime.Now}");
 
         return RedirectToAction(nameof(NapThe));
     }
@@ -421,7 +421,7 @@ public class UserController : Controller
         List<Lienminh> listProducts = new List<Lienminh>();
         foreach (Oder itemInList in listAccountId)
         {
-            var item = await _context.Lienminhs.Where(o => o.Id == itemInList.ProductId).FirstOrDefaultAsync();
+            var item = await _context.Lienminhs.Where(o => o.ProductId == itemInList.ProductId).FirstOrDefaultAsync();
             if(item  == null)
             {
                 continue;
@@ -448,7 +448,7 @@ public class UserController : Controller
             return View(nameof(ChangePassword));
         }
 
-        var currentUser = await _context.Users.Where(a => a.Id == HttpContext.Session.GetInt32(SessionKeyId)).FirstOrDefaultAsync();
+        var currentUser = await _context.Users.Where(a => a.UserId == HttpContext.Session.GetInt32(SessionKeyId)).FirstOrDefaultAsync();
         if(currentUser == null)
         {
             await RemoveInvalidSession();
@@ -493,7 +493,7 @@ public class UserController : Controller
         await _context.SaveChangesAsync();
 
         TempData["success-change-pw"] = "Đổi mật khẩu thành công";
-        _logger.LogInformation($"Change password successfully! ID: {currentUser.Id} - Time: {now.ToString("HH:mm:ss dd/MM/yyyy")}");
+        _logger.LogInformation($"Change password successfully! ID: {currentUser.UserId} - Time: {now.ToString("HH:mm:ss dd/MM/yyyy")}");
 
         return RedirectToAction(nameof(ChangePassword));
     }
@@ -515,7 +515,7 @@ public class UserController : Controller
         }
 
         var idSession = HttpContext.Session.GetInt32(SessionKeyId);
-        var user = await _context.Users.Where(a => a.Id == idSession).FirstOrDefaultAsync();
+        var user = await _context.Users.Where(a => a.UserId == idSession).FirstOrDefaultAsync();
         if(user == null)
         {
             await RemoveInvalidSession();
@@ -721,7 +721,7 @@ public class UserController : Controller
             return RedirectToAction(nameof(Login)); ;
         }
 
-        HttpContext.Session.SetInt32(SessionKeyId, loginUser.Id);
+        HttpContext.Session.SetInt32(SessionKeyId, loginUser.UserId);
         HttpContext.Session.SetString(SessionKeyName, loginUser.UserName);
         HttpContext.Session.SetInt32(SessionKeyMoney, Convert.ToInt32(loginUser.Money));
 

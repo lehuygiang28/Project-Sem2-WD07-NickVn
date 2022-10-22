@@ -31,10 +31,10 @@
 
         <div class="col-sm-12 col-xl-6">
             <div class="bg-secondary rounded h-100 p-4">
-                <h6 class="mb-4">#@user.Id - @user.UserName</h6>
+                <h6 class="mb-4">#@user.UserId - @user.UserName</h6>
                 <dl class="row mb-0">
                     <dt class="col-sm-4">Id</dt>
-                    <dd class="col-sm-8">@user.Id</dd>
+                    <dd class="col-sm-8">@user.UserId</dd>
                     <hr>
                     <dt class="col-sm-4">Name</dt>
                     <dd class="col-sm-8">@user.FirstName @user.LastName</dd>
@@ -80,7 +80,7 @@
                         <dd class="col-sm-8">@user.StatusAccount</dd> *@
                     <div class="d-flex justify-content-center">
 
-                        @Html.ActionLink("Edit", "EditUser", new { id = user.Id }, new {@class =
+                        @Html.ActionLink("Edit", "EditUser", new { id = user.UserId }, new {@class =
                         "btn btn-outline-light m-2"})
 
                         @* <!-- Button trigger modal -->

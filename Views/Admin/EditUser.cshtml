@@ -28,7 +28,7 @@
     }
     <form asp-action="EditUserSolve" asp-controller="Admin" enctype="multipart/form-data">
 
-        <input type="hidden" name="id" value="@user.Id">
+        <input type="hidden" name="id" value="@user.UserId">
         <div class="row g-4">
 
             <div class="col-sm-12 col-xl-6">
@@ -55,10 +55,10 @@
                     <div class="row">
                         <div class="col-sm-12 col-xl-6">
                             <div class="bg-secondary rounded h-100 p-4">
-                                <h6 class="mb-4">#@user.Id - @user.UserName</h6>
+                                <h6 class="mb-4">#@user.UserId - @user.UserName</h6>
                                 <dl class="row mb-0">
                                     <dt class="col-sm-4">Id</dt>
-                                    <dd class="col-sm-8">@user.Id</dd>
+                                    <dd class="col-sm-8">@user.UserId</dd>
                                     <hr>
                                     <dt class="col-sm-4">Name</dt>
                                     <dd class="col-sm-8 text-break">@user.FirstName @user.LastName</dd>
@@ -181,7 +181,7 @@
             <div class="col-sm-12 col-xl-6">
                 <div class="bg-secondary rounded h-100 p-4">
                     @* <form asp-action="EditUserSolve" asp-controller="Admin" enctype="multipart/form-data"> *@
-                    <input type="hidden" value="@user.Id" name="id">
+                    <input type="hidden" value="@user.UserId" name="id">
 
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="floatingFirstName" placeholder="FirstName"

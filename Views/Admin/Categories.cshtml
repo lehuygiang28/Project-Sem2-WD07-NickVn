@@ -33,13 +33,13 @@
                             foreach (var item in list)
                             {
                                 <tr>
-                                    <th scope="row">@item.Id</th>
+                                    <th scope="row">@item.CategoryId</th>
                                     <td>@item.Name</td>
                                     <td>@item.Title</td>
                                     <td>@item.Total</td>
-                                    <td>@Html.ActionLink("Details", "DetailCategory", new { id = item.Id }, new { @class =
+                                    <td>@Html.ActionLink("Details", "DetailCategory", new { id = item.CategoryId }, new { @class =
                                 "text-info"})</td>
-                                    <td>@Html.ActionLink("Edit", "EditCategory", new { id = item.Id }, new { @class =
+                                    <td>@Html.ActionLink("Edit", "EditCategory", new { id = item.CategoryId }, new { @class =
                                 "text-light"})
                                     </td>
                                     @* <td>@Html.ActionLink("Delete", "DeleteCategory", new { id = item.Id }, new { @class =
@@ -49,14 +49,14 @@
 
                                 <td>
                                         <a type="button" class="text-danger" data-bs-toggle="modal"
-                                        data-bs-target="#DeleteCategoryPopup_@item.Id">
+                                        data-bs-target="#DeleteCategoryPopup_@item.CategoryId">
                                             Delete
                                         </a>
                                     </td>
                                 </tr>
 
                                 <!-- Modal -->
-                                <div class="modal fade" id="DeleteCategoryPopup_@item.Id" tabindex="-1"
+                                <div class="modal fade" id="DeleteCategoryPopup_@item.CategoryId" tabindex="-1"
                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -72,7 +72,7 @@
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary"
                                                 data-bs-dismiss="modal">Close</button>
-                                                @Html.ActionLink("Confirm Delete", "DeleteCategory", new { id = item.Id }, new {
+                                                @Html.ActionLink("Confirm Delete", "DeleteCategory", new { id = item.CategoryId }, new {
                                         @class = "btn btn-danger text-white"})
                                             </div>
                                         </div>

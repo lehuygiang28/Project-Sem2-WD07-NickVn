@@ -53,12 +53,12 @@
                                 {
                                     <tr>
                                         <td>@oderDetailItem.Item1.CreateAt.ToString("dd/MM/yyyy")</td>
-                                        <th scope="row">@oderDetailItem.Item1.Id</th>
+                                        <th scope="row">@oderDetailItem.Item1.OrderId</th>
                                         <td>@oderDetailItem.Item2.UserName</td>
-                                        <td>@oderDetailItem.Item3.Name #@oderDetailItem.Item3.Id</td>
+                                        <td>@oderDetailItem.Item3.Name #@oderDetailItem.Item3.ProductId</td>
                                         <td>@vndFormat(oderDetailItem.Item3.PriceAtm)</td>
                                         <td>@oderDetailItem.Item1.Status</td>
-                                        <td>@Html.ActionLink("Details", "DetailOrder", new { id = oderDetailItem.Item1.Id }, new {
+                                        <td>@Html.ActionLink("Details", "DetailOrder", new { id = oderDetailItem.Item1.OrderId }, new {
                                     @class =
                                     "text-info"})</td>
                                         @* <td>@Html.ActionLink("Edit", "EditProduct", new { id = oderDetailItem.Item1.Id }, new { @class =

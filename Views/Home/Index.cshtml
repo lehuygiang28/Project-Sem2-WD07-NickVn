@@ -89,7 +89,7 @@
                                 var hrefAction = "#";
                                 if (cate.Action != hrefAction)
                                 {
-                                    hrefAction = Url.Action(cate.Action, "Category", new {id = @cate.Id});
+                                    hrefAction = Url.Action(cate.Action, "Category", new {id = @cate.CategoryId});
                                 }
 
                                 <div class="col-sm-3 col-6 p-5">

@@ -71,7 +71,7 @@
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="/" title="Trang chủ">Trang chủ</a></li>
                             <li class="breadcrumb-item"><a href="/garena/lien-minh" @accLienMinh.Name>@accLienMinh.Name</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">@accLienMinh.Id</li>
+                            <li class="breadcrumb-item active" aria-current="page">@accLienMinh.ProductId</li>
                         </ol>
                     </nav>
                     <div class="c-shop-product-details-4">
@@ -80,7 +80,7 @@
                                 <div class="c-product-header">
                                     <!--<h4 class="c-font-uppercase c-font-bold">Liên minh huyền thoại - Việt Nam</h4>-->
                                 <div class="c-content-title-1">
-                                        <h3 class="c-font-uppercase c-font-bold">#@accLienMinh.Id</h3>
+                                        <h3 class="c-font-uppercase c-font-bold">#@accLienMinh.ProductId</h3>
                                         <span class="c-font-red c-font-bold">@accLienMinh.Name</span>
                                     </div>
                                 </div>
@@ -286,9 +286,9 @@
                                         <div class="classWithPad">
                                             <div class="image">
 
-                                                <a href='@Url.ActionLink("Detail_LienMinh", "ShopAcc", new {id = @random.Id})'>
+                                                <a href='@Url.ActionLink("Detail_LienMinh", "ShopAcc", new {id = @random.ProductId})'>
                                                     <img src="@random.ImgThumb">
-                                                    <span class="ms">MS: @random.Id</span>
+                                                    <span class="ms">MS: @random.ProductId</span>
                                                 </a>
 
                                             </div>
@@ -329,7 +329,7 @@
                                                     <div class="col-xs-6 ">
                                                         <div class="view">
                                                             <a
-                                                            href='@Url.ActionLink("Detail_LienMinh", "ShopAcc", new {id = @random.Id})'>Chi
+                                                            href='@Url.ActionLink("Detail_LienMinh", "ShopAcc", new {id = @random.ProductId})'>Chi
                                                                 tiết</a>
                                                         </div>
                                                     </div>
@@ -469,7 +469,7 @@
                                             <table class='table table-striped'>
                                                 <tbody>
                                                     <tr>
-                                                        <th colspan='2'>Thông tin tài khoản # @accLienMinh.Id</th>
+                                                        <th colspan='2'>Thông tin tài khoản # @accLienMinh.ProductId</th>
                                                     </tr>
                                                 </tbody>
                                                 <tbody>
@@ -497,7 +497,7 @@
                                             <table class='table table-striped'>
                                                 <tbody>
                                                     <tr>
-                                                        <th colspan='2'>Chi tiết tài khoản #@accLienMinh.Id</th>
+                                                        <th colspan='2'>Chi tiết tài khoản #@accLienMinh.ProductId</th>
                                                     </tr>
 
                                                     <tr>
@@ -612,7 +612,7 @@
 
                                     <div class='modal-footer'>
 
-                                        <a class='btn c-theme-btn c-btn-square c-btn-uppercase c-btn-bold c-bg-green-4' href='/ShopAcc/BuyConfirmSolve?productId={accLienMinh.Id}'>Xác nhận mua ngay</a>
+                                        <a class='btn c-theme-btn c-btn-square c-btn-uppercase c-btn-bold c-bg-green-4' href='/ShopAcc/BuyConfirmSolve?productId={accLienMinh.ProductId}'>Xác nhận mua ngay</a>
 
                                         <button type='button'
                                             class='btn c-theme-btn c-btn-border-2x c-btn-square c-btn-bold c-btn-uppercase'

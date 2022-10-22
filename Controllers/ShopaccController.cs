@@ -39,14 +39,14 @@ public class ShopaccController : Controller
 
         var query = from lol in _context.Lienminhs
                     join sts in _context.Statuses on lol.StatusId equals sts.StatusId
-                    where lol.Id == productId
+                    where lol.ProductId == productId
                     && lol.StatusId == 1003
                     select lol;
 
         var varProduct = await query.FirstOrDefaultAsync();
 
         // var varProduct = await _context.Lienminhs.Where(i => i.Id == productId && i.Sold == Lienminh.NOT_SOLD).FirstAsync();
-        var userBuy = await _context.Users.Where(i => i.Id == HttpContext.Session.GetInt32(UserController.SessionKeyId)).FirstAsync();
+        var userBuy = await _context.Users.Where(i => i.UserId == HttpContext.Session.GetInt32(UserController.SessionKeyId)).FirstAsync();
 
         if (varProduct == null || userBuy == null)
         {
@@ -70,13 +70,13 @@ public class ShopaccController : Controller
             return RedirectToAction(nameof(Detail_LienMinh), new { id = productId });
         }
 
-        var maxOderId = await _context.Oders.MaxAsync(a => a.OderId);
+        var maxOderId = await _context.Oders.MaxAsync(a => a.OrderId);
 
         // Tao hoa don/ don hang
         Oder oderUser = new Oder();
-        oderUser.OderId = maxOderId + 1;
-        oderUser.UserId = userBuy.Id;
-        oderUser.ProductId = varProduct.Id;
+        oderUser.OrderId = maxOderId + 1;
+        oderUser.UserId = userBuy.UserId;
+        oderUser.ProductId = varProduct.ProductId;
         oderUser.Status = "Paid";
         oderUser.CreateAt = DateTime.Now;
         oderUser.UpdateAt = DateTime.Now;
@@ -104,7 +104,7 @@ public class ShopaccController : Controller
         if (id != null)
         {
             var money = HttpContext.Session.GetInt32(UserController.SessionKeyMoney);
-            var user = await _context.Users.Where(i => i.Id == id).FirstAsync();
+            var user = await _context.Users.Where(i => i.UserId == id).FirstAsync();
             if (money != user.Money)
             {
                 HttpContext.Session.SetInt32(UserController.SessionKeyMoney, Convert.ToInt32(user.Money));
@@ -120,7 +120,7 @@ public class ShopaccController : Controller
 
         var queryProductById = from product in _context.Lienminhs
                                join sts in _context.Statuses on product.StatusId equals sts.StatusId
-                               where product.Id == id && product.StatusId == NOT_SOLD
+                               where product.ProductId == id && product.StatusId == NOT_SOLD
                                select product;
 
 
@@ -139,14 +139,14 @@ public class ShopaccController : Controller
         ViewBag.accLienMinh = acc;
 
         // var imgAcc = await _context.Images.Where(i => i.LienminhId == acc.Id).OrderBy(i => i.ImgId).ToListAsync();
-        var imgAcc = await _context.Images.Where(i => i.LienminhId == acc.Id).OrderBy(i => i.ImgId).ToListAsync();
+        var imgAcc = await _context.Images.Where(i => i.LienminhId == acc.ProductId).OrderBy(i => i.ImgId).ToListAsync();
         ViewBag.imgAcc = imgAcc;
 
         // Take a random
         int total = await _context.Lienminhs.Where(a => a.StatusId == NOT_SOLD).CountAsync();
         Random r = new Random();
         int offset = r.Next(0, total);
-        var randomAcc = await _context.Lienminhs.OrderBy(a => a.Id).Skip(offset).Take(4).ToListAsync();
+        var randomAcc = await _context.Lienminhs.OrderBy(a => a.ProductId).Skip(offset).Take(4).ToListAsync();
         ViewBag.randomAcc = randomAcc;
 
         return View();
@@ -218,7 +218,7 @@ public class ShopaccController : Controller
         if (id != null)
         {
             query = from lienMinh in _context.Lienminhs
-                    where lienMinh.Id == id
+                    where lienMinh.ProductId == id
                     select lienMinh;
         }
 

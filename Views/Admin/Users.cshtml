@@ -52,7 +52,7 @@
                         @foreach (var item in listUser)
                         {
                             <tr>
-                                <td scope="row">@item.Id</td>
+                                <td scope="row">@item.UserId</td>
                                 <td scope="row">@item.UserName</td>
                                 <td scope="row">@string.Format(item.FirstName + " " + item.LastName)</td>
                                 <td scope="row">@item.Phone</td>
@@ -69,7 +69,7 @@
                                     }
                                 </td>
                                 @{
-                                    string idNameStatus = string.Format("status_name_" + item.Id);
+                                    string idNameStatus = string.Format("status_name_" + item.UserId);
                                 }
                                 <td scope="row" id="@idNameStatus">
                                     @foreach (var s in listStatus)
@@ -83,10 +83,10 @@
                                 </td>
                                 <td scope="row">
                                     @{
-                                        string idName = string.Format("statusId_" + item.Id);
+                                        string idName = string.Format("statusId_" + item.UserId);
                                     }
                                     <select class="form-select" id="@idName"
-                                    onchange="SubmitStatus(@item.Id, @idName, @idNameStatus)">
+                                    onchange="SubmitStatus(@item.UserId, @idName, @idNameStatus)">
 
                                         <option value="">Change</option>
 
@@ -100,9 +100,9 @@
                                     </select>
 
                                 </td>
-                                <td>@Html.ActionLink("Details", "DetailUser", new { id = item.Id }, new { @class =
+                                <td>@Html.ActionLink("Details", "DetailUser", new { id = item.UserId }, new { @class =
                                 "text-info"})</td>
-                                <td>@Html.ActionLink("Edit", "EditUser", new { id = item.Id }, new { @class =
+                                <td>@Html.ActionLink("Edit", "EditUser", new { id = item.UserId }, new { @class =
                                 "text-light"})
                                 </td>
 

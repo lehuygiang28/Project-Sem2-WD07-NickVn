@@ -309,14 +309,14 @@
                             {
                                 @foreach (var order in listOrders)
                                 {
-                                    @if (product.Id == order.ProductId)
+                                    @if (product.ProductId == order.ProductId)
                                     {
-                                        string divPassId = string.Format($"seepw{product.Id}");
-                                        string hidePassId = string.Format($"hidePw{product.Id}");
-                                        string btnPassId = string.Format($"btn{product.Id}");
+                                        string divPassId = string.Format($"seepw{product.ProductId}");
+                                        string hidePassId = string.Format($"hidePw{product.ProductId}");
+                                        string btnPassId = string.Format($"btn{product.ProductId}");
                                         <tr>
                                             <td>@order.CreateAt.ToString("dd/MM/yyyy")</td>
-                                            <td>@product.Id</td>
+                                            <td>@product.ProductId</td>
                                             <td>@product.Name</td>
                                             <td>@product.ProductUserName</td>
                                             <td>

@@ -12,10 +12,10 @@
 
         <div class="col-sm-12 col-xl-4">
             <div class="bg-secondary rounded h-100 p-4">
-                <h6 class="mb-4">#@cate.Id - @cate.Name</h6>
+                <h6 class="mb-4">#@cate.CategoryId - @cate.Name</h6>
                 <dl class="row mb-0">
                     <dt class="col-sm-4">Id</dt>
-                    <dd class="col-sm-8">@cate.Id</dd>
+                    <dd class="col-sm-8">@cate.CategoryId</dd>
 
                     <dt class="col-sm-4">Name</dt>
                     <dd class="col-sm-8">@cate.Name</dd>
@@ -40,7 +40,7 @@
 
                     <div class="d-flex justify-content-center">
 
-                        @Html.ActionLink("Edit", "EditCategory", new { id = cate.Id }, new {@class =
+                        @Html.ActionLink("Edit", "EditCategory", new { id = cate.CategoryId }, new {@class =
                         "btn btn-outline-light m-2"})
 
                         <!-- Button trigger modal -->
@@ -66,7 +66,7 @@
                                         <button type="button" class="btn btn-secondary"
                                             data-bs-dismiss="modal">Close</button>
                                         <button type="button" class="btn btn-danger">@Html.ActionLink("Confirm Delete",
-                                            "DeleteCategory", new { id = cate.Id }, new { @class =
+                                            "DeleteCategory", new { id = cate.CategoryId }, new { @class =
                                             "text-white"})</button>
                                     </div>
                                 </div>

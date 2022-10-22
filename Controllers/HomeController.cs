@@ -22,7 +22,7 @@ public class HomeController : Controller
                     where cate.Status == 1
                     select cate;
 
-        var categoryList = await query.OrderBy(c => c.Id).ToListAsync();
+        var categoryList = await query.OrderBy(c => c.CategoryId).ToListAsync();
 
         ViewBag.categoryList = categoryList;
         return View();

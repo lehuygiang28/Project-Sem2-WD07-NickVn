@@ -191,8 +191,8 @@ public class AdminController : Controller
         }
 
         var query = from od in _context.Oders
-                    join us in _context.Users on od.UserId equals us.Id
-                    join pd in _context.Lienminhs on od.ProductId equals pd.Id
+                    join us in _context.Users on od.UserId equals us.UserId
+                    join pd in _context.Lienminhs on od.ProductId equals pd.ProductId
                     orderby od.CreateAt descending
                     select Tuple.Create<Oder, User, Lienminh>(od, us, pd);
 
@@ -282,14 +282,14 @@ public class AdminController : Controller
         // int[] status_id = { NOT_SOLD, SOLD };
 
         int lienMinhID;
-        var lastLienMinhID = await _context.Lienminhs.OrderByDescending(a => a.Id).FirstOrDefaultAsync();
+        var lastLienMinhID = await _context.Lienminhs.OrderByDescending(a => a.ProductId).FirstOrDefaultAsync();
         if (lastLienMinhID == null)
         {
             lienMinhID = 1;
         }
         else
         {
-            lienMinhID = lastLienMinhID.Id;
+            lienMinhID = lastLienMinhID.ProductId;
         }
 
         int lastImgID;
@@ -310,7 +310,7 @@ public class AdminController : Controller
             lienMinhID++;
             Lienminh newProduct = new Lienminh();
 
-            newProduct.Id = lienMinhID;
+            newProduct.ProductId = lienMinhID;
             newProduct.Name = "Liên Minh";
             newProduct.StatusAccount = "shop" + RandomString(6);
             newProduct.ProductUserPassword = "passw" + RandomString(8);
@@ -384,7 +384,7 @@ public class AdminController : Controller
 
         var currentUserId = HttpContext.Session.GetInt32(SessionKeyAdminId);
 
-        var user = await _context.Users.Where(a => a.Id == id).FirstOrDefaultAsync();
+        var user = await _context.Users.Where(a => a.UserId == id).FirstOrDefaultAsync();
         if (user == null)
         {
             TempData["err"] = "Can not find user";
@@ -523,7 +523,7 @@ public class AdminController : Controller
             return RedirectToAction(nameof(Users));
         }
 
-        var user = await _context.Users.Where(a => a.Id == id).FirstOrDefaultAsync();
+        var user = await _context.Users.Where(a => a.UserId == id).FirstOrDefaultAsync();
         if (user == null)
         {
             TempData["err"] = "Can not found user";
@@ -552,7 +552,7 @@ public class AdminController : Controller
             return RedirectToAction(nameof(Users));
         }
 
-        var user = await _context.Users.Where(a => a.Id == id).FirstOrDefaultAsync();
+        var user = await _context.Users.Where(a => a.UserId == id).FirstOrDefaultAsync();
         if (user == null)
         {
             TempData["err"] = "Can not found user";
@@ -598,7 +598,7 @@ public class AdminController : Controller
             return statusName;
         }
 
-        var user = await _context.Users.Where(a => a.Id == userId).FirstOrDefaultAsync();
+        var user = await _context.Users.Where(a => a.UserId == userId).FirstOrDefaultAsync();
         if (user == null)
         {
             TempData["err"] = "Can not find user";
@@ -620,7 +620,7 @@ public class AdminController : Controller
             return RedirectToAction(nameof(Index));
         }
         var query = from us in _context.Users
-                    orderby us.Id
+                    orderby us.UserId
                     select us;
 
         // var listUser = await _context.Users.OrderBy(a => a.Id).ToListAsync();
@@ -737,10 +737,10 @@ public class AdminController : Controller
         product.PriceAtm = (decimal)PriceAtm;
         product.Note = note;
 
-        int lastProductId = (await _context.Lienminhs.OrderBy(a => a.Id).LastAsync()).Id;
+        int lastProductId = (await _context.Lienminhs.OrderBy(a => a.ProductId).LastAsync()).ProductId;
         int lastImgID = (await _context.Images.OrderBy(a => a.ImgId).LastAsync()).ImgId;
 
-        product.Id = lastProductId + 1;
+        product.ProductId = lastProductId + 1;
         try
         {
             string wwwRootPath = _hostEnvironment.WebRootPath;
@@ -772,7 +772,7 @@ public class AdminController : Controller
                 // Set new image
                 image = new Image();
                 image.ImgId = lastImgID;
-                image.LienminhId = product.Id;
+                image.LienminhId = product.ProductId;
                 image.ImgLink = Path.Combine(slashImg, fileName);
 
                 // Push image to list image
@@ -787,7 +787,7 @@ public class AdminController : Controller
             await _context.Lienminhs.AddAsync(product);
             await _context.SaveChangesAsync();
 
-            TempData["success-add"] = "Add product success, new product id: " + product.Id;
+            TempData["success-add"] = "Add product success, new product id: " + product.ProductId;
         }
         catch (Exception ex)
         {
@@ -830,7 +830,7 @@ public class AdminController : Controller
             return Redirect(Request.Headers["Referer"].ToString());
         }
 
-        var product = await _context.Lienminhs.Where(a => a.Id == id).FirstOrDefaultAsync();
+        var product = await _context.Lienminhs.Where(a => a.ProductId == id).FirstOrDefaultAsync();
         if (product == null)
         {
             TempData["err"] = "Can not find product with id: " + id;
@@ -904,7 +904,7 @@ public class AdminController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        var product = await _context.Lienminhs.Where(a => a.Id == id).FirstOrDefaultAsync();
+        var product = await _context.Lienminhs.Where(a => a.ProductId == id).FirstOrDefaultAsync();
         if (product == null)
         {
             TempData["error"] = $"Can not find product id: {id}";
@@ -914,7 +914,7 @@ public class AdminController : Controller
         List<string> listRank = new List<string> { "Chưa Rank", "Sắt", "Đồng", "Bạc", "Vàng", "Bạch Kim", "Kim Cương", "Cao Thủ", "Đại Cao Thủ", "Thách Đấu" };
         var listStatus = await _context.Statuses.OrderBy(a => a.StatusId).ToListAsync();
 
-        var listImage = await _context.Images.Where(a => a.LienminhId == product.Id).OrderBy(b => b.ImgId).ToListAsync();
+        var listImage = await _context.Images.Where(a => a.LienminhId == product.ProductId).OrderBy(b => b.ImgId).ToListAsync();
 
         ViewBag.listRank = listRank;
         ViewBag.product = product;
@@ -931,7 +931,7 @@ public class AdminController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        var searchId = await _context.Lienminhs.AnyAsync(c => c.Id == id);
+        var searchId = await _context.Lienminhs.AnyAsync(c => c.ProductId == id);
         if (!searchId)
         {
             _logger.LogInformation("Can not delete unknown ID: " + id);
@@ -939,7 +939,7 @@ public class AdminController : Controller
             return Redirect(Request.Headers["Referer"].ToString());
         }
 
-        var find = await _context.Lienminhs.Where(c => c.Id == id).FirstOrDefaultAsync();
+        var find = await _context.Lienminhs.Where(c => c.ProductId == id).FirstOrDefaultAsync();
         if (find == null)
         {
             TempData["error"] = "Can not delete unknown ID: " + id;
@@ -978,13 +978,13 @@ public class AdminController : Controller
             return RedirectToAction(nameof(Products));
         }
 
-        var DeltailProductByID = await _context.Lienminhs.Where(c => c.Id == id).FirstOrDefaultAsync();
+        var DeltailProductByID = await _context.Lienminhs.Where(c => c.ProductId == id).FirstOrDefaultAsync();
         if (DeltailProductByID == null)
         {
             TempData["error"] = "Not Found this ID";
             return RedirectToAction(nameof(Products));
         }
-        var imgList = await _context.Images.Where(a => a.LienminhId == DeltailProductByID.Id).ToListAsync();
+        var imgList = await _context.Images.Where(a => a.LienminhId == DeltailProductByID.ProductId).ToListAsync();
         var status_en = await _context.Statuses.Where(c => c.StatusId == DeltailProductByID.StatusId).FirstAsync();
         if (status_en == null)
         {
@@ -1048,7 +1048,7 @@ public class AdminController : Controller
                     join sts in _context.Statuses on lienMinh.StatusId equals sts.StatusId
                     where lienMinh.Name.Contains(SearchKey == null ? string.Empty : SearchKey)
                     && (lienMinh.PriceAtm >= priceSearchMin && lienMinh.PriceAtm < priceSearchMax)
-                    orderby lienMinh.Id
+                    orderby lienMinh.ProductId
                     select Tuple.Create<Lienminh, Status>(lienMinh, sts);
 
         // var query = from lienMinh in _context.Lienminhs
@@ -1098,14 +1098,14 @@ public class AdminController : Controller
             TempData["err"] = "Can not found category";
             return RedirectToAction(nameof(Categories));
         }
-        var searchId = await _context.Categories.AnyAsync(c => c.Id == id);
+        var searchId = await _context.Categories.AnyAsync(c => c.CategoryId == id);
         if (!searchId)
         {
             _logger.LogInformation("Can not delete unknown ID: " + id);
             return Redirect(Request.Headers["Referer"].ToString());
         }
 
-        var find = await _context.Categories.Where(c => c.Id == id).FirstOrDefaultAsync();
+        var find = await _context.Categories.Where(c => c.CategoryId == id).FirstOrDefaultAsync();
         if (find == null)
         {
             TempData["err"] = "Can not found category";
@@ -1139,7 +1139,7 @@ public class AdminController : Controller
         Category? otherCategory = new Category();
         try
         {
-            otherCategory = await _context.Categories.Where(c => c.Id == id).FirstOrDefaultAsync();
+            otherCategory = await _context.Categories.Where(c => c.CategoryId == id).FirstOrDefaultAsync();
             if (otherCategory == null)
             {
                 TempData["err"] = "Can not found category";
@@ -1205,7 +1205,7 @@ public class AdminController : Controller
 
             _context.Categories.Update(otherCategory);
             await _context.SaveChangesAsync();
-            _logger.LogInformation("Edit/Update Category successfull \n\tCategoryID: " + otherCategory.Id);
+            _logger.LogInformation("Edit/Update Category successfull \n\tCategoryID: " + otherCategory.CategoryId);
 
         }
         catch (Exception ex)
@@ -1214,7 +1214,7 @@ public class AdminController : Controller
             return RedirectToAction(nameof(Categories));
         }
 
-        return RedirectToAction(nameof(DetailCategory), new { id = otherCategory.Id });
+        return RedirectToAction(nameof(DetailCategory), new { id = otherCategory.CategoryId });
     }
 
     public async Task<IActionResult> EditCategory(int? id)
@@ -1229,7 +1229,7 @@ public class AdminController : Controller
             return RedirectToAction(nameof(DetailCategory));
         }
 
-        var selectedCategory = await _context.Categories.Where(c => c.Id == id).FirstOrDefaultAsync();
+        var selectedCategory = await _context.Categories.Where(c => c.CategoryId == id).FirstOrDefaultAsync();
         if (selectedCategory == null)
         {
             TempData["error"] = "Not found this category";
@@ -1252,7 +1252,7 @@ public class AdminController : Controller
             return RedirectToAction(nameof(Categories));
         }
 
-        var cateById = await _context.Categories.Where(c => c.Id == id).FirstOrDefaultAsync();
+        var cateById = await _context.Categories.Where(c => c.CategoryId == id).FirstOrDefaultAsync();
         if (cateById == null)
         {
             TempData["error"] = "Not Found this category";
@@ -1290,7 +1290,7 @@ public class AdminController : Controller
         totalRecord = await query.CountAsync();
         totalPage = (totalRecord / pageSize) + ((totalRecord % pageSize) > 0 ? 1 : 0);
 
-        List<Category> listCateQuery = await query.OrderBy(acc => acc.Id)
+        List<Category> listCateQuery = await query.OrderBy(acc => acc.CategoryId)
                                                     .Skip((page - 1) * pageSize)
                                                     .Take(pageSize).ToListAsync();
 
@@ -1363,7 +1363,7 @@ public class AdminController : Controller
             return RedirectToAction(nameof(Login)); ;
         }
 
-        HttpContext.Session.SetInt32(SessionKeyAdminId, loginUser.Id);
+        HttpContext.Session.SetInt32(SessionKeyAdminId, loginUser.UserId);
         HttpContext.Session.SetInt32(SessionKeyAdminRole, loginUser.RoleId);
         HttpContext.Session.SetString(SessionKeyAdminUserName, loginUser.UserName);
 
@@ -1390,7 +1390,7 @@ public class AdminController : Controller
             return false;
         }
 
-        var RenewAdminInformation = await _context.Users.Where(u => u.Id == HttpContext.Session.GetInt32(SessionKeyAdminId)).FirstOrDefaultAsync();
+        var RenewAdminInformation = await _context.Users.Where(u => u.UserId == HttpContext.Session.GetInt32(SessionKeyAdminId)).FirstOrDefaultAsync();
         if (RenewAdminInformation == null)
         {
             HttpContext.Session.Remove(SessionKeyAdminId);
@@ -1431,7 +1431,7 @@ public class AdminController : Controller
         // Get data for chart
         // Lấy dữ liệu cho biểu đồ
         var query = from od in _context.Oders
-                    join pd in _context.Lienminhs on od.ProductId equals pd.Id
+                    join pd in _context.Lienminhs on od.ProductId equals pd.ProductId
                     select Tuple.Create<Oder, Lienminh>(od, pd);
 
         int count = await query.CountAsync();
