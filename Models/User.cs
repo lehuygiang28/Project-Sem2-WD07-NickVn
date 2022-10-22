@@ -5,7 +5,12 @@ namespace Project_Sem2_WD07_NickVn.Models
 {
     public partial class User
     {
-        public int Id { get; set; }
+        public User()
+        {
+            Oders = new HashSet<Oder>();
+        }
+
+        public int UserId { get; set; }
         public string UserName { get; set; } = null!;
         public string Password { get; set; } = null!;
         public string FirstName { get; set; } = null!;
@@ -22,6 +27,8 @@ namespace Project_Sem2_WD07_NickVn.Models
         public DateTime UpdateAt { get; set; }
         public DateTime LastLogin { get; set; }
 
+        public virtual Role Role { get; set; } = null!;
         public virtual Status Status { get; set; } = null!;
+        public virtual ICollection<Oder> Oders { get; set; }
     }
 }

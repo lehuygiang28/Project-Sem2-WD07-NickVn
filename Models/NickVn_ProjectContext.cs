@@ -32,7 +32,7 @@ namespace Project_Sem2_WD07_NickVn.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseMySql("name=ConnectionStrings:NickVn_Project", Microsoft.EntityFrameworkCore.ServerVersion.Parse("10.4.22-mariadb"));
+                optionsBuilder.UseMySql("name=ConnectionStrings:NickVn_Project", Microsoft.EntityFrameworkCore.ServerVersion.Parse("10.4.25-mariadb"));
             }
         }
 
@@ -45,9 +45,9 @@ namespace Project_Sem2_WD07_NickVn.Models
             {
                 entity.ToTable("categories");
 
-                entity.Property(e => e.Id)
+                entity.Property(e => e.CategoryId)
                     .HasColumnType("int(11)")
-                    .HasColumnName("id");
+                    .HasColumnName("category_id");
 
                 entity.Property(e => e.Action)
                     .HasColumnType("text")
@@ -162,31 +162,48 @@ namespace Project_Sem2_WD07_NickVn.Models
 
             modelBuilder.Entity<Image>(entity =>
             {
-                entity.HasKey(e => e.ImgId)
-                    .HasName("PRIMARY");
+                entity.HasKey(e => new { e.ImgId, e.LienminhId })
+                    .HasName("PRIMARY")
+                    .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
 
                 entity.ToTable("images");
 
+                entity.HasIndex(e => e.LienminhId, "lienminh_id");
+
                 entity.Property(e => e.ImgId)
                     .HasColumnType("int(11)")
+                    .ValueGeneratedOnAdd()
                     .HasColumnName("img_id");
+
+                entity.Property(e => e.LienminhId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("lienminh_id");
 
                 entity.Property(e => e.ImgLink)
                     .HasColumnType("text")
                     .HasColumnName("img_link");
 
-                entity.Property(e => e.LienminhId)
-                    .HasColumnType("int(11)")
-                    .HasColumnName("lienminh_id");
+                entity.HasOne(d => d.Lienminh)
+                    .WithMany(p => p.Images)
+                    .HasForeignKey(d => d.LienminhId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("images_ibfk_1");
             });
 
             modelBuilder.Entity<Lienminh>(entity =>
             {
+                entity.HasKey(e => e.ProductId)
+                    .HasName("PRIMARY");
+
                 entity.ToTable("lienminh");
 
-                entity.Property(e => e.Id)
+                entity.HasIndex(e => e.ProductCategoryId, "fk_02_product-category-id");
+
+                entity.HasIndex(e => e.StatusId, "statuses_fk_status_id_lol");
+
+                entity.Property(e => e.ProductId)
                     .HasColumnType("int(11)")
-                    .HasColumnName("id");
+                    .HasColumnName("product_id");
 
                 entity.Property(e => e.Champ)
                     .HasColumnType("int(11)")
@@ -207,6 +224,10 @@ namespace Project_Sem2_WD07_NickVn.Models
                 entity.Property(e => e.PriceAtm)
                     .HasPrecision(10)
                     .HasColumnName("price_atm");
+
+                entity.Property(e => e.ProductCategoryId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("product_category_id");
 
                 entity.Property(e => e.ProductUserName)
                     .HasColumnType("text")
@@ -234,25 +255,31 @@ namespace Project_Sem2_WD07_NickVn.Models
 
                 entity.Property(e => e.StatusId)
                     .HasColumnType("int(11)")
-                    .HasColumnName("status_id")
-                    .HasDefaultValueSql("'1003'");
+                    .HasColumnName("status_id");
+
+                entity.HasOne(d => d.Status)
+                    .WithMany(p => p.Lienminhs)
+                    .HasForeignKey(d => d.StatusId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("statuses_fk_status_id_lol");
             });
 
             modelBuilder.Entity<Oder>(entity =>
             {
+                entity.HasKey(e => e.OrderId)
+                    .HasName("PRIMARY");
+
                 entity.ToTable("oders");
 
-                entity.Property(e => e.Id)
+                entity.HasIndex(e => e.UserId, "oders_ibfk_1");
+
+                entity.Property(e => e.OrderId)
                     .HasColumnType("int(11)")
-                    .HasColumnName("id");
+                    .HasColumnName("order_id");
 
                 entity.Property(e => e.CreateAt)
                     .HasColumnType("datetime")
                     .HasColumnName("create_at");
-
-                entity.Property(e => e.OderId)
-                    .HasColumnType("int(11)")
-                    .HasColumnName("oder_id");
 
                 entity.Property(e => e.ProductId)
                     .HasColumnType("int(11)")
@@ -269,26 +296,36 @@ namespace Project_Sem2_WD07_NickVn.Models
                 entity.Property(e => e.UserId)
                     .HasColumnType("int(11)")
                     .HasColumnName("user_id");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Oders)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("oders_ibfk_1");
             });
 
             modelBuilder.Entity<ProductCategory>(entity =>
             {
-                entity.HasKey(e => e.IndexNo)
-                    .HasName("PRIMARY");
+                entity.HasKey(e => new { e.ProductCategoryId, e.CategoryId })
+                    .HasName("PRIMARY")
+                    .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
 
                 entity.ToTable("product_category");
 
-                entity.Property(e => e.IndexNo)
-                    .HasColumnType("int(11)")
-                    .HasColumnName("index_no");
+                entity.HasIndex(e => e.CategoryId, "fk_04_categories_prod-category");
 
-                entity.Property(e => e.Action)
-                    .HasColumnType("text")
-                    .HasColumnName("action");
+                entity.Property(e => e.ProductCategoryId)
+                    .HasColumnType("int(11)")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("product_category_id");
 
                 entity.Property(e => e.CategoryId)
                     .HasColumnType("int(11)")
                     .HasColumnName("category_id");
+
+                entity.Property(e => e.Action)
+                    .HasColumnType("text")
+                    .HasColumnName("action");
 
                 entity.Property(e => e.CategoryName)
                     .HasColumnType("text")
@@ -310,6 +347,12 @@ namespace Project_Sem2_WD07_NickVn.Models
                 entity.Property(e => e.Total)
                     .HasColumnType("int(11)")
                     .HasColumnName("total");
+
+                entity.HasOne(d => d.Category)
+                    .WithMany(p => p.ProductCategories)
+                    .HasForeignKey(d => d.CategoryId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_04_categories_prod-category");
             });
 
             modelBuilder.Entity<Role>(entity =>
@@ -385,13 +428,13 @@ namespace Project_Sem2_WD07_NickVn.Models
             {
                 entity.ToTable("users");
 
-                entity.HasIndex(e => e.RoleId, "roles_fk_role_id");
+                entity.HasIndex(e => e.RoleId, "role_id");
 
                 entity.HasIndex(e => e.StatusId, "statuses_fk_status_id");
 
-                entity.Property(e => e.Id)
+                entity.Property(e => e.UserId)
                     .HasColumnType("int(11)")
-                    .HasColumnName("id");
+                    .HasColumnName("user_id");
 
                 entity.Property(e => e.CoverImgSrc)
                     .HasColumnType("text")
@@ -453,6 +496,12 @@ namespace Project_Sem2_WD07_NickVn.Models
                 entity.Property(e => e.UserName)
                     .HasColumnType("text")
                     .HasColumnName("user_name");
+
+                entity.HasOne(d => d.Role)
+                    .WithMany(p => p.Users)
+                    .HasForeignKey(d => d.RoleId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("users_ibfk_1");
 
                 entity.HasOne(d => d.Status)
                     .WithMany(p => p.Users)

@@ -5,8 +5,14 @@ namespace Project_Sem2_WD07_NickVn.Models
 {
     public partial class Lienminh
     {
-        public int Id { get; set; }
+        public Lienminh()
+        {
+            Images = new HashSet<Image>();
+        }
+
+        public int ProductId { get; set; }
         public string Name { get; set; } = null!;
+        public int ProductCategoryId { get; set; }
         public string ProductUserName { get; set; } = null!;
         public string ProductUserPassword { get; set; } = null!;
         public string Publisher { get; set; } = null!;
@@ -18,5 +24,8 @@ namespace Project_Sem2_WD07_NickVn.Models
         public string? Note { get; set; }
         public string ImgThumb { get; set; } = null!;
         public int StatusId { get; set; }
+
+        public virtual Status Status { get; set; } = null!;
+        public virtual ICollection<Image> Images { get; set; }
     }
 }

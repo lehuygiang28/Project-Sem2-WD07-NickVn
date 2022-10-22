@@ -7,6 +7,7 @@ namespace Project_Sem2_WD07_NickVn.Models
     {
         public Status()
         {
+            Lienminhs = new HashSet<Lienminh>();
             Users = new HashSet<User>();
         }
 
@@ -14,6 +15,7 @@ namespace Project_Sem2_WD07_NickVn.Models
         public string StatusNameVi { get; set; } = null!;
         public string StatusNameEn { get; set; } = null!;
 
+        public virtual ICollection<Lienminh> Lienminhs { get; set; }
         public virtual ICollection<User> Users { get; set; }
     }
 }

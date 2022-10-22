@@ -5,7 +5,12 @@ namespace Project_Sem2_WD07_NickVn.Models
 {
     public partial class Category
     {
-        public int Id { get; set; }
+        public Category()
+        {
+            ProductCategories = new HashSet<ProductCategory>();
+        }
+
+        public int CategoryId { get; set; }
         public string Name { get; set; } = null!;
         public string Title { get; set; } = null!;
         public string Action { get; set; } = null!;
@@ -14,5 +19,7 @@ namespace Project_Sem2_WD07_NickVn.Models
         public int Total { get; set; }
         public string Note { get; set; } = null!;
         public int Status { get; set; }
+
+        public virtual ICollection<ProductCategory> ProductCategories { get; set; }
     }
 }
