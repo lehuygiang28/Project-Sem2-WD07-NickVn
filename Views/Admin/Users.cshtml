@@ -363,9 +363,9 @@
         </div>
         @* Pagination section: END *@
 
-        <script>
+        @* <script>
             async function SubmitStatus(user_id, id_name, id_name_status) {
-            @* var statusId = $(id_name).val(); *@
+            // var statusId = $(id_name).val();
                 var urlSt = "/Admin/ChangeUserStatus?userId=" + user_id + "&statusId=" + id_name;
                 await $.get(urlSt, function (data, status) {
                     if (data) {
@@ -377,6 +377,6 @@
                     alert("Can not change status");
                 });
             }
-        </script>
+        </script> *@
     </div>
 </div>

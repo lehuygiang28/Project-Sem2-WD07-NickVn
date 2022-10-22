@@ -1273,21 +1273,37 @@ public class AdminController : Controller
 
         // Get data for chart
         // Lấy dữ liệu cho biểu đồ
-        var query = from od in _context.Orders
-                    join pd in _context.Lienminhs on od.ProductId equals pd.ProductId
-                    select Tuple.Create<Order, Lienminh>(od, pd);
+        // var query = from od in _context.Orders
+        //             join pd in _context.Lienminhs on od.ProductId equals pd.ProductId
+        //             select Tuple.Create<Order, Lienminh>(od, pd);
 
-        int count = await query.CountAsync();
-        var list = await query.ToListAsync();
+        var queryOrders = from order in _context.Orders
+                          join product in _context.Lienminhs on order.ProductId equals product.ProductId
+                          select new
+                          {
+                            Order = order,
+                            Lienminh = product
+                          };
+
+        var queryChargeHistory = from ChargeHistory in _context.ChargeHistories
+                                 select ChargeHistory;
+
+        // int count = await queryOrders.CountAsync();
+        var listOrders = await queryOrders.ToListAsync();
+        var listCharge = await queryChargeHistory.ToListAsync();
 
         // Sort by Descending date
-        list.Sort((a, b) => b.Item1.CreateAt.CompareTo(a.Item1.CreateAt));
+        listOrders.Sort((a, b) => b.Order.CreateAt.CompareTo(a.Order.CreateAt));
+        listCharge.Sort((a, b) => b.CreateAt.CompareTo(a.CreateAt));
 
         DateTime today = DateTime.Now.Date;
-        decimal todayRevenue = list.Where(a => a.Item1.CreateAt.Date == today).Sum(s => s.Item2.PriceAtm);
-        decimal totalRevenue = list.Sum(s => s.Item2.PriceAtm);
+        decimal todayRevenue = listOrders.Where(a => a.Order.CreateAt.Date == today).Sum(s => s.Lienminh.PriceAtm);
+        decimal totalRevenue = listOrders.Sum(s => s.Lienminh.PriceAtm);
         decimal todaySale = Math.Round(todayRevenue / 100 * 35);
         decimal totalSale = Math.Round(totalRevenue / 100 * 35);
+
+        decimal todayCharge = listCharge.Where(a => a.CreateAt.Date == today).Sum(a => a.MoneyReceived);
+        decimal totalCharge = listCharge.Sum(a => a.MoneyReceived);
 
         int thisMonth = DateTime.Now.Month;
         int thisYear = DateTime.Now.Year;
@@ -1307,9 +1323,14 @@ public class AdminController : Controller
             startMonth = thisMonth - 8;
             startYear = thisYear;
         }
+        // Lay 8 thang gan nhat
         string labels = "[";
+        // Data bieu do cho doanh thu
         string dataRevenues = "[";
+        // Data bieu do cho sale
         string dataSales = "[";
+        // Data bieu do cho tong so nap the
+        string ChargeHistoryDataChart = "[";
         for (int i = 0; i <= 8; i++)
         {
             if (startMonth > 12)
@@ -1317,29 +1338,65 @@ public class AdminController : Controller
                 startMonth = 1;
                 startYear++;
             }
-            decimal thisMonthTotal = list.Where(a => a.Item1.CreateAt.Month == startMonth).Sum(b => b.Item2.PriceAtm);
-            dataRevenues += string.Format($"\"{thisMonthTotal}\",");
-            dataSales += string.Format($"\"{Math.Round(thisMonthTotal / 100 * 35)}\",");
+            // Tong doanh thu trong thang
+            decimal thisMonthTotalRevenue = listOrders.Where(a => a.Order.CreateAt.Month == startMonth).Sum(b => b.Lienminh.PriceAtm);
+            // Tong so tien nap trong thang
+            decimal thisMonthTotalCharge = listCharge.Where(b => b.CreateAt.Month == startMonth).Sum(c => c.MoneyReceived);
+            // Add data to char data
+            dataRevenues += string.Format($"\"{thisMonthTotalRevenue}\",");
+            dataSales += string.Format($"\"{Math.Round(thisMonthTotalRevenue / 100 * 35)}\",");
+            ChargeHistoryDataChart += string.Format($"\"{thisMonthTotalCharge}\",");
             labels += string.Format($"\"{startMonth}/{startYear}\",");
             startMonth++;
         }
         labels += "]";
         dataRevenues += "]";
         dataSales += "]";
+        ChargeHistoryDataChart += "]";
 
-        var recentSales = list.Take(5).ToList();
+        System.Console.WriteLine(ChargeHistoryDataChart);
 
-        ViewData["listOderProd"] = list;
+        List<Order> recentSales = new List<Order>();
+        foreach(var i in listOrders)
+        {
+            if(recentSales.Count < 5)
+            {
+                recentSales.Add(i.Order);
+            }
+        }
 
+
+        // System.Console.WriteLine($"LIST ORDER COUNT: {recentSales.Count}");
+        // foreach (var a in recentSales)
+        // {
+        //     System.Console.WriteLine($"Fild: {a.ProductId}");
+        // }
+
+        // All order
+        ViewData["listOderProd"] = listOrders;
+        // Da ban gan day
+        ViewData["recentSales"] = recentSales;
+
+        // Data of sale
         ViewData["todaySale"] = todaySale;
         ViewData["totalSale"] = totalSale;
+
+        // Data of revenue
         ViewData["todayRevenue"] = todayRevenue;
         ViewData["totalRevenue"] = totalRevenue;
+
+        // Data of charge
+        ViewData["todayCharge"] = todayCharge;
+        ViewData["totalCharge"] = totalCharge;
+
+        // 8 thang gan nhat
         ViewData["labels"] = labels;
+
+        // Data bieu do
         ViewData["dataSales"] = dataSales;
         ViewData["dataRevenues"] = dataRevenues;
+        ViewData["ChargeHistoryDataChart"] = ChargeHistoryDataChart;
 
-        ViewData["recentSales"] = recentSales;
         return View();
     }
 
