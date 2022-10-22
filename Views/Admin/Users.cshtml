@@ -27,6 +27,14 @@
         <div class="d-flex align-items-center justify-content-between mb-4">
             <h6 class="mb-4">Users Table</h6>
             <span class="text-danger">@TempData["err"]</span>
+
+            @if (TempData["ban-active-msg"] != null)
+            {
+                <div class="alert alert-warning alert-dismissible fade show" id="alert_ban_active" role="alert">
+                    @TempData["ban-active-msg"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
             @* <a class="btn btn-info float-end" asp-action="AddUser" asp-controller="Admin">Add User</a> *@
         </div>
         <div class="table-responsive">
@@ -47,7 +55,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if(listUser.Count >= 0)
+                    @if (listUser.Count >= 0)
                     {
                         @foreach (var item in listUser)
                         {
@@ -81,65 +89,115 @@
 
                                     }
                                 </td>
-                                <td scope="row">
+                                @* <td scope="row">
                                     @{
-                                        string idName = string.Format("statusId_" + item.UserId);
+                                    string idName = string.Format("statusId_" + item.UserId);
                                     }
                                     <select class="form-select" id="@idName"
                                     onchange="SubmitStatus(@item.UserId, @idName, @idNameStatus)">
 
-                                        <option value="">Change</option>
+                                    <option value="">Change</option>
 
-                                        @foreach (var s in listStatus)
-                                        {
-                                            if (s.StatusNameEn == "Ban" || s.StatusNameEn == "Active")
-                                            {
-                                                <option value="@s.StatusId">@s.StatusNameEn</option>
-                                            }
-                                        }
+                                    @foreach (var s in listStatus)
+                                    {
+                                    if (s.StatusNameEn == "Ban" || s.StatusNameEn == "Active")
+                                    {
+                                    <option value="@s.StatusId">@s.StatusNameEn</option>
+                                    }
+                                    }
                                     </select>
 
-                                </td>
-                                <td>@Html.ActionLink("Details", "DetailUser", new { id = item.UserId }, new { @class =
-                                "text-info"})</td>
-                                <td>@Html.ActionLink("Edit", "EditUser", new { id = item.UserId }, new { @class =
-                                "text-light"})
-                                </td>
+                                    </td> *@
 
-                                @* <td>
-                                    <a type="button" class="text-danger" data-bs-toggle="modal"
-                                    data-bs-target="#DeleteCategoryPopup_@item.Id">
-                                        Delete
-                                    </a>
-                                </td> *@
-                            </tr>
+                                @if (item.StatusId == 1007)
+                                {
+                                    <td>
+                                        <a type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                data-bs-target="#BanButton_@item.UserId">
+                                            BAN
+                                        </a>
+                                    </td>
 
-                            @* <!-- Modal -->
-                            <div class="modal fade" id="DeleteCategoryPopup_@item.Id" tabindex="-1"
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="BanButton_@item.UserId" tabindex="-1"
                             aria-labelledby="DeleteModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title text-secondary" id="DeleteModalLabel">Confirmation to
-                                                delete?</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title text-secondary" id="DeleteModalLabel">Confirmation to ban
+                                                        this user?</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            Are you sure to delete this User?
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
+                                                </div>
+                                                <div class="modal-body">
+                                                    Are you sure to BAN this User?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
                                             data-bs-dismiss="modal">Close</button>
-                                            @Html.ActionLink("Confirm Delete", "DeleteUser", new { id = item.Id },
-                                        new {
-                                        @class = "btn btn-danger text-white"})
+
+                                                    @* <button type="button" class="btn btn-danger"
+                                            onclick="SubmitStatus(@item.UserId, 1006, @idNameStatus)">BAN</button> *@
+                                                    @Html.ActionLink("Confirm Ban", "ChangeUserStatus", new { userId = item.UserId, statusId = 1006 },
+                                                        new { @class = "btn btn-danger text-white"})
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div> *@
+                                }
+                                else if (item.StatusId == 1006)
+                                {
+                                    <td>
+                                        <a type="button" class="btn btn-success" data-bs-toggle="modal"
+                                data-bs-target="#BanButton_@item.UserId">
+                                            ACTIVE
+                                        </a>
+                                    </td>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="BanButton_@item.UserId" tabindex="-1"
+                            aria-labelledby="DeleteModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title text-secondary" id="DeleteModalLabel">Confirmation to
+                                                        active
+                                                        this user?</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Are you sure to ACTIVE this User?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+                                                    @* <button type="button" class="btn btn-success"
+                                            onclick="SubmitStatus(@item.UserId, 1007, @idNameStatus)">ACTIVE</button> *@
+                                                    @* @Html.ActionLink("Confirm Delete", "DeleteUser", new { id = item.UserId },
+                                                        new {
+                                                        @class = "btn btn-danger text-white"}) *@
+                                                    @Html.ActionLink("Confirm Active", "ChangeUserStatus", new { userId = item.UserId, statusId = 1007 },
+                                                        new { @class = "btn btn-success text-white"})
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                }
+
+                                <td>@Html.ActionLink("Details", "DetailUser", new { id = item.UserId }, new { @class =
+                            "text-info"})</td>
+
+
+                                @* <td>@Html.ActionLink("Edit", "EditUser", new { id = item.UserId }, new { @class =
+                                    "text-light"})
+                                    </td> *@
+                            </tr>
                         }
-                    } else {
+                    }
+                    else
+                    {
                         <tr>
                             <th colspan="11">No data ....</th>
                         </tr>
@@ -307,16 +365,15 @@
 
         <script>
             async function SubmitStatus(user_id, id_name, id_name_status) {
-                var statusId = $(id_name).val();
-                var urlSt = "/Admin/ChangeUserStatus?userId=" + user_id + "&statusId=" + statusId;
-                await $.get(urlSt, function(data, status) {
-                    if(data)
-                    {
+            @* var statusId = $(id_name).val(); *@
+                var urlSt = "/Admin/ChangeUserStatus?userId=" + user_id + "&statusId=" + id_name;
+                await $.get(urlSt, function (data, status) {
+                    if (data) {
                         $(id_name_status).text(data);
                     }
-                }).done(function(){
+                }).done(function () {
 
-                }).fail(function(){
+                }).fail(function () {
                     alert("Can not change status");
                 });
             }

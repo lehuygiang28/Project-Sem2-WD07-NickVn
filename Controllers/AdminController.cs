@@ -24,165 +24,6 @@ public class AdminController : Controller
         this._hostEnvironment = hostEnvironment;
     }
 
-    // public async Task fix ()
-    // {
-    //     var  querry = from pd in _context.Lienminhs
-    //                     join im in _context.Images on pd.Id equals im.LienminhId
-    //                     where pd.StatusId == 1004
-    //                     select Tuple.Create<Lienminh, Image>(pd, im);
-
-    //     var data = await querry.ToListAsync();
-
-    //     var imga = await _context.Images.OrderBy(a => a.ImgId).ToListAsync();
-    //     _context.RemoveRange(imga);
-    //     var prda = await _context.Lienminhs.OrderBy(b => b.Id).ToListAsync();
-    //     _context.RemoveRange(prda);
-
-    //     await _context.SaveChangesAsync();
-
-    //     List<Lienminh> lol = new List<Lienminh>();
-    //     List<Image> img = new List<Image>();
-
-    //     int idFirst = 0;
-    //     foreach(var dt in data)
-    //     {
-    //         idFirst++;
-    //         dt.Item1.Id = idFirst;
-    //         dt.Item2.ImgId = idFirst;
-    //         lol.Add(dt.Item1);
-    //         img.Add(dt.Item2);
-    //     }
-
-    //     await _context.Lienminhs.AddRangeAsync(lol);
-    //     await _context.Images.AddRangeAsync(img);
-
-    //     await _context.SaveChangesAsync();
-    // }
-
-    // public async Task<IActionResult> Sample()
-    // {
-    //     // var dataOrders = _context.Orders.OrderBy(a => a.CreateAt).ToListAsync();
-    //     // Note REVENUE > SALES
-    //     var query = from od in _context.Orders
-    //                 join pd in _context.Lienminhs on od.ProductId equals pd.Id
-    //                 select Tuple.Create<Order, Lienminh>(od, pd);
-
-    //     int count = await query.CountAsync();
-    //     var list = await query.ToListAsync();
-
-    //     // Sort by Descending date
-    //     list.Sort((a, b) => b.Item1.CreateAt.CompareTo(a.Item1.CreateAt));
-
-    //     DateTime today = DateTime.Now.Date;
-    //     decimal todayRevenue = list.Where(a => a.Item1.CreateAt.Date == today).Sum(s => s.Item2.PriceAtm);
-    //     decimal totalRevenue = list.Sum(s => s.Item2.PriceAtm);
-    //     decimal todaySale = Math.Round(todayRevenue / 100 * 35);
-    //     decimal totalSale = Math.Round(totalRevenue / 100 * 35);
-
-    //     // System.Console.WriteLine($"Tday sal: {todaySale}");
-    //     // System.Console.WriteLine($"Ttal sal: {totalSale}");
-    //     // System.Console.WriteLine($"Tday re: {todayRevenue}");
-    //     // System.Console.WriteLine($"Ttal re: {totalRevenue}");
-
-    //     int thisMonth = DateTime.Now.Month;
-    //     int thisYear = DateTime.Now.Year;
-
-    //     int startMonth = 0;
-    //     int startYear = 0;
-    //     int THANG12 = 12;
-
-    //     if (thisMonth <= 8)
-    //     {
-    //         int temp = 8 - thisMonth;
-    //         startMonth = THANG12 - temp;
-    //         startYear = thisYear - 1;
-    //     }
-    //     else
-    //     {
-    //         startMonth = thisMonth - 8;
-    //         startYear = thisYear;
-    //     }
-    //     System.Console.WriteLine($"StartM {startMonth} - Y {startYear} - thisY {thisYear}");
-    //     string labels = "[";
-    //     string dataRevenues = "[";
-    //     string dataSales = "[";
-    //     for (int i = 1; i <= 8; i++)
-    //     {
-    //         if (startMonth > 12)
-    //         {
-    //             startMonth = 1;
-    //             startYear++;
-    //         }
-    //         decimal thisMonthTotal = list.Where(a => a.Item1.CreateAt.Month == startMonth).Sum(b => b.Item2.PriceAtm);
-    //         dataRevenues += string.Format($"\"{thisMonthTotal}\",");
-    //         dataSales += string.Format($"\"{Math.Round(thisMonthTotal / 100 * 35)}\",");
-    //         labels += string.Format($"\"{startMonth}/{startYear}\",");
-    //         startMonth++;
-    //     }
-    //     labels += "]";
-    //     dataRevenues += "]";
-    //     dataSales += "]";
-
-    //     System.Console.WriteLine($"Labels {labels}\nDatas {dataRevenues}\nDatasRe {dataSales}");
-
-
-    //     // ViewData["listOderProd"] = list;
-
-    //     ViewData["todaySale"] = todaySale;
-    //     ViewData["totalSale"] = totalSale;
-    //     ViewData["todayRevenue"] = todayRevenue;
-    //     ViewData["totalRevenue"] = totalRevenue;
-    //     ViewData["labels"] = labels;
-    //     ViewData["dataSales"] = dataSales;
-    //     ViewData["dataRevenues"] = dataRevenues;
-    //     return View(nameof(Index));
-    // }
-
-    // public async Task<IActionResult> GenerateOrderData(int? s)
-    // {
-    //     if (!await IsLogin())
-    //     {
-    //         return RedirectToAction(nameof(Index));
-    //     }
-
-    //     Random random = new Random();
-
-    //     int? dataCount = s;
-    //     // Define number of data
-    //     if (dataCount == null || dataCount.Equals(null))
-    //     {
-    //         dataCount = 3;
-    //     }
-
-    //     var listProdId = await _context.Lienminhs.OrderBy(a => a.Id).ToListAsync();
-
-    //     List<Order> listOd = new List<Order>();
-    //     Order od;
-    //     int id = 0;
-    //     for (int i = 0; i <= dataCount; i++)
-    //     {
-    //         int rdProduct = listProdId[random.Next(0, listProdId.Count())].Id;
-    //         id++;
-    //         od = new Order();
-    //         od.Id = id;
-    //         od.OderId = id;
-    //         od.UserId = random.Next(1, 4);
-    //         od.ProductId = rdProduct;
-    //         od.Status = "Paid";
-    //         od.CreateAt = DateTime.Now;
-    //         od.UpdateAt = od.CreateAt;
-
-    //         listOd.Add(od);
-
-    //         listProdId[rdProduct].StatusId = 1004;
-    //         _context.Update(listProdId[rdProduct]);
-    //     }
-    //     await _context.AddRangeAsync(listOd);
-    //     await _context.SaveChangesAsync();
-
-    //     return RedirectToAction(nameof(Index));
-    // }
-
     public async Task<IActionResult> Orders(int? page)
     {
         if (!await IsLogin())
@@ -364,181 +205,181 @@ public class AdminController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    public async Task<IActionResult> EditUserSolve(
-        int? id, string? FirstName, string? LastName,
-        string? Password, string? Phone, string? Email,
-        int? role_id, int? status_id, string? Note,
-        IFormFile? newCover, IFormFile? newAvatar
-        )
-    {
-        if(!await IsLogin())
-        {
-            return RedirectToAction(nameof(Index));
-        }
+    // public async Task<IActionResult> EditUserSolve(
+    //     int? id, string? FirstName, string? LastName,
+    //     string? Password, string? Phone, string? Email,
+    //     int? role_id, int? status_id, string? Note,
+    //     IFormFile? newCover, IFormFile? newAvatar
+    //     )
+    // {
+    //     if(!await IsLogin())
+    //     {
+    //         return RedirectToAction(nameof(Index));
+    //     }
 
-        if (id == null)
-        {
-            TempData["err"] = "Can not find user";
-            return RedirectToAction(nameof(Users));
-        }
+    //     if (id == null)
+    //     {
+    //         TempData["err"] = "Can not find user";
+    //         return RedirectToAction(nameof(Users));
+    //     }
 
-        var currentUserId = HttpContext.Session.GetInt32(SessionKeyAdminId);
+    //     var currentUserId = HttpContext.Session.GetInt32(SessionKeyAdminId);
 
-        var user = await _context.Users.Where(a => a.UserId == id).FirstOrDefaultAsync();
-        if (user == null)
-        {
-            TempData["err"] = "Can not find user";
-            return RedirectToAction(nameof(Users));
-        }
-        User oldUser = user;
-        user.FirstName = FirstName == null ? user.FirstName : (string)FirstName;
-        user.LastName = LastName == null ? user.LastName : (string)LastName;
-        user.Password = Password == null ? user.Password : MD5.CreateMD5((string)Password);
-        user.Phone = Phone == null ? user.Phone : (string)Phone;
-        user.Email = Email == null ? user.Email : (string)Email;
-        user.Note = Note == null ? user.Note : (string)Note;
+    //     var user = await _context.Users.Where(a => a.UserId == id).FirstOrDefaultAsync();
+    //     if (user == null)
+    //     {
+    //         TempData["err"] = "Can not find user";
+    //         return RedirectToAction(nameof(Users));
+    //     }
+    //     User oldUser = user;
+    //     user.FirstName = FirstName == null ? user.FirstName : (string)FirstName;
+    //     user.LastName = LastName == null ? user.LastName : (string)LastName;
+    //     user.Password = Password == null ? user.Password : MD5.CreateMD5((string)Password);
+    //     user.Phone = Phone == null ? user.Phone : (string)Phone;
+    //     user.Email = Email == null ? user.Email : (string)Email;
+    //     user.Note = Note == null ? user.Note : (string)Note;
 
-        if(role_id != null || status_id != null)
-        {
-            if(id == 1)
-            {
-                TempData["error"] = "Can not change status or role of super admin";
-                return RedirectToAction(nameof(EditUser), new {id = id});
-            }
+    //     if(role_id != null || status_id != null)
+    //     {
+    //         if(id == 1)
+    //         {
+    //             TempData["error"] = "Can not change status or role of super admin";
+    //             return RedirectToAction(nameof(EditUser), new {id = id});
+    //         }
 
-            if(currentUserId == id)
-            {
-                TempData["error"] = "Can not change status or role of myself";
-                return RedirectToAction(nameof(EditUser), new {id = id});
-            }
-        }
+    //         if(currentUserId == id)
+    //         {
+    //             TempData["error"] = "Can not change status or role of myself";
+    //             return RedirectToAction(nameof(EditUser), new {id = id});
+    //         }
+    //     }
 
-        user.RoleId = role_id == null ? user.RoleId : (int)role_id;
-        user.StatusId = status_id == null ? user.StatusId : (int)status_id;
+    //     user.RoleId = role_id == null ? user.RoleId : (int)role_id;
+    //     user.StatusId = status_id == null ? user.StatusId : (int)status_id;
 
-        if (newAvatar != null)
-        {
-            try
-            {
-                int lastImgID = (await _context.Images.OrderBy(a => a.ImgId).LastAsync()).ImgId;
-                string wwwRootPath = _hostEnvironment.WebRootPath;
-                string fileName;
-                string extension;
-                string path;
-                string slashImg = @"\storage\images";
-                Image image;
-                IFormFile posted = newAvatar;
+    //     if (newAvatar != null)
+    //     {
+    //         try
+    //         {
+    //             int lastImgID = (await _context.Images.OrderBy(a => a.ImgId).LastAsync()).ImgId;
+    //             string wwwRootPath = _hostEnvironment.WebRootPath;
+    //             string fileName;
+    //             string extension;
+    //             string path;
+    //             string slashImg = @"\storage\images";
+    //             Image image;
+    //             IFormFile posted = newAvatar;
 
-                fileName = Path.GetFileNameWithoutExtension(posted.FileName);
-                extension = Path.GetExtension(posted.FileName);
-                fileName = fileName + "_" + DateTime.Now.ToString("yymmssfff") + extension;
-                // path = Path.Combine("/img", fileName);
-                path = Path.Combine(wwwRootPath + slashImg, fileName);
-                using (var fileStream = new FileStream(path, FileMode.Create))
-                {
-                    await posted.CopyToAsync(fileStream);
-                }
+    //             fileName = Path.GetFileNameWithoutExtension(posted.FileName);
+    //             extension = Path.GetExtension(posted.FileName);
+    //             fileName = fileName + "_" + DateTime.Now.ToString("yymmssfff") + extension;
+    //             // path = Path.Combine("/img", fileName);
+    //             path = Path.Combine(wwwRootPath + slashImg, fileName);
+    //             using (var fileStream = new FileStream(path, FileMode.Create))
+    //             {
+    //                 await posted.CopyToAsync(fileStream);
+    //             }
 
-                // Set new image
-                image = new Image();
-                image.ImgId = lastImgID + 1;
-                image.ProductId = 0;
-                image.ImgLink = Path.Combine(slashImg, fileName);
+    //             // Set new image
+    //             image = new Image();
+    //             image.ImgId = lastImgID + 1;
+    //             image.ProductId = 0;
+    //             image.ImgLink = Path.Combine(slashImg, fileName);
 
-                user.ImgSrc = Path.Combine(slashImg, fileName);
+    //             user.ImgSrc = Path.Combine(slashImg, fileName);
 
-                // Set path image
-                _context.Images.Add(image);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogWarning(ex.Message);
-                TempData["err"] = "  Error occur when update image";
-                return RedirectToAction(nameof(EditUser));
-            }
-        }
+    //             // Set path image
+    //             _context.Images.Add(image);
+    //         }
+    //         catch (Exception ex)
+    //         {
+    //             _logger.LogWarning(ex.Message);
+    //             TempData["err"] = "  Error occur when update image";
+    //             return RedirectToAction(nameof(EditUser));
+    //         }
+    //     }
 
-        if (newCover != null)
-        {
-            try
-            {
-                int lastImgID = (await _context.Images.OrderBy(a => a.ImgId).LastAsync()).ImgId;
-                string wwwRootPath = _hostEnvironment.WebRootPath;
-                string fileName;
-                string extension;
-                string path;
-                string slashImg = @"\storage\images";
-                Image image;
-                IFormFile posted = newCover;
+    //     if (newCover != null)
+    //     {
+    //         try
+    //         {
+    //             int lastImgID = (await _context.Images.OrderBy(a => a.ImgId).LastAsync()).ImgId;
+    //             string wwwRootPath = _hostEnvironment.WebRootPath;
+    //             string fileName;
+    //             string extension;
+    //             string path;
+    //             string slashImg = @"\storage\images";
+    //             Image image;
+    //             IFormFile posted = newCover;
 
-                fileName = Path.GetFileNameWithoutExtension(posted.FileName);
-                extension = Path.GetExtension(posted.FileName);
-                fileName = fileName + "_" + DateTime.Now.ToString("yymmssfff") + extension;
-                // path = Path.Combine("/img", fileName);
-                path = Path.Combine(wwwRootPath + slashImg, fileName);
-                using (var fileStream = new FileStream(path, FileMode.Create))
-                {
-                    await posted.CopyToAsync(fileStream);
-                }
+    //             fileName = Path.GetFileNameWithoutExtension(posted.FileName);
+    //             extension = Path.GetExtension(posted.FileName);
+    //             fileName = fileName + "_" + DateTime.Now.ToString("yymmssfff") + extension;
+    //             // path = Path.Combine("/img", fileName);
+    //             path = Path.Combine(wwwRootPath + slashImg, fileName);
+    //             using (var fileStream = new FileStream(path, FileMode.Create))
+    //             {
+    //                 await posted.CopyToAsync(fileStream);
+    //             }
 
-                // Set new image
-                image = new Image();
-                image.ImgId = lastImgID + 1;
-                image.ProductId = 0;
-                image.ImgLink = Path.Combine(slashImg, fileName);
+    //             // Set new image
+    //             image = new Image();
+    //             image.ImgId = lastImgID + 1;
+    //             image.ProductId = 0;
+    //             image.ImgLink = Path.Combine(slashImg, fileName);
 
-                // Set path image
-                user.CoverImgSrc = Path.Combine(slashImg, fileName);
-                _context.Images.Add(image);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogWarning(ex.Message);
-                TempData["err"] = "  Error occur when update image";
-                return RedirectToAction(nameof(EditUser));
-            }
-        }
-        // If user have change, update time
-        if(!oldUser.Equals(user))
-        {
-            user.UpdateAt = DateTime.Now;
-        }
+    //             // Set path image
+    //             user.CoverImgSrc = Path.Combine(slashImg, fileName);
+    //             _context.Images.Add(image);
+    //         }
+    //         catch (Exception ex)
+    //         {
+    //             _logger.LogWarning(ex.Message);
+    //             TempData["err"] = "  Error occur when update image";
+    //             return RedirectToAction(nameof(EditUser));
+    //         }
+    //     }
+    //     // If user have change, update time
+    //     if(!oldUser.Equals(user))
+    //     {
+    //         user.UpdateAt = DateTime.Now;
+    //     }
 
-        _context.Users.Update(user);
-        await _context.SaveChangesAsync();
-        TempData["success"] = "Edit user success!";
+    //     _context.Users.Update(user);
+    //     await _context.SaveChangesAsync();
+    //     TempData["success"] = "Edit user success!";
 
-        return RedirectToAction(nameof(EditUser), new {id = id});
-    }
+    //     return RedirectToAction(nameof(EditUser), new {id = id});
+    // }
 
-    public async Task<IActionResult> EditUser(int? id)
-    {
-        if (!await IsLogin())
-        {
-            return RedirectToAction(nameof(Index));
-        }
-        if (id == null)
-        {
-            TempData["err"] = "Can not found user";
-            return RedirectToAction(nameof(Users));
-        }
+    // public async Task<IActionResult> EditUser(int? id)
+    // {
+    //     if (!await IsLogin())
+    //     {
+    //         return RedirectToAction(nameof(Index));
+    //     }
+    //     if (id == null)
+    //     {
+    //         TempData["err"] = "Can not found user";
+    //         return RedirectToAction(nameof(Users));
+    //     }
 
-        var user = await _context.Users.Where(a => a.UserId == id).FirstOrDefaultAsync();
-        if (user == null)
-        {
-            TempData["err"] = "Can not found user";
-            return RedirectToAction(nameof(Users));
-        }
+    //     var user = await _context.Users.Where(a => a.UserId == id).FirstOrDefaultAsync();
+    //     if (user == null)
+    //     {
+    //         TempData["err"] = "Can not found user";
+    //         return RedirectToAction(nameof(Users));
+    //     }
 
-        var listRole = await _context.Roles.OrderBy(b => b.RoleId).ToListAsync();
-        var listStatus = await _context.Statuses.OrderBy(b => b.StatusId).ToListAsync();
+    //     var listRole = await _context.Roles.OrderBy(b => b.RoleId).ToListAsync();
+    //     var listStatus = await _context.Statuses.OrderBy(b => b.StatusId).ToListAsync();
 
-        ViewBag.listStatus = listStatus;
-        ViewBag.listRole = listRole;
-        ViewBag.user = user;
+    //     ViewBag.listStatus = listStatus;
+    //     ViewBag.listRole = listRole;
+    //     ViewBag.user = user;
 
-        return View();
-    }
+    //     return View();
+    // }
 
     public async Task<IActionResult> DetailUser(int? id)
     {
@@ -568,41 +409,42 @@ public class AdminController : Controller
         return View();
     }
 
-    public async Task<string>? ChangeUserStatus(int? userId, int? statusId)
+    public async Task<IActionResult> ChangeUserStatus(int? userId, int? statusId)
     {
         string? statusName = string.Empty;
         if (!await IsLogin())
         {
-            return statusName;
+            return RedirectToAction(nameof(Index));
         }
         if (statusId == null)
         {
-            TempData["err"] = "Can not find status";
-            return statusName;
+            TempData["ban-active-msg"] = "Can not find status";
+            return RedirectToAction(nameof(Users));
         }
         if (userId == null)
         {
-            TempData["err"] = "Can not find user";
-            return statusName;
+            TempData["ban-active-msg"] = "Can not find user";
+            return RedirectToAction(nameof(Users));
         }
 
         int? currentUserId = HttpContext.Session.GetInt32(SessionKeyAdminId);
-        if(currentUserId == null)
+        if (currentUserId == null)
         {
-            TempData["err"] = "Can not change status";
-            return statusName;
+            TempData["ban-active-msg"] = "Can not change status";
+            return RedirectToAction(nameof(Users));
         }
 
-        if(currentUserId == userId)
+        if (currentUserId == userId && statusId == 1006)
         {
-            return statusName;
+            TempData["ban-active-msg"] = "You can not ban yourself";
+            return RedirectToAction(nameof(Users));
         }
 
         var user = await _context.Users.Where(a => a.UserId == userId).FirstOrDefaultAsync();
         if (user == null)
         {
-            TempData["err"] = "Can not find user";
-            return statusName;
+            TempData["ban-active-msg"] = "Can not find user";
+            return RedirectToAction(nameof(Users));
         }
 
         user.StatusId = (int)statusId;
@@ -610,7 +452,8 @@ public class AdminController : Controller
         _context.Users.Update(user);
         await _context.SaveChangesAsync();
 
-        return statusName;
+        TempData["ban-active-msg"] = $"{statusName} user {userId} successfull!";
+        return RedirectToAction(nameof(Users));
     }
 
     public async Task<IActionResult> Users(int? page)
