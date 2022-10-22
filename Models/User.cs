@@ -7,7 +7,8 @@ namespace Project_Sem2_WD07_NickVn.Models
     {
         public User()
         {
-            Oders = new HashSet<Oder>();
+            ChargeHistories = new HashSet<ChargeHistory>();
+            Orders = new HashSet<Order>();
         }
 
         public int UserId { get; set; }
@@ -29,6 +30,7 @@ namespace Project_Sem2_WD07_NickVn.Models
 
         public virtual Role Role { get; set; } = null!;
         public virtual Status Status { get; set; } = null!;
-        public virtual ICollection<Oder> Oders { get; set; }
+        public virtual ICollection<ChargeHistory> ChargeHistories { get; set; }
+        public virtual ICollection<Order> Orders { get; set; }
     }
 }

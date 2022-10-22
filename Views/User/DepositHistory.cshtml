@@ -341,7 +341,7 @@
                                 bool isDisplayHead = true;
                                 foreach (var histo in listHistory)
                                 {
-                                    System.Console.WriteLine($"date: {currentDate} - id {histo.Id} - uid {histo.UserId}");
+                                    @* System.Console.WriteLine($"date: {currentDate} - id {histo.PhoneCardHistoryId} - uid {histo.UserId}"); *@
                                     if (histo.CreateAt.Date != currentDate)
                                     {
                                         currentDate = histo.CreateAt.Date;

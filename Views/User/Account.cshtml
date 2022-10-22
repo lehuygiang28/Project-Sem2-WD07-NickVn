@@ -4,12 +4,12 @@
     var listOrdersVar = ViewBag.listOrders;
     var listProductsVar = ViewBag.listProducts;
 
-    List<Oder> listOrders = new List<Oder>();
+    List<Order> listOrders = new List<Order>();
     List<Lienminh> listProducts = new List<Lienminh>();
 
-    if (listOrdersVar is List<Oder>)
+    if (listOrdersVar is List<Order>)
     {
-        listOrders = (List<Oder>)listOrdersVar;
+        listOrders = (List<Order>)listOrdersVar;
     }
     if (listProductsVar is List<Lienminh>)
     {

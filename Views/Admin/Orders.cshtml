@@ -12,14 +12,14 @@
     }
 
     var data = ViewBag.ordersUsersProducts;
-    List<Tuple<Oder, User, Lienminh>> ordersUsersProducts;
+    List<Tuple<Order, User, Lienminh>> ordersUsersProducts;
     if(data != null)
     {
-        ordersUsersProducts = (List<Tuple<Oder, User, Lienminh>>)data;
+        ordersUsersProducts = (List<Tuple<Order, User, Lienminh>>)data;
     }
     else
     {
-        ordersUsersProducts = new List<Tuple<Oder, User, Lienminh>>();
+        ordersUsersProducts = new List<Tuple<Order, User, Lienminh>>();
     }
 }
 <div class="container-fluid pt-4 px-4">

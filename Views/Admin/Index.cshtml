@@ -2,14 +2,14 @@
     ViewData["Title"] = "Admin Panel";
 
     var data = ViewData["listOderProd"];
-    List<Tuple<Oder, Lienminh>> listOderProduct;
+    List<Tuple<Order, Lienminh>> listOderProduct;
     if (data != null)
     {
-        listOderProduct = (List<Tuple<Oder, Lienminh>>)data;
+        listOderProduct = (List<Tuple<Order, Lienminh>>)data;
     }
     else
     {
-        listOderProduct = new List<Tuple<Oder, Lienminh>>();
+        listOderProduct = new List<Tuple<Order, Lienminh>>();
     }
 
     string vndFormat(dynamic? money)
@@ -22,10 +22,10 @@
         return String.Format(info, "{0:c0}", money);
     }
     var vRecent = ViewData["recentSales"];
-    List<Tuple<Oder, Lienminh>> recentSales = new List<Tuple<Oder, Lienminh>>();
+    List<Tuple<Order, Lienminh>> recentSales = new List<Tuple<Order, Lienminh>>();
     if (vRecent != null)
     {
-        recentSales = (List<Tuple<Oder, Lienminh>>)vRecent;
+        recentSales = (List<Tuple<Order, Lienminh>>)vRecent;
     }
 
     var todaySale = ViewData["todaySale"];

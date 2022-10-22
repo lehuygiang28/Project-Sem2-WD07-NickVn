@@ -70,10 +70,10 @@ public class ShopaccController : Controller
             return RedirectToAction(nameof(Detail_LienMinh), new { id = productId });
         }
 
-        var maxOderId = await _context.Oders.MaxAsync(a => a.OrderId);
+        var maxOderId = await _context.Orders.MaxAsync(a => a.OrderId);
 
         // Tao hoa don/ don hang
-        Oder oderUser = new Oder();
+        Order oderUser = new Order();
         oderUser.OrderId = maxOderId + 1;
         oderUser.UserId = userBuy.UserId;
         oderUser.ProductId = varProduct.ProductId;
@@ -86,7 +86,7 @@ public class ShopaccController : Controller
         // Update stats da ban
         varProduct.StatusId = SOLD;
 
-        _context.Oders.Update(oderUser);
+        _context.Orders.Update(oderUser);
         _context.Users.Update(userBuy);
         _context.Lienminhs.Update(varProduct);
 
@@ -139,7 +139,7 @@ public class ShopaccController : Controller
         ViewBag.accLienMinh = acc;
 
         // var imgAcc = await _context.Images.Where(i => i.LienminhId == acc.Id).OrderBy(i => i.ImgId).ToListAsync();
-        var imgAcc = await _context.Images.Where(i => i.LienminhId == acc.ProductId).OrderBy(i => i.ImgId).ToListAsync();
+        var imgAcc = await _context.Images.Where(i => i.ProductId == acc.ProductId).OrderBy(i => i.ImgId).ToListAsync();
         ViewBag.imgAcc = imgAcc;
 
         // Take a random

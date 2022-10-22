@@ -8,6 +8,7 @@ namespace Project_Sem2_WD07_NickVn.Models
         public Lienminh()
         {
             Images = new HashSet<Image>();
+            Orders = new HashSet<Order>();
         }
 
         public int ProductId { get; set; }
@@ -27,5 +28,6 @@ namespace Project_Sem2_WD07_NickVn.Models
 
         public virtual Status Status { get; set; } = null!;
         public virtual ICollection<Image> Images { get; set; }
+        public virtual ICollection<Order> Orders { get; set; }
     }
 }

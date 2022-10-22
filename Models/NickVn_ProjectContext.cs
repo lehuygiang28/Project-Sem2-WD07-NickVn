@@ -21,7 +21,7 @@ namespace Project_Sem2_WD07_NickVn.Models
         public virtual DbSet<Googlerecaptcha> Googlerecaptchas { get; set; } = null!;
         public virtual DbSet<Image> Images { get; set; } = null!;
         public virtual DbSet<Lienminh> Lienminhs { get; set; } = null!;
-        public virtual DbSet<Oder> Oders { get; set; } = null!;
+        public virtual DbSet<Order> Orders { get; set; } = null!;
         public virtual DbSet<ProductCategory> ProductCategories { get; set; } = null!;
         public virtual DbSet<Role> Roles { get; set; } = null!;
         public virtual DbSet<Status> Statuses { get; set; } = null!;
@@ -86,11 +86,22 @@ namespace Project_Sem2_WD07_NickVn.Models
 
             modelBuilder.Entity<ChargeHistory>(entity =>
             {
+                entity.HasKey(e => new { e.PhoneCardHistoryId, e.UserId })
+                    .HasName("PRIMARY")
+                    .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
+
                 entity.ToTable("charge_history");
 
-                entity.Property(e => e.Id)
+                entity.HasIndex(e => e.UserId, "user_id");
+
+                entity.Property(e => e.PhoneCardHistoryId)
                     .HasColumnType("int(11)")
-                    .HasColumnName("id");
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("phone_card_history_id");
+
+                entity.Property(e => e.UserId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("user_id");
 
                 entity.Property(e => e.Amount)
                     .HasPrecision(11)
@@ -132,9 +143,11 @@ namespace Project_Sem2_WD07_NickVn.Models
                     .HasColumnType("datetime")
                     .HasColumnName("update_at");
 
-                entity.Property(e => e.UserId)
-                    .HasColumnType("int(11)")
-                    .HasColumnName("user_id");
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.ChargeHistories)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("charge_history_ibfk_1");
             });
 
             modelBuilder.Entity<Googlerecaptcha>(entity =>
@@ -162,30 +175,30 @@ namespace Project_Sem2_WD07_NickVn.Models
 
             modelBuilder.Entity<Image>(entity =>
             {
-                entity.HasKey(e => new { e.ImgId, e.LienminhId })
+                entity.HasKey(e => new { e.ImgId, e.ProductId })
                     .HasName("PRIMARY")
                     .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
 
                 entity.ToTable("images");
 
-                entity.HasIndex(e => e.LienminhId, "lienminh_id");
+                entity.HasIndex(e => e.ProductId, "product_id");
 
                 entity.Property(e => e.ImgId)
                     .HasColumnType("int(11)")
                     .ValueGeneratedOnAdd()
                     .HasColumnName("img_id");
 
-                entity.Property(e => e.LienminhId)
+                entity.Property(e => e.ProductId)
                     .HasColumnType("int(11)")
-                    .HasColumnName("lienminh_id");
+                    .HasColumnName("product_id");
 
                 entity.Property(e => e.ImgLink)
                     .HasColumnType("text")
                     .HasColumnName("img_link");
 
-                entity.HasOne(d => d.Lienminh)
+                entity.HasOne(d => d.Product)
                     .WithMany(p => p.Images)
-                    .HasForeignKey(d => d.LienminhId)
+                    .HasForeignKey(d => d.ProductId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("images_ibfk_1");
             });
@@ -264,26 +277,34 @@ namespace Project_Sem2_WD07_NickVn.Models
                     .HasConstraintName("statuses_fk_status_id_lol");
             });
 
-            modelBuilder.Entity<Oder>(entity =>
+            modelBuilder.Entity<Order>(entity =>
             {
-                entity.HasKey(e => e.OrderId)
-                    .HasName("PRIMARY");
+                entity.HasKey(e => new { e.OrderId, e.UserId, e.ProductId })
+                    .HasName("PRIMARY")
+                    .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0, 0 });
 
-                entity.ToTable("oders");
+                entity.ToTable("orders");
 
                 entity.HasIndex(e => e.UserId, "oders_ibfk_1");
 
+                entity.HasIndex(e => e.ProductId, "orders_ibfk_2");
+
                 entity.Property(e => e.OrderId)
                     .HasColumnType("int(11)")
+                    .ValueGeneratedOnAdd()
                     .HasColumnName("order_id");
 
-                entity.Property(e => e.CreateAt)
-                    .HasColumnType("datetime")
-                    .HasColumnName("create_at");
+                entity.Property(e => e.UserId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("user_id");
 
                 entity.Property(e => e.ProductId)
                     .HasColumnType("int(11)")
                     .HasColumnName("product_id");
+
+                entity.Property(e => e.CreateAt)
+                    .HasColumnType("datetime")
+                    .HasColumnName("create_at");
 
                 entity.Property(e => e.Status)
                     .HasColumnType("text")
@@ -293,15 +314,17 @@ namespace Project_Sem2_WD07_NickVn.Models
                     .HasColumnType("datetime")
                     .HasColumnName("update_at");
 
-                entity.Property(e => e.UserId)
-                    .HasColumnType("int(11)")
-                    .HasColumnName("user_id");
+                entity.HasOne(d => d.Product)
+                    .WithMany(p => p.Orders)
+                    .HasForeignKey(d => d.ProductId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("orders_ibfk_2");
 
                 entity.HasOne(d => d.User)
-                    .WithMany(p => p.Oders)
+                    .WithMany(p => p.Orders)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("oders_ibfk_1");
+                    .HasConstraintName("orders_ibfk_1");
             });
 
             modelBuilder.Entity<ProductCategory>(entity =>

@@ -401,7 +401,7 @@ public class UserController : Controller
             return RedirectToAction("Index", "Home");
         }
         int userId = Convert.ToInt32(HttpContext.Session.GetInt32(SessionKeyId));
-        List<Oder> listAccountId = await _context.Oders.Where(o => o.UserId == userId).OrderByDescending(a => a.CreateAt).ToListAsync();
+        List<Order> listAccountId = await _context.Orders.Where(o => o.UserId == userId).OrderByDescending(a => a.CreateAt).ToListAsync();
 
         if (listAccountId == null)
         {
@@ -419,7 +419,7 @@ public class UserController : Controller
 
         //  Push products purchased to list
         List<Lienminh> listProducts = new List<Lienminh>();
-        foreach (Oder itemInList in listAccountId)
+        foreach (Order itemInList in listAccountId)
         {
             var item = await _context.Lienminhs.Where(o => o.ProductId == itemInList.ProductId).FirstOrDefaultAsync();
             if(item  == null)

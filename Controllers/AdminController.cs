@@ -61,11 +61,11 @@ public class AdminController : Controller
 
     // public async Task<IActionResult> Sample()
     // {
-    //     // var dataOrders = _context.Oders.OrderBy(a => a.CreateAt).ToListAsync();
+    //     // var dataOrders = _context.Orders.OrderBy(a => a.CreateAt).ToListAsync();
     //     // Note REVENUE > SALES
-    //     var query = from od in _context.Oders
+    //     var query = from od in _context.Orders
     //                 join pd in _context.Lienminhs on od.ProductId equals pd.Id
-    //                 select Tuple.Create<Oder, Lienminh>(od, pd);
+    //                 select Tuple.Create<Order, Lienminh>(od, pd);
 
     //     int count = await query.CountAsync();
     //     var list = await query.ToListAsync();
@@ -156,14 +156,14 @@ public class AdminController : Controller
 
     //     var listProdId = await _context.Lienminhs.OrderBy(a => a.Id).ToListAsync();
 
-    //     List<Oder> listOd = new List<Oder>();
-    //     Oder od;
+    //     List<Order> listOd = new List<Order>();
+    //     Order od;
     //     int id = 0;
     //     for (int i = 0; i <= dataCount; i++)
     //     {
     //         int rdProduct = listProdId[random.Next(0, listProdId.Count())].Id;
     //         id++;
-    //         od = new Oder();
+    //         od = new Order();
     //         od.Id = id;
     //         od.OderId = id;
     //         od.UserId = random.Next(1, 4);
@@ -190,11 +190,11 @@ public class AdminController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        var query = from od in _context.Oders
+        var query = from od in _context.Orders
                     join us in _context.Users on od.UserId equals us.UserId
                     join pd in _context.Lienminhs on od.ProductId equals pd.ProductId
                     orderby od.CreateAt descending
-                    select Tuple.Create<Oder, User, Lienminh>(od, us, pd);
+                    select Tuple.Create<Order, User, Lienminh>(od, us, pd);
 
         int totalPage = 0;
         int totalRecord = 0;
@@ -219,7 +219,7 @@ public class AdminController : Controller
         ViewBag.currentPage = page;
 
         // var ordersUsersProducts = await query.ToListAsync();
-        // var orders = await _context.Oders.OrderByDescending(a => a.CreateAt).ToListAsync();
+        // var orders = await _context.Orders.OrderByDescending(a => a.CreateAt).ToListAsync();
 
         ViewBag.ordersUsersProducts = ordersUsersProducts;
         return View();
@@ -331,7 +331,7 @@ public class AdminController : Controller
                 Image productImage = new Image();
 
                 productImage.ImgId = lastImgID;
-                productImage.LienminhId = lienMinhID;
+                productImage.ProductId = lienMinhID;
                 productImage.ImgLink = urlImage[j];
 
                 // Add image path clone
@@ -442,7 +442,7 @@ public class AdminController : Controller
                 // Set new image
                 image = new Image();
                 image.ImgId = lastImgID + 1;
-                image.LienminhId = 0;
+                image.ProductId = 0;
                 image.ImgLink = Path.Combine(slashImg, fileName);
 
                 user.ImgSrc = Path.Combine(slashImg, fileName);
@@ -484,7 +484,7 @@ public class AdminController : Controller
                 // Set new image
                 image = new Image();
                 image.ImgId = lastImgID + 1;
-                image.LienminhId = 0;
+                image.ProductId = 0;
                 image.ImgLink = Path.Combine(slashImg, fileName);
 
                 // Set path image
@@ -772,7 +772,7 @@ public class AdminController : Controller
                 // Set new image
                 image = new Image();
                 image.ImgId = lastImgID;
-                image.LienminhId = product.ProductId;
+                image.ProductId = product.ProductId;
                 image.ImgLink = Path.Combine(slashImg, fileName);
 
                 // Push image to list image
@@ -914,7 +914,7 @@ public class AdminController : Controller
         List<string> listRank = new List<string> { "Chưa Rank", "Sắt", "Đồng", "Bạc", "Vàng", "Bạch Kim", "Kim Cương", "Cao Thủ", "Đại Cao Thủ", "Thách Đấu" };
         var listStatus = await _context.Statuses.OrderBy(a => a.StatusId).ToListAsync();
 
-        var listImage = await _context.Images.Where(a => a.LienminhId == product.ProductId).OrderBy(b => b.ImgId).ToListAsync();
+        var listImage = await _context.Images.Where(a => a.ProductId == product.ProductId).OrderBy(b => b.ImgId).ToListAsync();
 
         ViewBag.listRank = listRank;
         ViewBag.product = product;
@@ -984,7 +984,7 @@ public class AdminController : Controller
             TempData["error"] = "Not Found this ID";
             return RedirectToAction(nameof(Products));
         }
-        var imgList = await _context.Images.Where(a => a.LienminhId == DeltailProductByID.ProductId).ToListAsync();
+        var imgList = await _context.Images.Where(a => a.ProductId == DeltailProductByID.ProductId).ToListAsync();
         var status_en = await _context.Statuses.Where(c => c.StatusId == DeltailProductByID.StatusId).FirstAsync();
         if (status_en == null)
         {
@@ -1425,14 +1425,14 @@ public class AdminController : Controller
             return RedirectToAction(nameof(Login));
         }
 
-        // var dataOrders = _context.Oders.OrderBy(a => a.CreateAt).ToListAsync();
+        // var dataOrders = _context.Orders.OrderBy(a => a.CreateAt).ToListAsync();
         // Note REVENUE > SALES
 
         // Get data for chart
         // Lấy dữ liệu cho biểu đồ
-        var query = from od in _context.Oders
+        var query = from od in _context.Orders
                     join pd in _context.Lienminhs on od.ProductId equals pd.ProductId
-                    select Tuple.Create<Oder, Lienminh>(od, pd);
+                    select Tuple.Create<Order, Lienminh>(od, pd);
 
         int count = await query.CountAsync();
         var list = await query.ToListAsync();
