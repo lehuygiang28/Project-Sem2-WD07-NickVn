@@ -7,11 +7,13 @@ string connectionString = builder.Configuration.GetConnectionString("NickVn_Proj
 builder.Services.AddDbContext<NickVn_ProjectContext>(options => options.UseMySql(connectionString, Microsoft.EntityFrameworkCore.ServerVersion.Parse("10.4.22-mariadb")));
 
 // UseUrls - change IpAdress and port to listen
-builder.WebHost.UseUrls().UseKestrel(serverOptions =>
-{
-    serverOptions.ListenAnyIP(80);
-    serverOptions.ListenAnyIP(443, listenOptions => listenOptions.UseHttps());
-});
+// builder.WebHost.UseUrls().UseKestrel(serverOptions =>
+// {
+//     serverOptions.ListenAnyIP(80);
+//     serverOptions.ListenAnyIP(443, listenOptions => listenOptions.UseHttps());
+// });
+
+builder.WebHost.UseUrls().UseKestrel();
 
 // Add session services
 builder.Services.AddDistributedMemoryCache();
