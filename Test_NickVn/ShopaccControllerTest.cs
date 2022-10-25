@@ -1,6 +1,4 @@
-﻿
-
-namespace Test_NickVn
+﻿namespace Test_NickVn
 {
     public class ShopaccControllerTest
     {
@@ -65,10 +63,10 @@ namespace Test_NickVn
 
         [Theory]
         [InlineData(null, "LienMinh")]
-        [InlineData(1, "Detail_LienMinh")]
-        [InlineData(5, "Detail_LienMinh")]
-        [InlineData(00099, "Detail_LienMinh")]
-        [InlineData(-00099, "Detail_LienMinh")]
+        [InlineData(1, "LienMinh")]
+        [InlineData(5, "LienMinh")]
+        [InlineData(00099, "LienMinh")]
+        [InlineData(-00099, "LienMinh")]
         public async Task LienMinhBuyConfirmSolveWithoutLoginTest(int? productId, string? expected)
         {
             // Arrange
