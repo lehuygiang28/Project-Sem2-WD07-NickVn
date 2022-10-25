@@ -1,0 +1,125 @@
+@{
+    ViewData["Title"] = "Danh sách thẻ nạp";
+    Layout = "";
+    var list = ViewBag.card;
+    List<TheNapDatum> cardList = (List<TheNapDatum>)list;
+
+    string vndFormat(dynamic money)
+    {
+        money = Convert.ToInt64(money);
+        if (money == null)
+        {
+            return "0";
+        }
+        var info = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+        return String.Format(info, "{0:c0}", money);
+    }
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <script src="https://kit.fontawesome.com/48323a11ad.js" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.1.js"
+        integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="container">
+
+        <h2 class="mb-4">Card Table</h2>
+        <a href='@Url.ActionLink("TheNap", "User", new { @renew = 1})' class="text-end float-end btn btn-primary">Làm mới</a>
+        <table class="table table-striped" id="table">
+            <thead>
+                <tr>
+                    <th scope="col">Nhà Mạng</th>
+                    <th scope="col">Mệnh Giá</th>
+                    <th scope="col">Mã Thẻ</th>
+                    <th scope="col">Serial</th>
+                    @* <th scope="col">&nbsp;</th> *@
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    if (cardList.Count <= 0)
+                    {
+                        <th scope="row">Không có dữ liệu</th>
+                    }
+                    else
+                    {
+                        foreach (var item in cardList)
+                        {
+                            <tr>
+                                <td>@item.TelecomName</td>
+                                <td>@vndFormat(item.Amount)</td>
+                                <td>
+                                    <a class="pin" id="@item.Pin" onclick="CopyToClipboard('@item.Pin')">@item.Pin <i
+                                    class="fa fa-copy"></i></a>
+                                </td>
+                                <td>
+                                    <a class="pin" id="@item.Serial" onclick="CopyToClipboard('@item.Serial')">@item.Serial <i
+                                    class="fa fa-copy"></i></a>
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                }
+            </tbody>
+        </table>
+
+        <div class="alert-bottom">
+            <div class="alert alert-success" role="alert" id="copy_alert">
+                Đã sao chép vào bộ nhớ tạm
+            </div>
+        </div>
+        <style>
+            .Alert-bottom {
+                position: fixed;
+                bottom: 5px;
+                left: 2%;
+                width: 96%;
+            }
+            .pin{
+                text-decoration: none;
+            }
+            .pin:hover{
+                text-shadow: 5px solid;
+                cursor: pointer;
+            }
+        </style>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $("#copy_alert").hide();
+            $(".pin").click(function showAlert() {
+                $("#copy_alert").fadeTo(2000, 500).slideUp(500, function () {
+                    $("#copy_alert").slideUp(500);
+                });
+            });
+        });
+
+        function CopyToClipboard(id) {
+            var r = document.createRange();
+            r.selectNode(document.getElementById(id));
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(r);
+            document.execCommand('copy');
+            window.getSelection().removeAllRanges();
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>

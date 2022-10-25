@@ -1,0 +1,382 @@
+@{
+    ViewData["Title"] = "Users page";
+
+    string vndFormat(dynamic money)
+    {
+        money = Convert.ToInt64(money);
+        if (money == null)
+        {
+            return "0";
+        }
+        var info = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+        return String.Format(info, "{0:c0}", money);
+    }
+
+    var varlistUser = ViewBag.listUser;
+    var varlistRole = ViewBag.listRole;
+    var varListStatus = ViewBag.listStatus;
+
+    List<User> listUser = varlistUser == null ? new List<User>() : (List<User>)varlistUser;
+    List<Role> listRole = varlistRole == null ? new List<Role>() : (List<Role>)varlistRole;
+    List<Status> listStatus = varListStatus == null ? new List<Status>() : (List<Status>)varListStatus;
+
+}
+<div class="container-fluid pt-4 px-4">
+
+    <div class="bg-secondary rounded h-100 p-4">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <h6 class="mb-4">Users Table</h6>
+            <span class="text-danger">@TempData["err"]</span>
+
+            @if (TempData["ban-active-msg"] != null)
+            {
+                <div class="alert alert-warning alert-dismissible fade show" id="alert_ban_active" role="alert">
+                    @TempData["ban-active-msg"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+            @* <a class="btn btn-info float-end" asp-action="AddUser" asp-controller="Admin">Add User</a> *@
+        </div>
+        <div class="table-responsive">
+            <table class="table table-stripedx mb-4" id="table">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">User Name</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Phone</th>
+                        <th scope="col">Money</th>
+                        <th scope="col">Role</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Change Status</th>
+                        <th scope="col">&nbsp;</th>
+                        <th scope="col">&nbsp;</th>
+                        @* <th scope="col">&nbsp;</th> *@
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (listUser.Count >= 0)
+                    {
+                        @foreach (var item in listUser)
+                        {
+                            <tr>
+                                <td scope="row">@item.UserId</td>
+                                <td scope="row">@item.UserName</td>
+                                <td scope="row">@string.Format(item.FirstName + " " + item.LastName)</td>
+                                <td scope="row">@item.Phone</td>
+                                <td scope="row">@vndFormat(item.Money)</td>
+                                <td scope="row">@{
+                                        foreach (var r in listRole)
+                                        {
+                                            if (r.RoleId == item.RoleId)
+                                            {
+                                                @r.RoleNameEn
+                                                break;
+                                            }
+                                        }
+                                    }
+                                </td>
+                                @{
+                                    string idNameStatus = string.Format("status_name_" + item.UserId);
+                                }
+                                <td scope="row" id="@idNameStatus">
+                                    @foreach (var s in listStatus)
+                                    {
+                                        if (item.StatusId == s.StatusId)
+                                        {
+                                            @s.StatusNameEn
+                                        }
+
+                                    }
+                                </td>
+                                @* <td scope="row">
+                                    @{
+                                    string idName = string.Format("statusId_" + item.UserId);
+                                    }
+                                    <select class="form-select" id="@idName"
+                                    onchange="SubmitStatus(@item.UserId, @idName, @idNameStatus)">
+
+                                    <option value="">Change</option>
+
+                                    @foreach (var s in listStatus)
+                                    {
+                                    if (s.StatusNameEn == "Ban" || s.StatusNameEn == "Active")
+                                    {
+                                    <option value="@s.StatusId">@s.StatusNameEn</option>
+                                    }
+                                    }
+                                    </select>
+
+                                    </td> *@
+
+                                @if (item.StatusId == 1007)
+                                {
+                                    <td>
+                                        <a type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                data-bs-target="#BanButton_@item.UserId">
+                                            BAN
+                                        </a>
+                                    </td>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="BanButton_@item.UserId" tabindex="-1"
+                            aria-labelledby="DeleteModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title text-secondary" id="DeleteModalLabel">Confirmation to ban
+                                                        this user?</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Are you sure to BAN this User?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+
+                                                    @* <button type="button" class="btn btn-danger"
+                                            onclick="SubmitStatus(@item.UserId, 1006, @idNameStatus)">BAN</button> *@
+                                                    @Html.ActionLink("Confirm Ban", "ChangeUserStatus", new { userId = item.UserId, statusId = 1006 },
+                                                        new { @class = "btn btn-danger text-white"})
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                else if (item.StatusId == 1006)
+                                {
+                                    <td>
+                                        <a type="button" class="btn btn-success" data-bs-toggle="modal"
+                                data-bs-target="#BanButton_@item.UserId">
+                                            ACTIVE
+                                        </a>
+                                    </td>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="BanButton_@item.UserId" tabindex="-1"
+                            aria-labelledby="DeleteModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title text-secondary" id="DeleteModalLabel">Confirmation to
+                                                        active
+                                                        this user?</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Are you sure to ACTIVE this User?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+                                                    @* <button type="button" class="btn btn-success"
+                                            onclick="SubmitStatus(@item.UserId, 1007, @idNameStatus)">ACTIVE</button> *@
+                                                    @* @Html.ActionLink("Confirm Delete", "DeleteUser", new { id = item.UserId },
+                                                        new {
+                                                        @class = "btn btn-danger text-white"}) *@
+                                                    @Html.ActionLink("Confirm Active", "ChangeUserStatus", new { userId = item.UserId, statusId = 1007 },
+                                                        new { @class = "btn btn-success text-white"})
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                }
+
+                                <td>@Html.ActionLink("Details", "DetailUser", new { id = item.UserId }, new { @class =
+                            "text-info"})</td>
+
+
+                                @* <td>@Html.ActionLink("Edit", "EditUser", new { id = item.UserId }, new { @class =
+                                    "text-light"})
+                                    </td> *@
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <th colspan="11">No data ....</th>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        @* Pagination section: START *@
+        <div class="d-flex justify-content-end">
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    @{
+                        int currentPage = ViewBag.currentPage ?? 1;
+                        int totalPage = ViewBag.totalPage ?? 1;
+                        int spacePage = 2;
+                        int nearLastPage = totalPage - 1;
+                        int he_so = 2;
+
+                        if (totalPage >= 1)
+                        {
+                            // Previous button, disable if is first page
+                            if (currentPage == 1)
+                            {
+                                <li class="page-item disabled" aria-disabled="true" aria-label="&lsaquo; Previous">
+                                    <span class="page-link" aria-hidden="true">&lsaquo;</span>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" href='@Url.Action("Users", new {page = currentPage - 1 })'
+                                aria-label="&laquo; Previous">&lsaquo;</a>
+                                </li>
+                            }
+
+                            // Pages
+                            // if total of page (less than) <
+                            if (totalPage <= (spacePage * he_so) + 5)
+                            {
+                                for (int i = 1; i <= totalPage; i++)
+                                {
+                                    // Disable if is current page
+                                    if (currentPage == i)
+                                    {
+                                        <li class="page-item active" aria-current="page">
+                                            <span class="page-link">@i</span>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="page-item">
+                                            <a class="page-link" href='@Url.Action("Users", new {page = @i })'>@i</a>
+                                        </li>
+                                    }
+                                }
+                            }
+                            else if (totalPage > (spacePage * he_so) + 5)
+                            {
+                                // In this case, current_page is too close to the beginning
+                                if (currentPage < (spacePage + 3))
+                                {
+                                    // Beginning only hide later pages
+                                    for (int i = 1; i <= totalPage - (spacePage + 3); i++)
+                                    {
+                                        // Disable if is current page
+                                        if (currentPage == i)
+                                        {
+                                            <li class="page-item active" aria-current="page">
+                                                <span class="page-link">@i</span>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li class="page-item">
+                                                <a class="page-link" href='@Url.Action("Users", new {page = @i })'>@i</a>
+                                            </li>
+                                        }
+                                    }
+                                    <li class="page-item disabled" aria-disabled="true"><span class="page-link">...</span></li>
+                                    <li class="page-item"><a class="page-link"
+                                href='@Url.Action("Users", new {page = @totalPage - 1 })'>@nearLastPage</a></li>
+                                    <li class="page-item"><a class="page-link"
+                                href='@Url.Action("Users", new {page = @totalPage })'>@totalPage</a></li>
+                                }
+                                else if (currentPage >= (spacePage + 3) && currentPage < totalPage - (spacePage * he_so))
+                                {
+                                    // Middle hide some front and some back
+                                    <li class="page-item"><a class="page-link"
+                                href='@Url.Action("Users", new {page = @totalPage - totalPage + 1 })'>1</a></li>
+                                    <li class="page-item"><a class="page-link"
+                                href='@Url.Action("Users", new {page = @totalPage - totalPage + 2 })'>2</a></li>
+                                    <li class="page-item disabled" aria-disabled="true"><span class="page-link">...</span></li>
+
+                                    for (int i = currentPage - spacePage; i <= currentPage + spacePage; i++)
+                                    {
+                                        // Disable if is current page
+                                        if (currentPage == i)
+                                        {
+                                            <li class="page-item active" aria-current="page">
+                                                <span class="page-link">@i</span>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li class="page-item">
+                                                <a class="page-link" href='@Url.Action("Users", new {page = @i })'>@i</a>
+                                            </li>
+                                        }
+                                    }
+                                    <li class="page-item disabled" aria-disabled="true"><span class="page-link">...</span></li>
+                                    <li class="page-item"><a class="page-link"
+                                href="@Url.Action("LienMinh", new {page = @totalPage - 1 })">@nearLastPage</a></li>
+                                    <li class="page-item"><a class="page-link"
+                                href='@Url.Action("Users", new {page = @totalPage })'>@totalPage</a></li>
+                                }
+                                else
+                                {
+                                    // End only hide early pages
+                                    <li class="page-item"><a class="page-link"
+                                href='@Url.Action("Users", new {page = @totalPage - totalPage + 1 })'>1</a></li>
+                                    <li class="page-item"><a class="page-link"
+                                href='@Url.Action("Users", new {page = @totalPage - totalPage + 2 })'>2</a></li>
+                                    <li class="page-item disabled" aria-disabled="true"><span class="page-link">...</span></li>
+
+                                    for (int i = totalPage - (spacePage * he_so); i <= totalPage; i++)
+                                    {
+                                        // Disable if is current page
+                                        if (currentPage == i)
+                                        {
+                                            <li class="page-item active" aria-current="page">
+                                                <span class="page-link">@i</span>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li class="page-item">
+                                                <a class="page-link" href='@Url.Action("Users", new {page = @i })'>@i</a>
+                                            </li>
+                                        }
+                                    }
+                                }
+                            }
+
+                            // Next button, disable if is last page
+                            if (currentPage == totalPage)
+                            {
+                                <li class="page-item disabled" aria-disabled="true" aria-label="Next &rsaquo;">
+                                    <span class="page-link" aria-hidden="false">&rsaquo;</span>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" href="@Url.Action("Users", new {page = currentPage + 1 })"
+                                aria-label="Next &rsaquo;">&rsaquo;</a>
+                                </li>
+                            }
+                        }
+                    }
+                </ul>
+            </nav>
+        </div>
+        @* Pagination section: END *@
+
+        @* <script>
+            async function SubmitStatus(user_id, id_name, id_name_status) {
+            // var statusId = $(id_name).val();
+                var urlSt = "/Admin/ChangeUserStatus?userId=" + user_id + "&statusId=" + id_name;
+                await $.get(urlSt, function (data, status) {
+                    if (data) {
+                        $(id_name_status).text(data);
+                    }
+                }).done(function () {
+
+                }).fail(function () {
+                    alert("Can not change status");
+                });
+            }
+        </script> *@
+    </div>
+</div>

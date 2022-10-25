@@ -1,0 +1,146 @@
+@{
+    ViewData["Title"] = "Add new product";
+}
+
+<div class="container-fluid pt-4 px-4">
+    <form asp-action="AddProductSolve" asp-controller="Admin" enctype="multipart/form-data">
+        <div class="row g-4">
+            <div class="col-sm-12 col-xl-6">
+                <div class="bg-secondary rounded h-100 p-4">
+                    <h6 class="mb-4">Add Product</h6>
+                    @if(TempData["err-add"] != null || TempData["success-add"] != null)
+                    {
+                        <div class="mb-2">
+                            <text class="text-danger">@TempData["err-add"]</text>
+                            @if (TempData["err-add"] != null && TempData["success-add"] != null)
+                            {
+                                <br>
+                            }
+                            <text class="text-success">@TempData["success-add"]</text>
+                        </div>
+                    }
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="floatingInput" placeholder="name" name="name"
+                            required>
+                        <label for="floatingInput">Name</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="ProductUserName" placeholder="ProductUserName"
+                            name="ProductUserName" required>
+                        <label for="ProductUserName">Product UserName</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="ProductPassword" placeholder="ProductPassword"
+                            name="ProductPassword" required>
+                        <label for="ProductPassword">Product Password</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="number" class="form-control" id="PriceAtm" placeholder="PriceAtm"
+                            name="PriceAtm" required>
+                        <label for="Publisher">Price Atm</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="Publisher" placeholder="Publisher"
+                            name="Publisher" required>
+                        <label for="Publisher">Publisher</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="number" class="form-control" id="Champ" placeholder="Champ" name="Champ">
+                        <label for="Champ">Champ</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="number" class="form-control" id="Skin" placeholder="Skin" name="Skin">
+                        <label for="Skin">Skin</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <select class="form-select" id="floatingSelect" aria-label="Floating label select example"
+                            name="Rank" required>
+                            <option selected>Select rank</option>
+                            @{
+                                string[] rankArray = { "Chưa Rank", "Sắt", "Đồng", "Bạc", "Vàng", "Bạch Kim", "Kim Cương",
+                                                "Cao Thủ", "Đại Cao Thủ", "Thách Đấu" };
+                                for (int i = 0; i < rankArray.Length; i++)
+                                {
+                                    <option value="@rankArray[i]">@rankArray[i]</option>
+                                }
+                            }
+                        </select>
+                        <label for="floatingSelect">Select rank</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="StatusAccount" placeholder="StatusAccount"
+                            name="StatusAccount" required>
+                        <label for="StatusAccount">StatusAccount</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <select class="form-select" id="floatingSelectStatus" aria-label="Floating label select example"
+                            name="Status" required>
+                            <option selected>Select status</option>
+                            @{
+                                var varStatusList = ViewBag.statusList;
+                                List<Status> statusList = (List<Status>)varStatusList;
+                                foreach (var st in statusList)
+                                {
+                                    <option value="@st.StatusId">@st.StatusNameEn</option>
+                                }
+                            }
+                        </select>
+                        <label for="floatingSelectStatus">Select status</label>
+                    </div>
+
+                    @* <div class="form-floating">
+                        <input type="text" class="form-control" id="floatingPassword" placeholder="Note" name="Note">
+                        <label for="floatingPassword">Note</label>
+                        </div> *@
+
+                    <div class="form-floating">
+                        <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea"
+                            style="height: 150px;" placeholder="Note" name="Note"></textarea>
+                        <label for="floatingTextarea">Note</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-12 col-xl-6">
+                <div class="bg-secondary rounded h-100 p-4">
+                    <div class="mb-3">
+                        <label for="gallery-photo-add" class="form-label">Multiple image input</label>
+                        <input class="form-control bg-dark" type="file" accept="image/*" name="ImageCollection" id="gallery-photo-add"
+                            multiple required>
+                        <div class="gallery row pt-2"></div>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success">Save</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    $(function () {
+        // Multiple images preview in browser
+        var imagesPreview = function (input, placeToInsertImagePreview) {
+
+            // Refresh div image
+            $(placeToInsertImagePreview).children().remove();
+
+            if (input.files) {
+                var filesAmount = input.files.length;
+
+                for (i = 0; i < filesAmount; i++) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (event) {
+                        $($.parseHTML('<img>')).attr('src', event.target.result).appendTo(placeToInsertImagePreview).addClass('w-50 h-100 mb-3 col-sm-12 col-md-6 border border-white');
+                    }
+
+                    reader.readAsDataURL(input.files[i]);
+                }
+            }
+        };
+
+        $('#gallery-photo-add').on('change', function () {
+            imagesPreview(this, 'div.gallery');
+        });
+    });
+</script>

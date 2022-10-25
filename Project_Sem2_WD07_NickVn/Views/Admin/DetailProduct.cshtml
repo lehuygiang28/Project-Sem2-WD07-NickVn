@@ -1,0 +1,116 @@
+@{
+    ViewData["Title"] = "Product Details";
+
+    var DeltailProductByID = ViewBag.DeltailProductByID;
+    var a = ViewBag.imgList;
+    List<Image> imgList = (List<Image>)a;
+    Lienminh product = (Lienminh)DeltailProductByID;
+
+}
+
+
+<div class="container-fluid pt-4 px-4">
+
+    <div class="row g-4">
+        <div class="col-sm-12 col-xl-6">
+            <div class="bg-secondary rounded h-100 p-4">
+
+                <div class="row">
+                    <div class="col-sm-12 col-xl-6 mb-2">
+                        <img class="w-100 border border-light" src="@DeltailProductByID.ImgThumb"
+                            alt="@product.ProductUserName">
+                    </div>
+                    @{
+                        foreach (var item in imgList)
+                        {
+                            <div class="col-sm-12 col-xl-6 mb-2">
+                                <img class="w-100 border border-light" src="@item.ImgLink" alt="@product.ProductUserName">
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-xl-6">
+            <div class="bg-secondary rounded h-100 p-4">
+                <h6 class="mb-4">#@product.ProductId - @product.Name</h6>
+                <dl class="row mb-0">
+                    <dt class="col-sm-4">Id</dt>
+                    <dd class="col-sm-8">@product.ProductId</dd>
+                    <hr>
+                    <dt class="col-sm-4">Name</dt>
+                    <dd class="col-sm-8">@product.Name</dd>
+                    <hr>
+                    <dt class="col-sm-4">Product UserName</dt>
+                    <dd class="col-sm-8">@product.ProductUserName</dd>
+                    <hr>
+                    <dt class="col-sm-4">Product User Password</dt>
+                    <dd class="col-sm-8">@product.ProductUserPassword</dd>
+                    <hr>
+                    <dt class="col-sm-4">Publisher</dt>
+                    <dd class="col-sm-8">@product.Publisher</dd>
+                    <hr>
+                    <dt class="col-sm-4">PriceAtm</dt>
+                    <dd class="col-sm-8">@product.PriceAtm</dd>
+                    <hr>
+                    <dt class="col-sm-4">Champ</dt>
+                    <dd class="col-sm-8">@product.Champ</dd>
+                    <hr>
+                    <dt class="col-sm-4">Skin</dt>
+                    <dd class="col-sm-8">@product.Skin</dd>
+                    <hr>
+                    <dt class="col-sm-4">Rank</dt>
+                    <dd class="col-sm-8">@product.Rank</dd>
+                    <hr>
+                    <dt class="col-sm-4">Status Account Info</dt>
+                    <dd class="col-sm-8">@product.StatusAccount</dd>
+                    <hr>
+                    <dt class="col-sm-4">Status</dt>
+                    <dd class="col-sm-8">@ViewBag.statusName</dd>
+
+                    @* <dt class="col-sm-4">Note</dt>
+                        <dd class="col-sm-8">@product.StatusAccount</dd> *@
+                    <div class="d-flex justify-content-center">
+
+                        @Html.ActionLink("Edit", "EditProduct", new { id = product.ProductId }, new {@class =
+                        "btn btn-outline-light m-2"})
+
+                        <!-- Button trigger modal -->
+                        <a type="button" class="btn btn-outline-danger m-2" data-bs-toggle="modal"
+                            data-bs-target="#DeleteCategoryPopup">
+                            Delete
+                        </a>
+                        <!-- Modal -->
+                        <div class="modal fade" id="DeleteCategoryPopup" tabindex="-1"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title text-secondary" id="exampleModalLabel">Confirmation to
+                                            delete?</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Are you sure to delete this Category?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-danger">@Html.ActionLink("Confirm Delete",
+                                            "DeleteProduct", new { id = product.ProductId }, new { @class =
+                                            "text-white"})</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Modal End -->
+
+                    </div>
+                </dl>
+            </div>
+        </div>
+
+    </div>
+</div>

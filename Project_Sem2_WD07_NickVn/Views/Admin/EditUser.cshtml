@@ -1,0 +1,261 @@
+@{
+    ViewData["Title"] = "User Details";
+
+    var varUser = ViewBag.user;
+    var varListStatus = ViewBag.listStatus;
+    var varListRole = ViewBag.listRole;
+
+    User user = (User)varUser;
+    List<Status> listStatus = (List<Status>)varListStatus;
+    List<Role> listRole = (List<Role>)varListRole;
+
+    string formatDate = @"HH:mm:ss - dd/MM/yyyy";
+}
+<div class="container-fluid pt-4 px-4">
+    @if (TempData["error"] != null)
+    {
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            @TempData["error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    @if (TempData["success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    <form asp-action="EditUserSolve" asp-controller="Admin" enctype="multipart/form-data">
+
+        <input type="hidden" name="id" value="@user.UserId">
+        <div class="row g-4">
+
+            <div class="col-sm-12 col-xl-6">
+                <div class="bg-secondary rounded h-100 p-4">
+
+                    <div class="container_img mb-4">
+                        <img src="~/@user.CoverImgSrc" alt="Avatar" class="image" class="w-100">
+                        <div class="middle row">
+                            <a href="~/@user.CoverImgSrc" class="fas fa-image col-sm-6" data-lightbox="image-avatar"
+                                data-title="Cover" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                title="See cover"></a>
+                            <label for="file-input-cover" class="far fa-edit col-sm-6" data-bs-toggle="tooltip"
+                                data-bs-placement="bottom" title="Update new avatar">
+                                <input type="file" name="newCover" id="file-input-cover">
+                            </label>
+                        </div>
+                    </div>
+
+                    @* <a href="~/@user.CoverImgSrc" data-lightbox="image-1" data-title="Cover">
+                        <img src="~/@user.CoverImgSrc" class="img-fluid mb-3 border border-white mx-auto d-block"
+                        alt="Responsive image">
+                        </a> *@
+
+                    <div class="row">
+                        <div class="col-sm-12 col-xl-6">
+                            <div class="bg-secondary rounded h-100 p-4">
+                                <h6 class="mb-4">#@user.UserId - @user.UserName</h6>
+                                <dl class="row mb-0">
+                                    <dt class="col-sm-4">Id</dt>
+                                    <dd class="col-sm-8">@user.UserId</dd>
+                                    <hr>
+                                    <dt class="col-sm-4">Name</dt>
+                                    <dd class="col-sm-8 text-break">@user.FirstName @user.LastName</dd>
+                                    <hr>
+                                    <dt class="col-sm-4">User Name</dt>
+                                    <dd class="col-sm-8 text-break">@user.UserName</dd>
+                                    <hr>
+                                    @* <dt class="col-sm-4">Password</dt>
+                                        <dd class="col-sm-8">@user.Password</dd>
+                                        <hr> *@
+                                    <dt class="col-sm-4">Phone</dt>
+                                    <dd class="col-sm-8 text-break">@user.Phone</dd>
+                                    <hr>
+                                    <dt class="col-sm-4">Email</dt>
+                                    <dd class="col-sm-8 text-break">@user.Email</dd>
+                                    <hr>
+                                    <dt class="col-sm-4">Money</dt>
+                                    <dd class="col-sm-8">@user.Money</dd>
+                                    <hr>
+                                    <dt class="col-sm-4">Role</dt>
+                                    <dd class="col-sm-8">
+                                        @foreach (var s in listRole)
+                                        {
+                                            if (user.RoleId == s.RoleId)
+                                            {
+                                                @s.RoleNameEn
+                                            }
+                                        }
+                                    </dd>
+                                    <hr>
+                                    <dt class="col-sm-4">Status</dt>
+                                    <dd class="col-sm-8">
+                                        @foreach (var s in listStatus)
+                                        {
+                                            if (user.StatusId == s.StatusId)
+                                            {
+                                                @s.StatusNameEn
+                                            }
+                                        }
+                                    </dd>
+                                    <hr>
+                                    <dt class="col-sm-4">Note</dt>
+                                    <dd class="col-sm-8">@user.Note</dd>
+                                    @* <div class="d-flex justify-content-center">
+
+                                        @Html.ActionLink("Edit", "EditUser", new { id = user.Id }, new {@class =
+                                        "btn btn-outline-light m-2"})
+
+                                        <!-- Button trigger modal -->
+                                        <a type="button" class="btn btn-outline-danger m-2" data-bs-toggle="modal"
+                                        data-bs-target="#DeleteCategoryPopup">
+                                        Delete
+                                        </a>
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="DeleteCategoryPopup" tabindex="-1"
+                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                        <div class="modal-content">
+                                        <div class="modal-header">
+                                        <h5 class="modal-title text-secondary" id="exampleModalLabel">
+                                        Confirmation to
+                                        delete?</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                        Are you sure to delete this User?
+                                        </div>
+                                        <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                        <button type="button"
+                                        class="btn btn-danger">@Html.ActionLink("Confirm Delete",
+                                        "DeleteUser", new { id = user.Id }, new { @class =
+                                        "text-white"})</button>
+                                        </div>
+                                        </div>
+                                        </div>
+                                        </div>
+                                        <!-- Modal End -->
+
+                                        </div> *@
+                                </dl>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 col-xl-6">
+                            @* <img src="~/@user.ImgSrc" class="img-fluid border border-white mx-auto d-block mb-4"
+                                alt="Responsive image"> *@
+
+                            <div class="container_img mb-4">
+                                <img src="~/@user.ImgSrc" alt="Avatar" class="image" class="w-100">
+                                <div class="middle row">
+                                    <a href="~/@user.ImgSrc" class="fas fa-image col-sm-6" data-lightbox="image-avatar"
+                                        data-title="Cover" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                        title="See avatar"></a>
+                                    <label for="file-input-btn" class="far fa-edit col-sm-6" data-bs-toggle="tooltip"
+                                        data-bs-placement="bottom" title="Update new cover background">
+                                        <input type="file" name="newAvatar" id="file-input-btn">
+                                    </label>
+                                </div>
+                            </div>
+
+                            <dl class="row">
+                                <dt class="col-sm-4">Create at</dt>
+                                <dd class="col-sm-8">@user.CreateAt.ToString(formatDate)</dd>
+                                <hr>
+                                <dt class="col-sm-4">Update at</dt>
+                                <dd class="col-sm-8">@user.UpdateAt.ToString(formatDate)</dd>
+                                <hr>
+                                <dt class="col-sm-4">Last login</dt>
+                                <dd class="col-sm-8">@user.LastLogin.ToString(formatDate)</dd>
+                                <hr>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-12 col-xl-6">
+                <div class="bg-secondary rounded h-100 p-4">
+                    @* <form asp-action="EditUserSolve" asp-controller="Admin" enctype="multipart/form-data"> *@
+                    <input type="hidden" value="@user.UserId" name="id">
+
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="floatingFirstName" placeholder="FirstName"
+                            name="FirstName">
+                        <label for="floatingFirstName">FirstName</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="floatingLastName" placeholder="LastName"
+                            name="LastName">
+                        <label for="floatingLastName">LastName</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="floatingPass" placeholder="Password"
+                            name="Password">
+                        <label for="floatingPass">New Password</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="floatingPhone" placeholder="Phone" name="Phone">
+                        <label for="floatingPhone">Phone</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control" id="floatingEmail" placeholder="Email" name="Email">
+                        <label for="floatingEmail">Email</label>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="row">
+                            <div class="col-sm-6 form-floating">
+                                <select class="form-select" id="floatingSelect"
+                                    aria-label="Floating label select example" name="role_id">
+                                    <option value="" disabled>Select Role</option>
+                                    @foreach (var item in listRole)
+                                    {
+                                        <option value="@item.RoleId">@item.RoleNameEn</option>
+                                    }
+                                </select>
+                                <label for="floatingSelect">Select Role</label>
+                            </div>
+
+                            <div class="col-sm-6 form-floating">
+                                <select class="form-select" id="floatingSelect2"
+                                    aria-label="Floating label select example" name="status_id">
+                                    <option value="" disabled>Select Status</option>
+                                    @foreach (var item in listStatus)
+                                    {
+                                        if (item.StatusId == 1006 || item.StatusId == 1007)
+                                        {
+                                            <option value="@item.StatusId">@item.StatusNameEn</option>
+                                        }
+                                    }
+                                </select>
+                                <label for="floatingSelect2">Select Status</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea"
+                            style="height: 150px;" name="Note"></textarea>
+                        <label for="floatingTextarea">Note</label>
+                    </div>
+
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="btn btn-outline-success m-2">Save Change</button>
+                    </div>
+                    @* </form> *@
+                </div>
+
+            </div>
+
+        </div>
+    </form>
+</div>

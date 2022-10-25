@@ -1,0 +1,654 @@
+@{
+    ViewData["Title"] = "Game Liên Minh";
+    Lienminh accLienMinh = new Lienminh();
+
+    string vndFormat(int? money)
+    {
+        if (money == null)
+        {
+            return "0";
+        }
+        var info = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
+        return String.Format(info, "{0:c0}", money);
+    }
+}
+
+
+@* <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> *@
+@* <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> *@
+@* <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> *@
+
+
+<!-- BEGIN: PAGE CONTAINER -->
+<div class="c-layout-page">
+    <!-- BEGIN: PAGE CONTENT -->
+
+        @{
+            var error = TempData["error"];
+        }
+
+        @if (error != null)
+        {
+            <div class="modal fade" id="errorModal" role="dialog" style="display: none;" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+
+                        <div class='modal-header'>
+                            <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                                <span aria-hidden='true'>×</span>
+                            </button>
+                            <h4 class='modal-title'>Thông báo</h4>
+                        </div>
+
+                        <div class="modal-body text-danger">@error</div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn c-theme-btn c-btn-square c-btn-uppercase c-btn-bold c-bg-green-4" data-dismiss="modal">Xác nhận</button>
+                            <button type="button" class="btn c-theme-btn c-btn-border-2x c-btn-square c-btn-bold c-btn-uppercase" data-dismiss="modal">Đóng</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                var a = $('#errorModal');
+                a.ready(function()
+                {
+                    a.modal('show');
+                });
+            </script>
+        }
+
+    @{
+        var detailAcc = ViewBag.accLienMinh;
+        if (detailAcc is Lienminh)
+        {
+            accLienMinh = (Lienminh)detailAcc;
+
+            <div class="c-content-box c-size-lg c-overflow-hide c-bg-white">
+                <div class="container">
+
+                    <nav aria-label="breadcrumb" style="display:none">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/" title="Trang chủ">Trang chủ</a></li>
+                            <li class="breadcrumb-item"><a href="/garena/lien-minh" @accLienMinh.Name>@accLienMinh.Name</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">@accLienMinh.ProductId</li>
+                        </ol>
+                    </nav>
+                    <div class="c-shop-product-details-4">
+                        <div class="row">
+                            <div class="col-md-4 m-b-20">
+                                <div class="c-product-header">
+                                    <!--<h4 class="c-font-uppercase c-font-bold">Liên minh huyền thoại - Việt Nam</h4>-->
+                                <div class="c-content-title-1">
+                                        <h3 class="c-font-uppercase c-font-bold">#@accLienMinh.ProductId</h3>
+                                        <span class="c-font-red c-font-bold">@accLienMinh.Name</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12 visible-sm visible-xs visible-sm">
+                                <div class="text-center m-t-20">
+
+                                    <img class="img-responsive img-thumbnail" src="@accLienMinh.ImgThumb" />
+                                </div>
+                                <div class="c-product-meta">
+                                    <div class="c-content-divider">
+                                        <i class="icon-dot"></i>
+                                    </div>
+                                    <div class="row">
+
+
+                                        <div class="col-sm-4 col-xs-6 c-product-variant">
+                                            <p class="c-product-meta-label c-product-margin-1 c-font-uppercase c-font-bold">
+                                                Tướng: <span class="c-font-red">@accLienMinh.Champ</span></p>
+                                        </div>
+
+
+                                        <div class="col-sm-4 col-xs-6 c-product-variant">
+                                            <p class="c-product-meta-label c-product-margin-1 c-font-uppercase c-font-bold">
+                                                Skin: <span class="c-font-red">@accLienMinh.Skin</span></p>
+                                        </div>
+
+
+                                        <div class="col-sm-4 col-xs-6 c-product-variant">
+                                            <p class="c-product-meta-label c-product-margin-1 c-font-uppercase c-font-bold">Bảng
+                                                Ngọc: <span class="c-font-red"></span></p>
+                                        </div>
+
+
+
+                                        <div class="col-sm-4 col-xs-6 c-product-variant">
+                                            <p class="c-product-meta-label c-product-margin-1 c-font-uppercase c-font-bold">
+                                                Rank: <span class="c-font-red">@accLienMinh.Rank</span></p>
+                                        </div>
+
+
+                                        <div class="col-sm-4 col-xs-6 c-product-variant">
+                                            <p class="c-product-meta-label c-product-margin-1 c-font-uppercase c-font-bold">
+                                                Trạng Thái: <span class="c-font-red">@accLienMinh.StatusAccount</span></p>
+                                        </div>
+
+
+                                        <div class="col-sm-12 col-xs-12 c-product-variant">
+                                            <p class="c-product-meta-label c-product-margin-1 c-font-uppercase c-font-bold">Nổi
+                                                bật: <span class="c-font-red"></span></p>
+
+                                        </div>
+                                    </div>
+                                    <div class="c-content-divider">
+                                        <i class="icon-dot"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="c-product-meta">
+                                <div class="c-product-price c-theme-font" style="float: none;text-align: center">
+
+                                </div>
+                                <div style="display: none">
+                                    @{
+                                        decimal cardPrice = accLienMinh.PriceAtm / 100 * 145;
+                                        <div class="position0">
+                                            CARD @vndFormat((int?)cardPrice)
+                                        </div>
+                                    }
+                                    <div class="position1">
+                                        ATM @vndFormat((int?)accLienMinh.PriceAtm)
+                                    </div>
+                                </div>
+                                <script type="text/javascript">
+                                    $(".c-product-price").append($(".position0"));
+                                    $(".c-product-price").append($(".position1"));
+                                </script>
+                            </div>
+                            <div class="col-md-4 text-right">
+                                <div class="c-product-header">
+                                    <div class="c-content-title-1">
+
+                                        @* @Html.ActionLink("Mua Ngay", "BuyNowPopupModalLienMinh", "ShopAcc", new { id =
+                                            accLienMinh.Id}, new { @class = "btn c-btn btn-lg c-theme-btn c-font-uppercase
+                                            c-font-bold c-btn-square m-t-20 load-modal", @id = "BuyNowBtn"}) *@
+                                        <button type="button" id="BuyNowBtn"
+                                        class="btn c-btn btn-lg c-theme-btn c-font-uppercase c-font-bold c-btn-square m-t-20">Mua
+                                            ngay</button>
+
+                                        <a type="button"
+                                        class="btn c-btn btn-lg btn-danger c-font-uppercase c-font-bold c-btn-square m-t-20 load-modal"
+                                        href="#">Trả góp</a>
+
+
+                                        <a type="button"
+                                        class="btn c-btn btn-lg c-bg-green-4 c-font-white c-font-uppercase c-font-bold c-btn-square m-t-20"
+                                        asp-action="NapThe" asp-controller="User">ATM - Ví điện tử</a>
+                                        <a class="btn c-btn btn-lg c-bg-green-4 c-font-white c-font-uppercase c-font-bold c-btn-square m-t-20"
+                                        asp-action="NapThe" asp-controller="User">Nạp thẻ cào</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="c-product-meta visible-md visible-lg">
+                            <div class="c-content-divider">
+                                <i class="icon-dot"></i>
+                            </div>
+                            <div class="row">
+
+                                <div class="col-sm-4 col-xs-6 c-product-variant">
+                                    <p class="c-product-meta-label c-product-margin-1 c-font-uppercase c-font-bold">Tướng: <span
+                                        class="c-font-red">@accLienMinh.Champ</span></p>
+                                </div>
+
+
+                                <div class="col-sm-4 col-xs-6 c-product-variant">
+                                    <p class="c-product-meta-label c-product-margin-1 c-font-uppercase c-font-bold">Skin: <span
+                                        class="c-font-red">@accLienMinh.Skin</span></p>
+                                </div>
+
+
+                                <div class="col-sm-4 col-xs-6 c-product-variant">
+                                    <p class="c-product-meta-label c-product-margin-1 c-font-uppercase c-font-bold">Bảng Ngọc:
+                                        <span class="c-font-red"></span>
+                                    </p>
+                                </div>
+
+
+
+                                <div class="col-sm-4 col-xs-6 c-product-variant">
+                                    <p class="c-product-meta-label c-product-margin-1 c-font-uppercase c-font-bold">Rank: <span
+                                        class="c-font-red">@accLienMinh.Rank</span></p>
+                                </div>
+
+
+                                <div class="col-sm-4 col-xs-6 c-product-variant">
+                                    <p class="c-product-meta-label c-product-margin-1 c-font-uppercase c-font-bold">Trạng Thái:
+                                        <span class="c-font-red">@accLienMinh.StatusAccount</span>
+                                    </p>
+                                </div>
+
+
+                                <div class="col-sm-12 col-xs-12 c-product-variant">
+
+                                    <p class="c-product-meta-label c-product-margin-1 c-font-uppercase c-font-bold">Nổi bật:
+                                        <span class="c-font-red"></span>
+                                    </p>
+
+
+                                </div>
+                            </div>
+
+                            <div class="c-content-divider">
+                                <i class="icon-dot"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container m-t-20 content_post">
+
+                    @{
+                        var imgAcc = ViewBag.imgAcc;
+                        List<Image> imgAccList = (List<Image>)imgAcc;
+                        foreach (Image img in imgAccList)
+                        {
+                            <p>
+                                <a rel="gallery1" data-fancybox="images" href="@img.ImgLink">
+                                    <img class="img-responsive img-thumbnail" src="@img.ImgLink" />
+                                </a>
+                            </p>
+
+                        }
+                    }
+                    <div class="buy-footer" style="text-align: center">
+
+                        <button type="button"
+                        class="btn c-btn btn-lg c-theme-btn c-font-uppercase c-font-bold c-btn-square m-t-20 load-modal">Mua ngay</button>
+
+
+                    </div>
+
+                </div>
+
+                <div class="container m-t-20 ">
+
+                    <div class="game-item-view" style="margin-top: 40px">
+                        <div class="c-content-title-1">
+                            <h3 class="c-center c-font-uppercase c-font-bold">Tài khoản liên quan</h3>
+                            <div class="c-line-center c-theme-bg"></div>
+                        </div>
+                            <div class="row row-flex  item-list">
+
+                            @{
+                                var randomAcc = ViewBag.randomAcc;
+                                List<Lienminh> accRandom = (List<Lienminh>)randomAcc;
+
+                                foreach(Lienminh random in accRandom)
+                                {
+                                    <div class="col-sm-6 col-md-3">
+                                        <div class="classWithPad">
+                                            <div class="image">
+
+                                                <a href='@Url.ActionLink("Detail_LienMinh", "ShopAcc", new {id = @random.ProductId})'>
+                                                    <img src="@random.ImgThumb">
+                                                    <span class="ms">MS: @random.ProductId</span>
+                                                </a>
+
+                                            </div>
+                                            <div class="description">
+
+                                            </div>
+                                            <div class="attribute_info">
+                                                <div class="row">
+
+                                                    <div class="col-xs-6 a_att">
+                                                        Tướng: <b>@random.Champ</b>
+                                                    </div>
+
+
+                                                    <div class="col-xs-6 a_att">
+                                                        Skin: <b>@random.Skin</b>
+                                                    </div>
+
+
+                                                    <div class="col-xs-6 a_att">
+                                                        Bảng Ngọc: <b></b>
+                                                    </div>
+
+
+
+                                                    <div class="col-xs-6 a_att">
+                                                        Rank: <b>@random.StatusAccount</b>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="a-more">
+                                                <div class="row">
+                                                    <div class="col-xs-6">
+                                                        <div class="price_item">
+                                                            @vndFormat((int?)random.PriceAtm)
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-6 ">
+                                                        <div class="view">
+                                                            <a
+                                                            href='@Url.ActionLink("Detail_LienMinh", "ShopAcc", new {id = @random.ProductId})'>Chi
+                                                                tiết</a>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+
+                    </div>
+
+                    <div class="tab-vertical tutorial_area">
+                        <div class="panel-group" id="accordion">
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h5 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="">Thử vận may liên minh chỉ với
+                                            12k -18k - 60k <i class="glyphicon glyphicon-flag"></i></a>
+                                    </h5>
+                                </div>
+                                <div id="tab1" class="panel-collapse collapse in" aria-expanded="true" style="">
+                                    <div class="panel-body">
+                                        <p>Ngo&agrave;i <a href="#"
+                                            target="_blank"><strong>B&aacute;n Nick Li&ecirc;n Minh Huyền
+                                                    Thoại</strong></a>&nbsp;theo c&aacute;c th&ocirc;ng tin đ&atilde; show
+                                            sẵn.<strong><a href="" target="_blank">Shop
+                                                    chuy&ecirc;n b&aacute;n acc li&ecirc;n minh random</a></strong>&nbsp;cho
+                                            c&aacute;c bạn thử vận may với c&aacute;c g&oacute;i ưu đ&atilde;i kh&aacute;c nhau
+                                            :</p>
+
+                                        <p>-&nbsp;<strong><a href="#"
+                                                target="_blank">Random li&ecirc;n minh sơ cấp 12k&nbsp;</a></strong></p>
+
+                                        <p>-&nbsp;<strong><a href="#"
+                                                target="_blank">Random li&ecirc;n minh trung cấp 18k</a></strong></p>
+
+                                        <p>-&nbsp;<strong><a href="#"
+                                                target="_blank">Random li&ecirc;n minh cao cấp 60k</a></strong></p>
+
+                                        <p>.C&aacute;c bạn sẽ c&oacute; cơ hội nhận được những&nbsp;<strong>acc LMHT -
+                                                li&ecirc;n minh -&nbsp;LOl ngẫu nhi&ecirc;n</strong>&nbsp;c&oacute; thể
+                                            l&agrave; acc v&iacute;p,acc c&ugrave;i, acc tầm trung..vv</p>
+
+                                        <p>Mỗi mức gi&aacute; để c&oacute; tỷ lệ random kh&aacute;c nhau.N&agrave;o n&agrave;o
+                                            nhanh ch&oacute;ng thử vậy may của m&igrave;nh th&ocirc;i.&nbsp;<span
+                                            style="color:#e74c3c"><strong>T&iacute;ch cực quay tay vận may sẽ
+                                                    đến</strong></span></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h5 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="">Bán RP liên minh - Cày Thuê
+                                            Rank Liên Minh <i class="glyphicon glyphicon-flag"></i></a>
+                                    </h5>
+                                </div>
+                                <div id="tab1" class="panel-collapse collapse in" aria-expanded="true" style="">
+                                    <div class="panel-body">
+                                        <p>Ngo&agrave;i shop <strong><a href="#"
+                                                target="_blank">b&aacute;n nick Li&ecirc;n Minh</a></strong> b&ecirc;n
+                                            m&igrave;nh c&oacute; c&oacute; <strong>b&aacute;n&nbsp;RP li&ecirc;n minh
+                                                gi&aacute; rẻ</strong>&nbsp;v&agrave; <strong>C&agrave;y Thu&ecirc;&nbsp;Rank
+                                                Li&ecirc;n Minh</strong> nữa nh&eacute;.</p>
+
+                                        <p>C&aacute;c bạn c&oacute; thể l&ecirc;n web <strong><a href="#"
+                                                target="_blank">Dichvu.me</a></strong> - Website t&iacute;ch hợp tất cả
+                                            c&aacute;c <strong>dịch vụ game online</strong></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h5 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="">Hướng dẫn đổi thông tin nick
+                                            liên minh <i class="glyphicon glyphicon-flag"></i></a>
+                                    </h5>
+                                </div>
+                                <div id="tab1" class="panel-collapse collapse in" aria-expanded="true" style="">
+                                    <div class="panel-body">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+            </div>
+        }
+    }
+
+    @* @{
+        if (ViewBag.popupModalScriptBuy != null)
+        {
+        @Html.Raw(ViewBag.popupModalScriptBuy)
+        }
+        } *@
+
+    <div class="modal fade" id="LoadModal" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form method='POST' asp-action='BuyAcc' asp-controller='ShopAcc' accept-charset='UTF-8'
+                    class='form-horizontal' enctype='multipart/form-data'>
+
+                    <div class='modal-header'>
+                        <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                            <span aria-hidden='true'>×</span>
+                        </button>
+                        <h4 class='modal-title'>Xác nhận mua tài khoản</h4>
+                    </div>
+
+                    <div class='modal-body'>
+                        <div class='c-content-tab-4 c-opt-3' role='tabpanel'>
+                            <ul class='nav nav-justified' role='tablist'>
+                                <li role='presentation' class='active'>
+                                    <a href='#payment' role='tab' data-toggle='tab' class='c-font-16'>Thanh toán</a>
+                                </li>
+                                <li role='presentation'>
+                                    <a href='#info' role='tab' data-toggle='tab' class='c-font-16'>Tài khoản</a>
+                                </li>
+                            </ul>
+                            <div class='tab-content'>
+
+                                <div role='tabpanel' class='tab-pane fade in active' id='payment'>
+                                    <ul class='c-tab-items p-t-0 p-b-0 p-l-5 p-r-5'>
+                                        <li class='c-font-dark'>
+                                            <table class='table table-striped'>
+                                                <tbody>
+                                                    <tr>
+                                                        <th colspan='2'>Thông tin tài khoản # @accLienMinh.ProductId</th>
+                                                    </tr>
+                                                </tbody>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Nhà phát hành:</td>
+                                                        <th>@accLienMinh.Publisher</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Tên game:</td>
+                                                        <th>@accLienMinh.Name</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Giá tiền:</td>
+                                                        <th class='text-info'>@vndFormat((int?)accLienMinh.PriceAtm)đ</th>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div role='tabpanel' class='tab-pane fade' id='info'>
+                                    <ul class='c-tab-items p-t-0 p-b-0 p-l-5 p-r-5'>
+                                        <li class='c-font-dark'>
+                                            <table class='table table-striped'>
+                                                <tbody>
+                                                    <tr>
+                                                        <th colspan='2'>Chi tiết tài khoản #@accLienMinh.ProductId</th>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td style='width: 50%'>Tướng:</td>
+                                                        <td class='text-danger' style='font-weight: 700'>
+                                                            @accLienMinh.Champ
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td style='width: 50%'>Skin:</td>
+                                                        <td class='text-danger' style='font-weight: 700'>
+                                                            @accLienMinh.Skin</td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td style='width: 50%'>Bảng Ngọc:</td>
+                                                        <td class='text-danger' style='font-weight: 700'></td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td style='width:50%'>Rank:</td>
+                                                        <td class='text-danger' style='font-weight: 700'>
+                                                            @accLienMinh.Rank</td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td style='width:50%'>Trạng Thái:</td>
+                                                        <td class='text-danger' style='font-weight: 700'>
+                                                            @accLienMinh.StatusAccount
+                                                        </td>
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class='form-group '>
+                            <label class='col-md-3 form-control-label'>Mã giảm giá:</label>
+                            <div class='col-md-7'>
+                                <input type='text' class='form-control c-square c-theme ' name='coupon'
+                                    placeholder='Mã giảm giá' value=''>
+                                <span class='help-block'>Nhập mã giảm giá nếu có để nhận ưu đãi</span>
+                            </div>
+                        </div>
+
+                        @{
+                            var sessionVar = Context.Session;
+                            string form = "";
+                            var money = sessionVar.GetInt32("_Money");
+                            if (money == null)
+                            {
+                                form = @"
+                                <div class='form-group '>
+                                    <label class='col-md-12 form-control-label text-danger'
+                                        style='text-align: center;margin: 10px 0; '>
+                                        Bạn phải đăng nhập mới có thể mua tài khoản tự động.
+                                    </label>
+                                </div>
+                                <div style='clear: both'></div>
+                                </div>
+                                
+                                <div class='modal-footer'>
+
+                                    <a class='btn c-theme-btn c-btn-square c-btn-uppercase c-btn-bold' href='/User/Login'>Đăng nhập</a>
+
+                                    <button type='button'
+                                        class='btn c-theme-btn c-btn-border-2x c-btn-square c-btn-bold c-btn-uppercase'
+                                        data-dismiss='modal'>Đóng</button>
+
+                                </div>";
+                            }
+                            else if (money < accLienMinh.PriceAtm)
+                            {
+                                string? urlNapThe = Url.ActionLink("NapThe", "User");
+                                form = @"
+                                <div class='form-group '>
+                                    <label class='col-md-12 form-control-label text-danger'
+                                        style='text-align: center;margin: 10px 0; '>
+                                        Bạn không đủ số dư để mua tài khoản này. Bạn hãy click vào nút nạp thẻ để nạp thêm và mua tài khoản.
+                                    </label>
+                                </div>
+                                <div style='clear: both'></div>
+                                </div>
+
+                                <div class='modal-footer'>
+
+                                    <a class='btn c-theme-btn c-btn-square c-btn-uppercase c-btn-bold' href='@urlNapThe'>Nạp thẻ cào</a>
+                                    <a class='btn c-theme-btn c-btn-square c-btn-uppercase c-btn-bold c-bg-green-4' href='#'>Nạp từ atm - ví điện tử</a>
+
+                                    <button type='button'
+                                        class='btn c-theme-btn c-btn-border-2x c-btn-square c-btn-bold c-btn-uppercase'
+                                        data-dismiss='modal'>Đóng</button>
+
+                                </div>";
+                            }
+                            else
+                            {
+                                form = $@"
+                                    <div class='form-group '>
+                                        <label class='col-md-12 form-control-label text-danger'
+                                            style='text-align: center;margin: 10px 0; '>
+                                            
+                                        </label>
+                                    </div>
+                                    <div style='clear: both'></div>
+                                    </div>
+
+                                    <div class='modal-footer'>
+
+                                        <a class='btn c-theme-btn c-btn-square c-btn-uppercase c-btn-bold c-bg-green-4' href='/ShopAcc/BuyConfirmSolve?productId={accLienMinh.ProductId}'>Xác nhận mua ngay</a>
+
+                                        <button type='button'
+                                            class='btn c-theme-btn c-btn-border-2x c-btn-square c-btn-bold c-btn-uppercase'
+                                            data-dismiss='modal'>Đóng</button>
+
+                                    </div>";
+                            }
+                        }
+                    
+                    @Html.Raw(form)
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="noticeModal" role="dialog" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="loader" style="text-align: center"><img src="~/storage/images/loader.gif"
+                    style="width: 50px;height: 50px;display: none"></div>
+            <div class="modal-content">
+
+            </div>
+        </div>
+    </div>
+
+    <!-- END: PAGE CONTENT -->
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#BuyNowBtn").click(function () {
+            $("#LoadModal").modal();
+        });
+    });
+</script>
+
+<!-- END: PAGE CONTAINER -->
+

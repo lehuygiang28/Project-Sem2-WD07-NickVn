@@ -1,0 +1,14 @@
+C:\App\Project_Sem2_WD07_NickVn.exe
+C:\App\appsettings.Development.json
+C:\App\appsettings.json
+C:\App\Project_Sem2_WD07_NickVn.dll
+C:\App\Project_Sem2_WD07_NickVn.runtimeconfig.json
+C:\App\Project_Sem2_WD07_NickVn.pdb
+C:\App\Microsoft.EntityFrameworkCore.dll
+C:\App\Microsoft.EntityFrameworkCore.Abstractions.dll
+C:\App\Microsoft.EntityFrameworkCore.Relational.dll
+C:\App\Microsoft.Extensions.Caching.Memory.dll
+C:\App\MySqlConnector.dll
+C:\App\Newtonsoft.Json.dll
+C:\App\Pomelo.EntityFrameworkCore.MySql.dll
+C:\App\Project_Sem2_WD07_NickVn.deps.json

@@ -1,0 +1,16 @@
+﻿@{
+    string CurrentControllerName = Convert.ToString(((Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor)ViewContext.ActionDescriptor).ControllerName);  
+    if(CurrentControllerName.StartsWith("Admin"))
+    {
+        CurrentControllerName = "Admin";
+    }
+    switch (CurrentControllerName)
+    {
+        case "Admin":
+            Layout = "_AdminLayout";
+            break;
+        default:
+            Layout = "_Layout";
+            break;
+    }
+}
