@@ -1,0 +1,10 @@
+global using Xunit;
+global using Project_Sem2_WD07_NickVn.Models;
+global using Project_Sem2_WD07_NickVn.Controllers;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.Extensions.Logging.Abstractions;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.AspNetCore.Mvc.ViewFeatures;
+global using Microsoft.AspNetCore.Http;
+global using Moq;
+global using Microsoft.AspNetCore.Authentication;
