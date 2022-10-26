@@ -26,6 +26,10 @@
 * Show product
 * Search product
 
+### xUnitest
+* Test category, product page
+* Test search
+
 ## Description
 * **This is a project semester 2 of WD07, `WD07_Project 2`**
 * **Name Project: _Shop Acc Game_**
