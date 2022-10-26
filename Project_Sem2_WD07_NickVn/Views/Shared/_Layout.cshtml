@@ -173,7 +173,7 @@
                     <div class="c-brand c-pull-left">
                         <div style="margin: 0px;display: inline-block">
                             <a href="~/" class="c-logo"
-                                alt="Shop bán nick game, acc game online avatar, đột kích – CF, liên minh huyền thoại lol , ngọc rồng, khí phách anh hùng - kpah giá rẻ, uy tín...">
+                                alt="Shop bán nick game, acc game online liên minh huyền thoại lol giá rẻ, uy tín...">
                                 <img height="35px" src="~/storage/images/logo.jpg" alt="logo" class="c-desktop-logo">
                                 <img height="29px" src="~/storage/images/logo.jpg" alt="logo"
                                     class="c-desktop-logo-inverse">
@@ -188,9 +188,9 @@
                         <button class="c-topbar-toggler" type="button">
                             <i class="fa fa-ellipsis-v"></i>
                         </button>
-                        <button class="c-search-toggler" type="button">
+                        @* <button class="c-search-toggler" type="button">
                             <i class="fa fa-search"></i>
-                        </button>
+                        </button> *@
                         <!--    <button class="c-cart-toggler" type="button">
                             <i class="icon-handbag"></i>
                             <span class="c-cart-number c-theme-bg">2</span>
@@ -198,11 +198,11 @@
                     </div>
                     <!-- END: BRAND -->
                     <!-- BEGIN: QUICK SEARCH -->
-                    <form class="c-quick-search" action="#">
+                    @* <form class="c-quick-search" action="#">
                         <input type="text" name="query" placeholder="Tìm kiếm..." value="" class="form-control"
                             autocomplete="off">
                         <span class="c-theme-link">&times;</span>
-                    </form>
+                    </form> *@
                     <!-- END: QUICK SEARCH -->
                     <!-- BEGIN: HOR NAV -->
                     <!-- BEGIN: LAYOUT/HEADERS/MEGA-MENU -->
@@ -248,17 +248,17 @@
                                 <ul id="children-of-42" class="dropdown-menu c-menu-type-classic c-pull-left ">
                                     <li class="c-menu-type-classic"><a rel="" href="#" class="">Blog</a></li>
                                     <li class="c-menu-type-classic"><a rel="" href="#" class="">UY
-                                            T&Iacute;N CỦA SHOP</a></li>
+                                            TÍN CỦA SHOP</a></li>
                                     <li class="c-menu-type-classic"><a rel="" href="#" class="">Danh
-                                            S&aacute;ch GDV group</a></li>
+                                            Sách GDV group</a></li>
                                     <li class="c-menu-type-classic"><a rel="" href="#" class="">Dịch Vụ
                                             Game</a></li>
                                     <li class="c-menu-type-classic"><a rel=""
                                             href="#" class="">Điều
                                             khoản sử dụng website</a></li>
                                     <li class="c-menu-type-classic"><a rel="" href="#"
-                                            class="">Ch&iacute;nh
-                                            s&aacute;ch tại Nick.vn</a></li>
+                                            class="">Chính
+                                            sách tại Shop</a></li>
                                 </ul>
                             </li>
                             @{
@@ -354,7 +354,7 @@
                                     var money = Context.Session.GetInt32("_Money");
 
                                     <li>
-                                        <a href="#" title="@userName"
+                                        <a asp-action="Profile" asp-controller="User" title="@userName"
                                         class="c-btn-border-opacity-04 c-btn btn-no-focus c-btn-header btn btn-sm c-btn-border-1x c-btn-dark c-btn-circle c-btn-uppercase c-btn-sbold">
                                             <i class="icon-user"></i> @limitChar(userName) - @vndFormat(money)</a>
                                     </li>

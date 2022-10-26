@@ -258,11 +258,8 @@
                         }
                     }
                     <div class="buy-footer" style="text-align: center">
-
-                        <button type="button"
+                        <button type="button" id="BuyNowBtn1"
                         class="btn c-btn btn-lg c-theme-btn c-font-uppercase c-font-bold c-btn-square m-t-20 load-modal">Mua ngay</button>
-
-
                     </div>
 
                 </div>
@@ -645,6 +642,11 @@
 <script>
     $(document).ready(function () {
         $("#BuyNowBtn").click(function () {
+            $("#LoadModal").modal();
+        });
+    });
+    $(document).ready(function () {
+        $("#BuyNowBtn1").click(function () {
             $("#LoadModal").modal();
         });
     });
