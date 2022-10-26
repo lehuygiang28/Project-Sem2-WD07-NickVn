@@ -31,7 +31,7 @@ public class UserController : Controller
 
     public async Task<IActionResult> DepositHistory(int? page)
     {
-        if(!await IsLoggedIn())
+        if (!await IsLoggedIn())
         {
             return RedirectToAction(nameof(Login));
         }
@@ -42,11 +42,11 @@ public class UserController : Controller
                     orderby his.CreateAt descending
                     select his;
 
-        if(page <= 0 || page == null)
+        if (page <= 0 || page == null)
         {
             page = 1;
         }
-                    
+
         // Max size of page is 8
         int totalPage = 0;
         int totalRecord = 0;
@@ -187,21 +187,32 @@ public class UserController : Controller
 
     private async Task<bool> IsLoggedIn()
     {
-        var sessionValueId = HttpContext.Session.GetInt32(SessionKeyId);
-        if (sessionValueId == null)
+        try
+        {
+            var sessionValueId = HttpContext.Session.GetInt32(SessionKeyId);
+            if (sessionValueId == null)
+            {
+                return false;
+            }
+
+            var user = await _context.Users.Where(u => u.UserId == sessionValueId).FirstOrDefaultAsync();
+            if (user == null)
+            {
+                HttpContext.Session.Remove(SessionKeyId);
+                HttpContext.Session.Remove(SessionKeyMoney);
+                HttpContext.Session.Remove(SessionKeyName);
+                TempData["err"] = "Error occur when login";
+                return false;
+            }
+            HttpContext.Session.SetInt32(SessionKeyId, user.UserId);
+            HttpContext.Session.SetInt32(SessionKeyId, (int)user.Money);
+            HttpContext.Session.SetString(SessionKeyId, user.UserName);
+            return true;
+        }
+        catch
         {
             return false;
         }
-        var user = await _context.Users.Where(u => u.UserId == sessionValueId).FirstOrDefaultAsync();
-        if(user == null)
-        {
-            HttpContext.Session.Remove(SessionKeyId);
-            HttpContext.Session.Remove(SessionKeyMoney);
-            HttpContext.Session.Remove(SessionKeyName);
-            TempData["err"] = "Error occur when login";
-            return false;
-        }
-        return true;
     }
 
     public string? LayMenhGiaThe(string telecom_key)
@@ -247,7 +258,7 @@ public class UserController : Controller
     public async Task<IActionResult> NapTheSolve(int? id, string? UserName, string telecom, decimal? amount, string? pin, string? serial, int? type_charge)
     {
         // If not login, return to login
-        if(!await IsLoggedIn())
+        if (!await IsLoggedIn())
         {
             return RedirectToAction(nameof(Login));
         }
@@ -280,7 +291,7 @@ public class UserController : Controller
             TempData["error"] = "Hãy chọn mệnh giá thẻ!";
             return RedirectToAction(nameof(NapThe));
         }
-        
+
         // Check if user invalid (null), return msg
         if (string.IsNullOrEmpty(id.ToString()) || string.IsNullOrEmpty(UserName))
         {
@@ -298,7 +309,7 @@ public class UserController : Controller
 
         var napthe = await _context.TheNapData.Where(t => t.TelecomName == telecom && t.Pin == pin && t.Serial == serial).FirstAsync();
         // If card was use, return msg error
-        if(napthe.IsUse == true)
+        if (napthe.IsUse == true)
         {
             TempData["error"] = "Thẻ đã được sử dụng.";
             return RedirectToAction(nameof(NapThe));
@@ -311,7 +322,7 @@ public class UserController : Controller
             TempData["error"] = "Có lỗi xảy ra! Hãy đăng nhập và thử lại!";
             return RedirectToAction(nameof(NapThe));
         }
-        
+
         // Check if wrong amount seclected, send message and subtraction %
         bool isWrongAmount = false;
         if (napthe.Amount != amountInput)
@@ -327,7 +338,7 @@ public class UserController : Controller
         {
             typeCharge = "Nạp thẻ cào";
         }
-        
+
         // Write history charge
         ChargeHistory history = new ChargeHistory();
         history.UserId = Convert.ToInt32(id);
@@ -356,7 +367,7 @@ public class UserController : Controller
         await _context.SaveChangesAsync();
 
         // Send message success to view
-        TempData["success"] = "Nạp thẻ thành công! Bạn nhận được: " +  history.MoneyReceived;
+        TempData["success"] = "Nạp thẻ thành công! Bạn nhận được: " + history.MoneyReceived;
 
         // Update session value
         HttpContext.Session.SetInt32(SessionKeyMoney, (int)user.Money);
@@ -422,7 +433,7 @@ public class UserController : Controller
         foreach (Order itemInList in listAccountId)
         {
             var item = await _context.Lienminhs.Where(o => o.ProductId == itemInList.ProductId).FirstOrDefaultAsync();
-            if(item  == null)
+            if (item == null)
             {
                 continue;
             }
@@ -449,7 +460,7 @@ public class UserController : Controller
         }
 
         var currentUser = await _context.Users.Where(a => a.UserId == HttpContext.Session.GetInt32(SessionKeyId)).FirstOrDefaultAsync();
-        if(currentUser == null)
+        if (currentUser == null)
         {
             await RemoveInvalidSession();
             return RedirectToAction(nameof(ChangePassword));
@@ -516,7 +527,7 @@ public class UserController : Controller
 
         var idSession = HttpContext.Session.GetInt32(SessionKeyId);
         var user = await _context.Users.Where(a => a.UserId == idSession).FirstOrDefaultAsync();
-        if(user == null)
+        if (user == null)
         {
             await RemoveInvalidSession();
             return RedirectToAction(nameof(Login));
@@ -620,7 +631,7 @@ public class UserController : Controller
         string defaultCoverUrl = @"storage/images/unknown-cover.jpg";
 
         int ROLE_MEMBER = (await _context.Roles.Where(b => b.RoleNameEn == "Member").FirstAsync()).RoleId;
-        int STATUS_ACTIVE  = (await _context.Statuses.Where(a => a.StatusNameEn == "Active").FirstAsync()).StatusId;
+        int STATUS_ACTIVE = (await _context.Statuses.Where(a => a.StatusNameEn == "Active").FirstAsync()).StatusId;
 
         userInput.LastName = localTime.ToString("yyyyMMdd'T'HHmmss");
         userInput.CreateAt = localTime;
@@ -663,7 +674,7 @@ public class UserController : Controller
         return RedirectToAction("Index", "Home");
     }
 
-    public async Task<IActionResult> LoginSolve(string UserName, string Password)
+    public async Task<IActionResult> LoginSolve(string? UserName, string? Password)
     {
         if (await IsLoggedIn())
         {
@@ -712,10 +723,10 @@ public class UserController : Controller
             TempData["error"] = "Có lỗi xảy ra";
             return View(nameof(Login));
         }
-        
+
         // Get status list: Ban
         int ban_status_id = (await _context.Statuses.Where(a => a.StatusNameEn == "Ban").FirstAsync()).StatusId;
-        if(loginUser.StatusId == ban_status_id)
+        if (loginUser.StatusId == ban_status_id)
         {
             TempData["error"] = "Tài khoản của bạn đã bị khoá, liên hệ admin để biết thêm chi tiết";
             return RedirectToAction(nameof(Login)); ;
@@ -748,7 +759,7 @@ public class UserController : Controller
         }
 
         TempData["siteKey"] = (await _context.Googlerecaptchas.Where(a => a.HostName == HostName).FirstAsync()).SiteKey;
-        return View();
+        return View(nameof(Login));
     }
 
     public async Task<IActionResult> Index()
