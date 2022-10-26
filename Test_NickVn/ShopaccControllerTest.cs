@@ -27,7 +27,7 @@
                 Session = sessionMock.Object
             };
 
-            if(userId is not null || money is not null || userName is not null)
+            if(userId is not null && money is not null && userName is not null)
             {
                 httpContext.Session.SetInt32("_Id", (int)userId);
                 httpContext.Session.SetInt32("_Money", (int)money);
