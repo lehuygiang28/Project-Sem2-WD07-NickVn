@@ -40,7 +40,7 @@
                             <th scope="col">Product Name</th>
                             <th scope="col">Price</th>
                             <th scope="col">Status</th>
-                            <th scope="col">&nbsp;</th>
+                            @* <th scope="col">&nbsp;</th> *@
                             @* <th scope="col">&nbsp;</th>
                             <th scope="col">&nbsp;</th> *@
                         </tr>
@@ -58,9 +58,9 @@
                                         <td>@oderDetailItem.Item3.Name #@oderDetailItem.Item3.ProductId</td>
                                         <td>@vndFormat(oderDetailItem.Item3.PriceAtm)</td>
                                         <td>@oderDetailItem.Item1.Status</td>
-                                        <td>@Html.ActionLink("Details", "DetailOrder", new { id = oderDetailItem.Item1.OrderId }, new {
+                                        @* <td>@Html.ActionLink("Details", "DetailOrder", new { id = oderDetailItem.Item1.OrderId }, new {
                                     @class =
-                                    "text-info"})</td>
+                                    "text-info"})</td> *@
                                         @* <td>@Html.ActionLink("Edit", "EditProduct", new { id = oderDetailItem.Item1.Id }, new { @class =
                                     "text-light"})
                                         </td> *@

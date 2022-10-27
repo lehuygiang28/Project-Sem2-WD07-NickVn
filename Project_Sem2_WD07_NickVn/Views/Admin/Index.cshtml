@@ -228,7 +228,7 @@
                         <th scope="col">Invoice</th>
                         <th scope="col">Amount</th>
                         <th scope="col">Status</th>
-                        <th scope="col">Action</th>
+                        @* <th scope="col">Action</th> *@
                     </tr>
                 </thead>
                 <tbody>
@@ -242,7 +242,7 @@
                                 <td>@item.OrderId</td>
                                 <td>@vndFormat(item.Product.PriceAtm)</td>
                                 <td>@item.Status</td>
-                                <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
+                                @* <td><a class="btn btn-sm btn-primary" href="">Detail</a></td> *@
                             </tr>
                         }
                     }
