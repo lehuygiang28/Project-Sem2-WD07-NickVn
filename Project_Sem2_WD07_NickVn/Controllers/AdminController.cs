@@ -571,6 +571,7 @@ public class AdminController : Controller
         product.ProductUserName = ProductUserName;
         product.ProductUserPassword = ProductPassword;
         product.Publisher = Publisher;
+        product.ProductCategoryId = 1;
         product.Rank = Rank;
         product.StatusAccount = StatusAccount;
 #pragma warning restore CS8601
