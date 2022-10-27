@@ -50,23 +50,13 @@ public class ShopaccController : Controller
         var varProduct = await query.FirstOrDefaultAsync();
 
         // var varProduct = await _context.Lienminhs.Where(i => i.Id == productId && i.Sold == Lienminh.NOT_SOLD).FirstAsync();
-        var userBuy = await _context.Users.Where(i => i.UserId == HttpContext.Session.GetInt32(UserController.SessionKeyId)).FirstAsync();
+        var userBuy = await _context.Users.Where(i => i.UserId == HttpContext.Session.GetInt32(UserController.SessionKeyId)).FirstOrDefaultAsync();
 
         if (varProduct == null || userBuy == null)
         {
             TempData["error"] = "Có lỗi xảy ra!";
             return RedirectToAction(nameof(LienMinh));
         }
-
-        // Tuple<Lienminh, Status> lienMinhProduct;
-        // if (varProduct != null)
-        // {
-        //     lienMinhProduct = (Tuple<Lienminh, Status>)varProduct;
-        // }
-        // if(varProduct == null)
-        // {
-        //     return;
-        // }
 
         if (userBuy.Money < varProduct.PriceAtm)
         {
@@ -90,7 +80,7 @@ public class ShopaccController : Controller
         // Update stats da ban
         varProduct.StatusId = SOLD;
 
-        _context.Orders.Update(oderUser);
+        _context.Orders.Add(oderUser);
         _context.Users.Update(userBuy);
         _context.Lienminhs.Update(varProduct);
 
