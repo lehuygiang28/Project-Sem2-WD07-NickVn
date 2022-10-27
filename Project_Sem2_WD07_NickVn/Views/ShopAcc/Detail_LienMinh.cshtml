@@ -573,7 +573,6 @@
                             }
                             else if (money < accLienMinh.PriceAtm)
                             {
-                                string? urlNapThe = Url.ActionLink("NapThe", "User");
                                 form = @"
                                 <div class='form-group '>
                                     <label class='col-md-12 form-control-label text-danger'
@@ -586,7 +585,7 @@
 
                                 <div class='modal-footer'>
 
-                                    <a class='btn c-theme-btn c-btn-square c-btn-uppercase c-btn-bold' href='@urlNapThe'>Nạp thẻ cào</a>
+                                    <a class='btn c-theme-btn c-btn-square c-btn-uppercase c-btn-bold' href='/User/NapThe'>Nạp thẻ cào</a>
                                     <a class='btn c-theme-btn c-btn-square c-btn-uppercase c-btn-bold c-bg-green-4' href='#'>Nạp từ atm - ví điện tử</a>
 
                                     <button type='button'
