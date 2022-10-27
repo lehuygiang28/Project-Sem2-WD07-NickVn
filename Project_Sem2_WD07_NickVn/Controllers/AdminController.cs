@@ -737,6 +737,7 @@ public class AdminController : Controller
 
         _context.Update(product);
         await _context.SaveChangesAsync();
+        TempData["success"] = "Edit products success";
 
         return Redirect(Request.Headers["Referer"].ToString());
     }
@@ -765,7 +766,7 @@ public class AdminController : Controller
         ViewBag.listStatus = listStatus;
         ViewBag.listImage = listImage;
 
-        return View();
+        return View(nameof(EditProduct));
     }
 
     public async Task<IActionResult> DeleteProduct(int id)
