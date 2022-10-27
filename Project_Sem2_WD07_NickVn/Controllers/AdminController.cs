@@ -152,6 +152,7 @@ public class AdminController : Controller
             Lienminh newProduct = new Lienminh();
 
             newProduct.ProductId = lienMinhID;
+            newProduct.ProductCategoryId = 1;
             newProduct.Name = "Liên Minh";
             newProduct.StatusAccount = "shop" + RandomString(6);
             newProduct.ProductUserPassword = "passw" + RandomString(8);
