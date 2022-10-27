@@ -15,7 +15,7 @@ public class RecaptchaServices
     //ActionFilterAttribute has no async for MVC 5 therefore not using as an actionfilter attribute - needs revisiting in MVC 6
     internal static async Task<bool> Validate(HttpRequest request, string SecretKey)
     {
-        return true; // Disable recaptcha check for dev
+        // return true; // Disable recaptcha check for dev
 
         string recaptchaResponse = "";
         try
