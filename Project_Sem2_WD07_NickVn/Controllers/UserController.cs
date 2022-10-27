@@ -7,8 +7,8 @@ namespace Project_Sem2_WD07_NickVn.Controllers;
 
 public class UserController : Controller
 {
-    public const string SessionKeyName = "_Name";
     public const string SessionKeyId = "_Id";
+    public const string SessionKeyName = "_Name";
     public const string SessionKeyMoney = "_Money";
     private const string HostName = "GoogleReCaptcha";
     // public string HostName = "localhost";
@@ -187,8 +187,6 @@ public class UserController : Controller
 
     private async Task<bool> IsLoggedIn()
     {
-        try
-        {
             var sessionValueId = HttpContext.Session.GetInt32(SessionKeyId);
             if (sessionValueId == null)
             {
@@ -198,21 +196,16 @@ public class UserController : Controller
             var user = await _context.Users.Where(u => u.UserId == sessionValueId).FirstOrDefaultAsync();
             if (user == null)
             {
-                HttpContext.Session.Remove(SessionKeyId);
-                HttpContext.Session.Remove(SessionKeyMoney);
-                HttpContext.Session.Remove(SessionKeyName);
+                // HttpContext.Session.Remove(SessionKeyId);
+                // HttpContext.Session.Remove(SessionKeyMoney);
+                // HttpContext.Session.Remove(SessionKeyName);
                 TempData["err"] = "Error occur when login";
                 return false;
             }
-            HttpContext.Session.SetInt32(SessionKeyId, user.UserId);
-            HttpContext.Session.SetInt32(SessionKeyId, (int)user.Money);
-            HttpContext.Session.SetString(SessionKeyId, user.UserName);
+            // HttpContext.Session.SetInt32(SessionKeyId, user.UserId);
+            // HttpContext.Session.SetInt32(SessionKeyId, (int)user.Money);
+            // HttpContext.Session.SetString(SessionKeyId, user.UserName);
             return true;
-        }
-        catch
-        {
-            return false;
-        }
     }
 
     public string? LayMenhGiaThe(string telecom_key)
@@ -462,7 +455,7 @@ public class UserController : Controller
         var currentUser = await _context.Users.Where(a => a.UserId == HttpContext.Session.GetInt32(SessionKeyId)).FirstOrDefaultAsync();
         if (currentUser == null)
         {
-            await RemoveInvalidSession();
+            // await RemoveInvalidSession();
             return RedirectToAction(nameof(ChangePassword));
         }
 
@@ -525,11 +518,13 @@ public class UserController : Controller
             return RedirectToAction(nameof(Login));
         }
 
-        var idSession = HttpContext.Session.GetInt32(SessionKeyId);
+        int idSession = Convert.ToInt32(HttpContext.Session.GetInt32(SessionKeyId));
+        System.Console.WriteLine("ID: " + idSession);
         var user = await _context.Users.Where(a => a.UserId == idSession).FirstOrDefaultAsync();
         if (user == null)
         {
-            await RemoveInvalidSession();
+            // await RemoveInvalidSession();
+            System.Console.WriteLine("NULLL");
             return RedirectToAction(nameof(Login));
         }
         var roles = await _context.Roles.OrderBy(a => a.RoleId).ToListAsync();
