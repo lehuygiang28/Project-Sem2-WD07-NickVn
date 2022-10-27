@@ -892,7 +892,7 @@ public class AdminController : Controller
                     join sts in _context.Statuses on lienMinh.StatusId equals sts.StatusId
                     where lienMinh.Name.Contains(SearchKey == null ? string.Empty : SearchKey)
                     && (lienMinh.PriceAtm >= priceSearchMin && lienMinh.PriceAtm < priceSearchMax)
-                    orderby lienMinh.ProductId
+                    orderby lienMinh.ProductId descending
                     select Tuple.Create<Lienminh, Status>(lienMinh, sts);
 
         // var query = from lienMinh in _context.Lienminhs
