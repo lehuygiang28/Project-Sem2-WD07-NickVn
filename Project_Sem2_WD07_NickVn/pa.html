@@ -1,0 +1,48 @@
+<!-- Prev disable -->
+<li class="page-item disabled" aria-disabled="true" aria-label="&lsaquo; Previous">
+    <span class="page-link" aria-hidden="true">&lsaquo;</span>
+</li>
+
+<!-- Prev enable -->
+<li class="page-item">
+    <a class="page-link" href="" aria-label="Next &rsaquo;">&rsaquo;</a>
+</li>
+
+<!-- next disable -->
+<li class="page-item disabled" aria-disabled="true" aria-label="Next &rsaquo;">
+    <span class="page-link" aria-hidden="false">&rsaquo;</span>
+</li>
+
+<!-- next enable -->
+<li class="page-item">
+    <a class="page-link" href='' aria-label="&laquo; Previous">&lsaquo;</a>
+</li>
+
+<!-- current diable -->
+<li class="page-item active" aria-current="page">
+    <span class="page-link">aaaaaa</span>
+</li>
+
+<!-- item enable -->
+<li class="page-item">
+    <a class="page-link" href=''>aaaaa</a>
+</li>
+
+<!-- 
+                {{#if dataPaginations}}
+                {{else}}
+                {{/if}} -->
+
+
+                
+  <div class="app">
+
+    {{> header_admin}}
+
+    <div class="container">
+      {{{body}}}
+    </div>
+
+    {{> footer_admin}}
+
+  </div>

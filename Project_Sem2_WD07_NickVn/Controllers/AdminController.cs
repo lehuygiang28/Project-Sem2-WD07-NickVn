@@ -154,7 +154,7 @@ public class AdminController : Controller
             newProduct.ProductId = lienMinhID;
             newProduct.ProductCategoryId = 1;
             newProduct.Name = "Liên Minh";
-            newProduct.StatusAccount = "shop" + RandomString(6);
+            newProduct.ProductUserName = "shop" + RandomString(6);
             newProduct.ProductUserPassword = "passw" + RandomString(8);
             newProduct.Publisher = "Garena";
             newProduct.PriceAtm = RandomDecimal(10000, int.MaxValue / 100);

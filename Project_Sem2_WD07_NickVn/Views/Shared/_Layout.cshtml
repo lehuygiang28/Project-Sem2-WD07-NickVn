@@ -190,7 +190,7 @@
                         </button>
                         @* <button class="c-search-toggler" type="button">
                             <i class="fa fa-search"></i>
-                        </button> *@
+                            </button> *@
                         <!--    <button class="c-cart-toggler" type="button">
                             <i class="icon-handbag"></i>
                             <span class="c-cart-number c-theme-bg">2</span>
@@ -200,9 +200,9 @@
                     <!-- BEGIN: QUICK SEARCH -->
                     @* <form class="c-quick-search" action="#">
                         <input type="text" name="query" placeholder="Tìm kiếm..." value="" class="form-control"
-                            autocomplete="off">
+                        autocomplete="off">
                         <span class="c-theme-link">&times;</span>
-                    </form> *@
+                        </form> *@
                     <!-- END: QUICK SEARCH -->
                     <!-- BEGIN: HOR NAV -->
                     <!-- BEGIN: LAYOUT/HEADERS/MEGA-MENU -->
@@ -226,10 +226,10 @@
                         <ul class="nav navbar-nav c-theme-nav">
                             <li class="c-menu-type-classic"><a rel="" href="~/" class="c-link dropdown-toggle ">Trang
                                     chủ</a></li>
-                            <li class="c-menu-type-classic"><a rel="" href="#"
-                                    class="c-link dropdown-toggle ">Dịch vụ game</a></li>
-                            <li class="c-menu-type-classic"><a rel="" asp-action="TheNap" asp-controller="User" target="_blank"
-                                    class="c-link dropdown-toggle ">Mua thẻ</a></li>
+                            <li class="c-menu-type-classic"><a rel="" href="#" class="c-link dropdown-toggle ">Dịch vụ
+                                    game</a></li>
+                            <li class="c-menu-type-classic"><a rel="" asp-action="TheNap" asp-controller="User"
+                                    target="_blank" class="c-link dropdown-toggle ">Mua thẻ</a></li>
                             <li class="c-menu-type-classic"><a rel="" href="#" class="c-link dropdown-toggle ">Nạp
                                     tiền<span class="c-arrow c-toggler"></span></a>
                                 <ul id="children-of-41" class="dropdown-menu c-menu-type-classic c-pull-left ">
@@ -238,8 +238,7 @@
                                     </li>
                                     <li class="c-menu-type-classic"><a rel="" href="#" class="">Nạp ATM tự
                                             động</a></li>
-                                    <li class="c-menu-type-classic"><a target='_blank' rel=""
-                                            href="#" class="">Hướng
+                                    <li class="c-menu-type-classic"><a target='_blank' rel="" href="#" class="">Hướng
                                             dẫn nạp ATM tự động</a></li>
                                 </ul>
                             </li>
@@ -253,11 +252,9 @@
                                             Sách GDV group</a></li>
                                     <li class="c-menu-type-classic"><a rel="" href="#" class="">Dịch Vụ
                                             Game</a></li>
-                                    <li class="c-menu-type-classic"><a rel=""
-                                            href="#" class="">Điều
+                                    <li class="c-menu-type-classic"><a rel="" href="#" class="">Điều
                                             khoản sử dụng website</a></li>
-                                    <li class="c-menu-type-classic"><a rel="" href="#"
-                                            class="">Chính
+                                    <li class="c-menu-type-classic"><a rel="" href="#" class="">Chính
                                             sách tại Shop</a></li>
                                 </ul>
                             </li>
@@ -265,11 +262,11 @@
                                 if (isLogin() == false)
                                 {
                                     <li><a asp-controller="User" asp-action="Login" class="c-btn-border-opacity-04 c-btn btn-no-focus c-btn-header btn btn-sm c-btn-border-1x
-                                                        c-btn-dark c-btn-circle c-btn-uppercase c-btn-sbold">
+                                                                c-btn-dark c-btn-circle c-btn-uppercase c-btn-sbold">
                                             <i class="icon-user"></i> Đăng nhập</a>
                                     </li>
                                     <li><a asp-controller="User" asp-action="Signup" class="c-btn-border-opacity-04 c-btn btn-no-focus c-btn-header btn btn-sm c-btn-border-1x
-                                                        c-btn-dark c-btn-circle c-btn-uppercase c-btn-sbold">
+                                                                c-btn-dark c-btn-circle c-btn-uppercase c-btn-sbold">
                                             <i class="icon-key icons"></i> Đăng ký</a>
                                     </li>
                                 }
@@ -279,7 +276,7 @@
                                     var money = Context.Session.GetInt32("_Money");
                                     <li>
                                         <a asp-action="Profile" asp-controller="User" title="@userName"
-                                        class="c-btn-border-opacity-04 c-btn btn-no-focus c-btn-header btn btn-sm c-btn-border-1x c-btn-dark c-btn-circle c-btn-uppercase c-btn-sbold">
+                                    class="c-btn-border-opacity-04 c-btn btn-no-focus c-btn-header btn btn-sm c-btn-border-1x c-btn-dark c-btn-circle c-btn-uppercase c-btn-sbold">
                                             <i class="icon-user"></i> @limitChar(userName) - @vndFormat(money)</a>
                                     </li>
                                     <li>
@@ -301,19 +298,19 @@
                         <ul class="nav navbar-nav c-theme-nav">
                             <li class="c-menu-type-classic"><a rel="" href="~/" class="c-link dropdown-toggle ">Trang
                                     chủ</a></li>
-                            <li class="c-menu-type-classic"><a rel="" href="#"
-                                    class="c-link dropdown-toggle ">Dịch vụ game</a></li>
-                            <li class="c-menu-type-classic"><a rel="" asp-action="TheNap" asp-controller="User" target="_blank"
-                                    class="c-link dropdown-toggle ">Mua thẻ</a></li>
+                            <li class="c-menu-type-classic"><a rel="" href="#" class="c-link dropdown-toggle ">Dịch vụ
+                                    game</a></li>
+                            <li class="c-menu-type-classic"><a rel="" asp-action="TheNap" asp-controller="User"
+                                    target="_blank" class="c-link dropdown-toggle ">Mua thẻ</a></li>
                             <li class="c-menu-type-classic"><a rel="" href="#" class="c-link dropdown-toggle ">Nạp
                                     tiền<span class="c-arrow c-toggler"></span></a>
                                 <ul id="children-of-41" class="dropdown-menu c-menu-type-classic c-pull-left ">
-                                    <li class="c-menu-type-classic"><a rel="" asp-action="NapThe" asp-controller="User" class="">Nạp thẻ
+                                    <li class="c-menu-type-classic"><a rel="" asp-action="NapThe" asp-controller="User"
+                                            class="">Nạp thẻ
                                             cào</a></li>
                                     <li class="c-menu-type-classic"><a rel="" href="#" class="">Nạp ATM tự
                                             động</a></li>
-                                    <li class="c-menu-type-classic"><a target='_blank' rel=""
-                                            href="#" class="">Hướng
+                                    <li class="c-menu-type-classic"><a target='_blank' rel="" href="#" class="">Hướng
                                             dẫn nạp ATM tự động</a></li>
                                 </ul>
                             </li>
@@ -330,8 +327,8 @@
                                     <li class="c-menu-type-classic"><a rel=""
                                             href="blog/dieu-khoan-su-dung-website-nickvn" class="">Điều
                                             khoản sử dụng website</a></li>
-                                    <li class="c-menu-type-classic"><a rel="" href="#"
-                                            class="">Chính sách tại SHOP</a></li>
+                                    <li class="c-menu-type-classic"><a rel="" href="#" class="">Chính sách tại SHOP</a>
+                                    </li>
                                 </ul>
                             </li>
 
@@ -339,11 +336,11 @@
                                 if (isLogin() == false)
                                 {
                                     <li><a asp-controller="user" asp-action="Login" class="c-btn-border-opacity-04 c-btn btn-no-focus c-btn-header btn btn-sm c-btn-border-1x
-                                            c-btn-dark c-btn-circle c-btn-uppercase c-btn-sbold">
+                                                    c-btn-dark c-btn-circle c-btn-uppercase c-btn-sbold">
                                             <i class="icon-user"></i> Đăng nhập</a>
                                     </li>
                                     <li><a asp-controller="user" asp-action="Signup" class="c-btn-border-opacity-04 c-btn btn-no-focus c-btn-header btn btn-sm c-btn-border-1x
-                                            c-btn-dark c-btn-circle c-btn-uppercase c-btn-sbold">
+                                                    c-btn-dark c-btn-circle c-btn-uppercase c-btn-sbold">
                                             <i class="icon-key icons"></i> Đăng ký</a>
                                     </li>
 
@@ -355,7 +352,7 @@
 
                                     <li>
                                         <a asp-action="Profile" asp-controller="User" title="@userName"
-                                        class="c-btn-border-opacity-04 c-btn btn-no-focus c-btn-header btn btn-sm c-btn-border-1x c-btn-dark c-btn-circle c-btn-uppercase c-btn-sbold">
+                                    class="c-btn-border-opacity-04 c-btn btn-no-focus c-btn-header btn btn-sm c-btn-border-1x c-btn-dark c-btn-circle c-btn-uppercase c-btn-sbold">
                                             <i class="icon-user"></i> @limitChar(userName) - @vndFormat(money)</a>
                                     </li>
                                     <li>
@@ -368,7 +365,7 @@
                                 }
                             }
 
-                            </ul>
+                        </ul>
 
                     </nav>
 
@@ -404,22 +401,29 @@
                     <div class="col-md-4">
                         <div class="c-container c-first">
                             @* <!-- <div class="c-content-title-1">
-                            <h3 class="c-font-uppercase c-font-bold c-font-white">Về <span class="c-theme-font">Nick.vn</span>
+                                <h3 class="c-font-uppercase c-font-bold c-font-white">Về <span
+                                class="c-theme-font">Nick.vn</span>
 
-                                <a target="_blank"  href="~//www.dmca.com/Protection/Status.aspx?ID=6766daa6-8986-40c5-b282-a9c9e6a883de" title="DMCA.com Protection Status" class="dmca-badge"> <img src ="https://images.dmca.com/Badges/_dmca_premi_badge_1.png?ID=6766daa6-8986-40c5-b282-a9c9e6a883de"  alt="DMCA.com Protection Status" /></a>  <script src="~https://images.dmca.com/Badges/DMCABadgeHelper.min.js"> </script>
+                                <a target="_blank"
+                                href="~//www.dmca.com/Protection/Status.aspx?ID=6766daa6-8986-40c5-b282-a9c9e6a883de"
+                                title="DMCA.com Protection Status" class="dmca-badge"> <img src
+                                ="https://images.dmca.com/Badges/_dmca_premi_badge_1.png?ID=6766daa6-8986-40c5-b282-a9c9e6a883de"
+                                alt="DMCA.com Protection Status" /></a> <script
+                                src="~https://images.dmca.com/Badges/DMCABadgeHelper.min.js"> </script>
 
-                            </h3>
-                            <div class="c-line-left hide"></div>
-                            <p class="c-text">
+                                </h3>
+                                <div class="c-line-left hide"></div>
+                                <p class="c-text">
                                 Chuyên mua bán nick các game... an toàn. Tin cậy nhanh chóng. Giao dịch tự động 24/24</p>
-                        </div>
-                        <ul class="c-links">
-                            <li><a href="~/gioi-thieu">Giới thiệu</a></li>
-                            <li><a href="~/huong-dan-mua-tai-khoan">Hướng Dẫn Mua Tài Khoản</a></li>
-                            <li><a href="~/huong-dan-nick-mua-tra-gop">Hướng Dẫn Mua Nick Trả Góp</a></li>
-                            <li><a href="~/tuyen-dai-ly-cung-cap-nick-tai-nickvn">Tuyển Đại Lý cung cấp nick tại Nick.vn</a></li>
-                            <li><a href="~/lien-he-gop-y"> Liên hệ/góp ý</a></li>
-                        </ul> --> *@
+                                </div>
+                                <ul class="c-links">
+                                <li><a href="~/gioi-thieu">Giới thiệu</a></li>
+                                <li><a href="~/huong-dan-mua-tai-khoan">Hướng Dẫn Mua Tài Khoản</a></li>
+                                <li><a href="~/huong-dan-nick-mua-tra-gop">Hướng Dẫn Mua Nick Trả Góp</a></li>
+                                <li><a href="~/tuyen-dai-ly-cung-cap-nick-tai-nickvn">Tuyển Đại Lý cung cấp nick tại
+                                Nick.vn</a></li>
+                                <li><a href="~/lien-he-gop-y"> Liên hệ/góp ý</a></li>
+                                </ul> --> *@
                             <p><span style="font-size:22px"><strong>&nbsp;NICK.VN</strong></span>&nbsp; &nbsp;<a
                                     href="http://www.dmca.com/Protection/Status.aspx?ID=6766daa6-8986-40c5-b282-a9c9e6a883de&amp;refurl=https://nick.vn/"
                                     target="_blank"><img alt="DMCA.com Protection Status"
@@ -429,20 +433,14 @@
                             <p><span style="font-size:14px"><span style="color:#ffffff">Chuy&ecirc;n mua </span><a
                                         href="#"><span style="color:#ffffff">b&aacute;n
                                             nick&nbsp;all game gi&aacute; rẻ</span></a><span
-                                        style="color:#ffffff">&nbsp;( </span><a
-                                        href="#"><span
+                                        style="color:#ffffff">&nbsp;( </span><a href="#"><span
                                             style="color:#ffffff">Free Fire</span></a><span style="color:#ffffff">,
-                                    </span><a href="#"><span
-                                            style="color:#ffffff">Li&ecirc;n Qu&acirc;n</span></a><span
-                                        style="color:#ffffff">, </span><a
-                                        href="#"><span
-                                            style="color:#ffffff">Đột K&iacute;ch</span></a><span
-                                        style="color:#ffffff">, </span><a
-                                        href="#"><span
+                                    </span><a href="#"><span style="color:#ffffff">Li&ecirc;n Qu&acirc;n</span></a><span
+                                        style="color:#ffffff">, </span><a href="#"><span style="color:#ffffff">Đột
+                                            K&iacute;ch</span></a><span style="color:#ffffff">, </span><a href="#"><span
                                             style="color:#ffffff">Li&ecirc;n Minh</span></a><span
-                                        style="color:#ffffff">, </span><a
-                                        href="#"><span
-                                            style="color:#ffffff">Ngọc Rồng</span></a><span style="color:#ffffff">,...),
+                                        style="color:#ffffff">, </span><a href="#"><span style="color:#ffffff">Ngọc
+                                            Rồng</span></a><span style="color:#ffffff">,...),
                                     </span><a href="#"><span style="color:#ffffff">nạp game
                                             gi&aacute; rẻ</span></a><span style="color:#ffffff">,&nbsp;an
                                         to&agrave;n,&nbsp;tin cậy, nhanh ch&oacute;ng. Giao dịch tự động
@@ -451,20 +449,19 @@
                             <ul>
                                 <li><strong><span style="font-size:14px"><a href="#" target="_blank"><span
                                                     style="color:#ffffff">Giới thiệu</span></a></span></strong></li>
-                                <li><strong><span style="font-size:14px"><a href="#"
-                                                target="_blank"><span style="color:#ffffff">Hướng Dẫn Mua T&agrave;i
+                                <li><strong><span style="font-size:14px"><a href="#" target="_blank"><span
+                                                    style="color:#ffffff">Hướng Dẫn Mua T&agrave;i
                                                     Khoản</span></a></span></strong></li>
-                                <li><strong><span style="font-size:14px"><a href="#"
-                                                target="_blank"><span style="color:#ffffff">Hướng Dẫn Mua Nick Trả
+                                <li><strong><span style="font-size:14px"><a href="#" target="_blank"><span
+                                                    style="color:#ffffff">Hướng Dẫn Mua Nick Trả
                                                     G&oacute;p</span></a></span></strong></li>
-                                <li><strong><span style="font-size:14px"><a
-                                                href="#" target="_blank"><span
+                                <li><strong><span style="font-size:14px"><a href="#" target="_blank"><span
                                                     style="color:#ffffff">Tuyển Đại L&yacute; cung cấp nick tại
                                                     Nick.vn</span></a></span></strong></li>
                                 <li><strong><span style="font-size:14px"><a href="#" target="_blank"><span
                                                     style="color:#ffffff">Li&ecirc;n hệ</span></a></span></strong></li>
-                                <li><strong><a href="#" target="_blank"><span
-                                                style="color:#ffffff"><span style="font-size:14px">Tin
+                                <li><strong><a href="#" target="_blank"><span style="color:#ffffff"><span
+                                                    style="font-size:14px">Tin
                                                     tức&nbsp;game</span></span></a></strong></li>
                             </ul>
                         </div>
@@ -507,15 +504,18 @@
                     <div class="col-md-4">
                         <div id="fb-root"></div>
 
-
-
-                        <div class="fb-page" data-href="https://www.facebook.com/" data-tabs="timeline"
+                        <iframe
+                            src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2Flehuygiang28%2Fposts%2F1252444298493026&show_text=true&width=500"
+                            width="500" height="451" style="border:none;overflow:hidden" scrolling="no" frameborder="0"
+                            allowfullscreen="true"
+                            allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+                        @* <div class="fb-page" data-href="https://www.facebook.com/" data-tabs="timeline"
                             data-height="270" data-small-header="false" data-adapt-container-width="true"
                             data-hide-cover="false" data-show-facepile="true">
                             <blockquote cite="https://www.facebook.com/" class="fb-xfbml-parse-ignore"><a
-                                    href="https://www.facebook.com/">Nick.vn</a>
+                            href="https://www.facebook.com/">Nick.vn</a>
                             </blockquote>
-                        </div>
+                            </div> *@
                     </div>
                 </div>
             </div>
