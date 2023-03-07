@@ -14,7 +14,8 @@ builder.Services.AddDbContext<NickVn_ProjectContext>(options => options.UseMySql
 //     serverOptions.ListenAnyIP(443, listenOptions => listenOptions.UseHttps());
 // });
 
-builder.WebHost.UseUrls().UseKestrel();
+builder.WebHost.UseUrls().UseKestrel(serverOptions => { });
+builder.WebHost.UseIIS();
 
 // Add session services
 builder.Services.AddDistributedMemoryCache();
@@ -46,13 +47,13 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 // Handle error 404
 app.Use(async (context, next) =>
 {
-    await next();
     var statusCode = context.Response.StatusCode;
     if (statusCode == 400 || statusCode == 401 || statusCode == 404)
     {
         context.Request.Path = "/Home/Error";
         await next();
     }
+    await next();
 });
 
 // app.UseStatusCodePages();

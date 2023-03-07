@@ -1,2 +1,2 @@
 cd ../
-dotnet publish --configuration Release --output Release/App
+dotnet publish --configuration Release
