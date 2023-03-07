@@ -21,6 +21,9 @@ SET time_zone = "+00:00";
 -- Database: `nickvn_project`
 --
 
+CREATE DATABASE IF NOT EXISTS `nickvn_project`;
+USE `nickvn_project`;
+
 -- --------------------------------------------------------
 
 --
@@ -31,7 +34,7 @@ CREATE TABLE `categories` (
   `category_id` int(11) NOT NULL,
   `name` text NOT NULL,
   `title` text NOT NULL,
-  `action` text NOT NULL DEFAULT '#',
+  `action` text NOT NULL,
   `img_sale_off` text NOT NULL,
   `img_src` text NOT NULL,
   `total` int(11) NOT NULL DEFAULT 0,
